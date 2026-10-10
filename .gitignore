@@ -1,0 +1,13 @@
+# secrets
+.env
+env.sh
+
+# workspace-specific state: ids that exist only in our Freya workspace.
+# The organisers rerun the builder in their own workspace, so these must not be committed.
+.freya-agents.json
+.personas.json
+
+# python
+__pycache__/
+*.pyc
+.venv/
