@@ -1,0 +1,1659 @@
+{
+ "at": "20261010-181520",
+ "version": 24,
+ "s2": {
+  "case": "PUB-01",
+  "customer_id": "c_117a06f3-6e9",
+  "variables": {
+   "customer_id": "c_117a06f3-6e9",
+   "first_name": "Daniel",
+   "last_name": "Reyes",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "call_id": "1c900f72-365a-492a-ab77-64d54ed3ef0f",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "S2 opening. Send a command.",
+    "s": 1.56
+   },
+   {
+    "user": "verify date_of_birth 1988-03-14",
+    "agent": "Verify 1 back. vr_ok=true, vr_verified=true, vr_all=false, vr_left=3, vr_error=, vr_hook=post-ran. Counts {\"n_verify_success_count\": 1, \"n_verify_status_code\": 200}.",
+    "s": 4.19
+   },
+   {
+    "user": "verify phone_last4 4471",
+    "agent": "Verify 2 back. vr_ok=true, vr_verified=true, vr_all=true, vr_left=3, vr_error=, vr_hook=post-ran. Counts {\"n_verify_success_count\": 2, \"n_verify_status_code\": 200}.",
+    "s": 2.56
+   },
+   {
+    "user": "account",
+    "agent": "Account 1 back. acct_ok=true, acct_error=. Counts {\"n_account_success_count\": 1, \"n_account_status_code\": 200}.",
+    "s": 4.04
+   },
+   {
+    "user": "promise",
+    "agent": "Promise 1 back. pr_ok=true, pr_id=pr1, pr_error=. Counts {\"n_promise_success_count\": 1, \"n_promise_status_code\": 200}.",
+    "s": 2.61
+   },
+   {
+    "user": "final promise -",
+    "agent": "Final set: promise / -.",
+    "s": 2.17
+   },
+   {
+    "user": "bye",
+    "agent": "S2 farewell.",
+    "s": 14.47,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n",
+    "completed_s": 15.1
+   }
+  ],
+  "close_after_end_node_s": 0.3,
+  "closes_before_chat_end": 1,
+  "chat_end": "ok",
+  "ledger": {
+   "ok": true,
+   "case": "PUB-01",
+   "team": "ac21603b62a9d4ca4d06c1db",
+   "now": "2026-10-14T11:00",
+   "verified": {
+    "date_of_birth": true,
+    "phone_last4": true
+   },
+   "wrong": 0,
+   "hinted": false,
+   "promises": [
+    {
+     "promise_id": "pr1",
+     "product_id": "p1",
+     "type": "credit_card",
+     "amount": 420,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [],
+   "outcome": "promise",
+   "reason": null,
+   "failures": {
+    "verify_identity": 0,
+    "get_account": 0,
+    "create_promise": 0,
+    "close_call": 0
+   },
+   "calls": [
+    {
+     "n": 1,
+     "tool": "verify_identity",
+     "args": {
+      "field": "date_of_birth",
+      "answer": "1988-03-14"
+     },
+     "status": 200,
+     "result": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": false
+     }
+    },
+    {
+     "n": 2,
+     "tool": "verify_identity",
+     "args": {
+      "field": "phone_last4",
+      "answer": "4471"
+     },
+     "status": 200,
+     "result": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": true
+     }
+    },
+    {
+     "n": 3,
+     "tool": "get_account",
+     "args": {},
+     "status": 200,
+     "result": {
+      "ok": true,
+      "products": [
+       {
+        "product_id": "p1",
+        "type": "credit_card",
+        "card_last4": "4821",
+        "past_due": 420,
+        "days_late": 6,
+        "minimum_payment": 126
+       }
+      ]
+     }
+    },
+    {
+     "n": 4,
+     "tool": "create_promise",
+     "args": {
+      "date": "2026-10-14",
+      "amount": 420,
+      "product_id": "p1"
+     },
+     "status": 200,
+     "result": {
+      "ok": true,
+      "promise_id": "pr1"
+     }
+    },
+    {
+     "n": 5,
+     "tool": "close_call",
+     "args": {
+      "outcome": "promise"
+     },
+     "status": 200,
+     "result": {
+      "ok": true
+     }
+    }
+   ],
+   "last_at": 1791645351017
+  },
+  "ended_reason": "assistant-ended-call",
+  "api_events": [
+   {
+    "event": "function_call_start",
+    "function": "verify_identity",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/verify_identity",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "field": "date_of_birth",
+      "answer": "1988-03-14",
+      "customer_id": "c_117a06f3-6e9"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 3.7437515258789062
+   },
+   {
+    "event": "function_call_complete",
+    "function": "verify_identity",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": false,
+      "hook_mark": "post-ran"
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200
+    },
+    "error": null,
+    "t": 4.066744565963745
+   },
+   {
+    "event": "function_call_start",
+    "function": "verify_identity",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/verify_identity",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "field": "phone_last4",
+      "answer": "4471",
+      "customer_id": "c_117a06f3-6e9"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 6.344494819641113
+   },
+   {
+    "event": "function_call_complete",
+    "function": "verify_identity",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": true,
+      "hook_mark": "post-ran"
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200
+    },
+    "error": null,
+    "t": 6.605311870574951
+   },
+   {
+    "event": "function_call_start",
+    "function": "get_account",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/get_account",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "customer_id": "c_117a06f3-6e9"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 9.242826223373413
+   },
+   {
+    "event": "function_call_complete",
+    "function": "get_account",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "products": [
+       {
+        "product_id": "p1",
+        "type": "credit_card",
+        "card_last4": "4821",
+        "past_due": 420,
+        "days_late": 6,
+        "minimum_payment": 126
+       }
+      ]
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200,
+     "header": {
+      "Date": "Sat, 10 Oct 2026 15:15:33 GMT",
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=hRlcSKopGJeblxxmv990fXxcQltWuU99rq3VmNy7QWPe%2Bu6x4oDfJAFv3Ge04OtQvt1USksRCIj5ghKbOMnrnOHlfCo2UqKxjijLmm70F%2B0vqJ%2FY9ZJ0y86I6FB68mIQ6cHgT%2BuEh7Gkj1TmbP1bPjrB2%2BE3nPw2OQ%3D%3D\"}]}",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Content-Encoding": "gzip",
+      "Server": "cloudflare",
+      "CF-RAY": "a48694c539dbd360-FRA",
+      "alt-svc": "h3=\":443\"; ma=86400"
+     }
+    },
+    "error": null,
+    "t": 9.290757417678833
+   },
+   {
+    "event": "function_call_start",
+    "function": "create_promise",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/create_promise",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "date": "2026-10-14",
+      "amount": 420.0,
+      "product_id": "p1",
+      "customer_id": "c_117a06f3-6e9"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 12.744733572006226
+   },
+   {
+    "event": "function_call_complete",
+    "function": "create_promise",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "promise_id": "pr1"
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200,
+     "header": {
+      "Date": "Sat, 10 Oct 2026 15:15:36 GMT",
+      "Content-Type": "application/json",
+      "Content-Length": "30",
+      "Connection": "keep-alive",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=q7%2BY8WjX6GhDfBF4SfpxTJYQ7wQfbbJkkpbEZVGCAv8siSleps9J0dFY5HVHbOodjb%2Fs94vFqAfJcu7rlK4i5pUitskKiqXwAngSNDIpiV6UW4s1MnWBGswfKjvSeoOUyIlQRiyJ4Gv6PHXIHjIz3Didas%2BzDT3R0g%3D%3D\"}]}",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Server": "cloudflare",
+      "CF-RAY": "a48694db2e3d3a8a-FRA",
+      "alt-svc": "h3=\":443\"; ma=86400"
+     }
+    },
+    "error": null,
+    "t": 12.893230438232422
+   },
+   {
+    "event": "function_call_start",
+    "function": "close_call",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/close_call",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "outcome": "promise",
+      "customer_id": "c_117a06f3-6e9"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 26.912703275680542
+   },
+   {
+    "event": "function_call_complete",
+    "function": "close_call",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200,
+     "header": {
+      "Date": "Sat, 10 Oct 2026 15:15:51 GMT",
+      "Content-Type": "application/json",
+      "Content-Length": "11",
+      "Connection": "keep-alive",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=S4hIT2Fn0RPKXgtfBFD74EWW2LImIA57G3kCg634VX0%2BWQhRWZZ3OchTr3x0yxa8sOlTmo3LH1eZeXplOqOxhefjXRQMdEvYJzya4jIX3g18Q4DtHR19qan9lKBJiwAMsHDOUlOIAdiE8BOXGXTkfhNFC5JlApAQug%3D%3D\"}]}",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Server": "cloudflare",
+      "CF-RAY": "a4869533c86a1e32-FRA",
+      "alt-svc": "h3=\":443\"; ma=86400"
+     }
+    },
+    "error": null,
+    "t": 26.98237371444702
+   }
+  ],
+  "vars": {
+   "init.current_turns": 0,
+   "init.total_turns": 0,
+   "talk.current_turns": 0,
+   "talk.total_turns": 5,
+   "brain.current_turns": 0,
+   "brain.total_turns": 0,
+   "end_ok.current_turns": 0,
+   "end_ok.total_turns": 0,
+   "opening.current_turns": 0,
+   "opening.total_turns": 1,
+   "n_verify.current_turns": 0,
+   "n_verify.total_turns": 0,
+   "n_account.current_turns": 0,
+   "n_account.total_turns": 0,
+   "n_promise.current_turns": 0,
+   "n_promise.total_turns": 0,
+   "n_timeout.current_turns": 0,
+   "n_timeout.total_turns": 0,
+   "talk_error.current_turns": 0,
+   "talk_error.total_turns": 0,
+   "talk_fallback.current_turns": 0,
+   "talk_fallback.total_turns": 0,
+   "call.customer_phone_number": "",
+   "call.phone_number": "",
+   "call.call_id": "1c900f72-365a-492a-ab77-64d54ed3ef0f",
+   "call.direction": "web",
+   "system.iso_utc_now": "2026-10-10T15:15:40.980974Z",
+   "system.todays_date_en_cst": "10 October 2026 Saturday 09:15",
+   "system.todays_date_en_est": "10 October 2026 Saturday 10:15",
+   "system.todays_date_tr": "10 Ekim 2026 Cumartesi 18:15",
+   "system.todays_date_tr.iso_8601": "2026-10-10",
+   "system.uuid4()": "a64d7b6370384314b7f1f6d0db2ec8f2",
+   "customer_id": "c_117a06f3-6e9",
+   "first_name": "Daniel",
+   "last_name": "Reyes",
+   "title": "Mr",
+   "now": "2026-10-14T11:00",
+   "said": "bye",
+   "v_field": "phone_last4",
+   "v_answer": "4471",
+   "vr_ok": "true",
+   "vr_verified": "true",
+   "vr_all": "true",
+   "vr_left": 3,
+   "vr_error": "",
+   "vr_hook": "post-ran",
+   "route": "end_ok",
+   "say_next": "",
+   "state": "{\"runs\": 10, \"turn\": 6, \"n_verify\": 2, \"n_account\": 1, \"products\": [[\"p1\", 420]], \"n_promise\": 1}",
+   "brain_response.status": "success",
+   "brain_response.data": "null",
+   "brain_response.message": "Code executed successfully",
+   "brain_response.status_code": 200,
+   "brain_status_code": 200,
+   "brain_success_count": 10,
+   "hook_pre_verify": "2",
+   "hook_pre_body": "{\"field\": \"phone_last4\", \"answer\": \"4471\", \"customer_id\": \"c_117a06f3-6e9\"}",
+   "hook_post_verify": "2",
+   "n_verify_response.status": "success",
+   "n_verify_response.data.ok": "true",
+   "n_verify_response.data.verified": "true",
+   "n_verify_response.data.wrong_answers_left": 3,
+   "n_verify_response.data.all_verified": "true",
+   "n_verify_response.data.hook_mark": "post-ran",
+   "n_verify_response.message": "Successfully executed POST request",
+   "n_verify_response.status_code": 200,
+   "n_verify_status_code": 200,
+   "n_verify_success_count": 2,
+   "dbg_verify_1": "{\"before\": {}, \"after\": {\"n_verify_success_count\": 1, \"n_verify_status_code\": 200}, \"mapped\": {\"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\", \"vr_all\": \"str:'false'\", \"vr_left\": \"int:3\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\"}, \"keys\": {\"hook_post_verify\": \"str:'1'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"date_of_birth\\\", \\\"answer\\\": \\\"1988-03-14\\\", \\\"customer_id\\\": \\\"c_117a06f3-6e9\\\"}'\", \"hook_pre_verify\": \"str:'1'\", \"n_verify.current_turns\": \"int:0\", \"n_verify.total_turns\": \"int:0\", \"n_verify_response.data.all_verified\": \"str:'false'\", \"n_verify_response.data.hook_mark\": \"str:'post-ran'\", \"n_verify_response.data.ok\": \"str:'true'\", \"n_verify_response.data.verified\": \"str:'true'\", \"n_verify_response.data.wrong_answers_left\": \"int:3\", \"n_verify_response.message\": \"str:'Successfully executed POST request'\", \"n_verify_response.status\": \"str:'success'\", \"n_verify_response.status_code\": \"int:200\", \"n_verify_status_code\": \"int:200\", \"n_verify_success_count\": \"int:1\", \"vr_all\": \"str:'false'\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\", \"vr_left\": \"int:3\", \"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\"}}",
+   "dbg_verify_2": "{\"before\": {\"n_verify_success_count\": 1, \"n_verify_status_code\": 200}, \"after\": {\"n_verify_success_count\": 2, \"n_verify_status_code\": 200}, \"mapped\": {\"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\", \"vr_all\": \"str:'true'\", \"vr_left\": \"int:3\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\"}, \"keys\": {\"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"4471\\\", \\\"customer_id\\\": \\\"c_117a06f3-6e9\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_verify.current_turns\": \"int:0\", \"n_verify.total_turns\": \"int:0\", \"n_verify_response.data.all_verified\": \"str:'true'\", \"n_verify_response.data.hook_mark\": \"str:'post-ran'\", \"n_verify_response.data.ok\": \"str:'true'\", \"n_verify_response.data.verified\": \"str:'true'\", \"n_verify_response.data.wrong_answers_left\": \"int:3\", \"n_verify_response.message\": \"str:'Successfully executed POST request'\", \"n_verify_response.status\": \"str:'success'\", \"n_verify_response.status_code\": \"int:200\", \"n_verify_status_code\": \"int:200\", \"n_verify_success_count\": \"int:2\", \"vr_all\": \"str:'true'\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\", \"vr_left\": \"int:3\", \"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\"}}",
+   "acct_ok": "true",
+   "acct_products": "",
+   "acct_error": "",
+   "n_account_response.status": "success",
+   "n_account_response.data.ok": "true",
+   "n_account_response.data.products.0.product_id": "p1",
+   "n_account_response.data.products.0.type": "credit_card",
+   "n_account_response.data.products.0.card_last4": "4821",
+   "n_account_response.data.products.0.past_due": 420,
+   "n_account_response.data.products.0.days_late": 6,
+   "n_account_response.data.products.0.minimum_payment": 126,
+   "n_account_response.message": "Successfully executed POST request",
+   "n_account_response.status_code": 200,
+   "n_account_response.header.Date": "Sat, 10 Oct 2026 15:15:33 GMT",
+   "n_account_response.header.Content-Type": "application/json",
+   "n_account_response.header.Transfer-Encoding": "chunked",
+   "n_account_response.header.Connection": "keep-alive",
+   "n_account_response.header.Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=hRlcSKopGJeblxxmv990fXxcQltWuU99rq3VmNy7QWPe%2Bu6x4oDfJAFv3Ge04OtQvt1USksRCIj5ghKbOMnrnOHlfCo2UqKxjijLmm70F%2B0vqJ%2FY9ZJ0y86I6FB68mIQ6cHgT%2BuEh7Gkj1TmbP1bPjrB2%2BE3nPw2OQ%3D%3D\"}]}",
+   "n_account_response.header.Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+   "n_account_response.header.Content-Encoding": "gzip",
+   "n_account_response.header.Server": "cloudflare",
+   "n_account_response.header.CF-RAY": "a48694c539dbd360-FRA",
+   "n_account_response.header.alt-svc": "h3=\":443\"; ma=86400",
+   "n_account_status_code": 200,
+   "n_account_success_count": 1,
+   "dbg_account_1": "{\"before\": {}, \"after\": {\"n_account_success_count\": 1, \"n_account_status_code\": 200}, \"mapped\": {\"acct_ok\": \"str:'true'\", \"acct_products\": \"str:''\", \"acct_error\": \"str:''\"}, \"keys\": {\"acct_error\": \"str:''\", \"acct_ok\": \"str:'true'\", \"acct_products\": \"str:''\", \"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"4471\\\", \\\"customer_id\\\": \\\"c_117a06f3-6e9\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_account.current_turns\": \"int:0\", \"n_account.total_turns\": \"int:0\", \"n_account_response.data.ok\": \"str:'true'\", \"n_account_response.data.products.0.card_last4\": \"str:'4821'\", \"n_account_response.data.products.0.days_late\": \"int:6\", \"n_account_response.data.products.0.minimum_payment\": \"int:126\", \"n_account_response.data.products.0.past_due\": \"int:420\", \"n_account_response.data.products.0.product_id\": \"str:'p1'\", \"n_account_response.data.products.0.type\": \"str:'credit_card'\", \"n_account_response.header.CF-RAY\": \"str:'a48694c539dbd360-FRA'\", \"n_account_response.header.Connection\": \"str:'keep-alive'\", \"n_account_response.header.Content-Encoding\": \"str:'gzip'\", \"n_account_response.header.Content-Type\": \"str:'application/json'\", \"n_account_response.header.Date\": \"str:'Sat, 10 Oct 2026 15:15:33 GMT'\", \"n_account_response.header.Nel\": \"str:'{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}'\", \"n_account_response.header.Report-To\": \"str:'{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=hR\", \"n_account_response.header.Server\": \"str:'cloudflare'\", \"n_account_response.header.Transfer-Encoding\": \"str:'chunked'\", \"n_account_response.header.alt-svc\": \"str:'h3=\\\":443\\\"; ma=86400'\", \"n_account_response.message\": \"str:'Successfully executed POST request'\", \"n_account_response.status\": \"str:'success'\", \"n_account_response.status_code\": \"int:200\", \"n_account_status_code\": \"int:200\", \"n_account_success_count\": \"int:1\"}, \"products_form\": \"str\", \"products_mapped\": [], \"products\": [[\"p1\", 420]], \"past_due_type\": \"int\"}",
+   "v_product": "p1",
+   "v_amount": 420,
+   "v_date": "2026-10-14",
+   "pr_ok": "true",
+   "pr_id": "pr1",
+   "pr_error": "",
+   "n_promise_response.status": "success",
+   "n_promise_response.data.ok": "true",
+   "n_promise_response.data.promise_id": "pr1",
+   "n_promise_response.message": "Successfully executed POST request",
+   "n_promise_response.status_code": 200,
+   "n_promise_response.header.Date": "Sat, 10 Oct 2026 15:15:36 GMT",
+   "n_promise_response.header.Content-Type": "application/json",
+   "n_promise_response.header.Content-Length": "30",
+   "n_promise_response.header.Connection": "keep-alive",
+   "n_promise_response.header.Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=q7%2BY8WjX6GhDfBF4SfpxTJYQ7wQfbbJkkpbEZVGCAv8siSleps9J0dFY5HVHbOodjb%2Fs94vFqAfJcu7rlK4i5pUitskKiqXwAngSNDIpiV6UW4s1MnWBGswfKjvSeoOUyIlQRiyJ4Gv6PHXIHjIz3Didas%2BzDT3R0g%3D%3D\"}]}",
+   "n_promise_response.header.Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+   "n_promise_response.header.Server": "cloudflare",
+   "n_promise_response.header.CF-RAY": "a48694db2e3d3a8a-FRA",
+   "n_promise_response.header.alt-svc": "h3=\":443\"; ma=86400",
+   "n_promise_status_code": 200,
+   "n_promise_success_count": 1,
+   "dbg_promise_1": "{\"before\": {}, \"after\": {\"n_promise_success_count\": 1, \"n_promise_status_code\": 200}, \"mapped\": {\"pr_ok\": \"str:'true'\", \"pr_id\": \"str:'pr1'\", \"pr_error\": \"str:''\"}, \"keys\": {\"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"4471\\\", \\\"customer_id\\\": \\\"c_117a06f3-6e9\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_promise.current_turns\": \"int:0\", \"n_promise.total_turns\": \"int:0\", \"n_promise_response.data.ok\": \"str:'true'\", \"n_promise_response.data.promise_id\": \"str:'pr1'\", \"n_promise_response.header.CF-RAY\": \"str:'a48694db2e3d3a8a-FRA'\", \"n_promise_response.header.Connection\": \"str:'keep-alive'\", \"n_promise_response.header.Content-Length\": \"str:'30'\", \"n_promise_response.header.Content-Type\": \"str:'application/json'\", \"n_promise_response.header.Date\": \"str:'Sat, 10 Oct 2026 15:15:36 GMT'\", \"n_promise_response.header.Nel\": \"str:'{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}'\", \"n_promise_response.header.Report-To\": \"str:'{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=q7\", \"n_promise_response.header.Server\": \"str:'cloudflare'\", \"n_promise_response.header.alt-svc\": \"str:'h3=\\\":443\\\"; ma=86400'\", \"n_promise_response.message\": \"str:'Successfully executed POST request'\", \"n_promise_response.status\": \"str:'success'\", \"n_promise_response.status_code\": \"int:200\", \"n_promise_status_code\": \"int:200\", \"n_promise_success_count\": \"int:1\", \"pr_error\": \"str:''\", \"pr_id\": \"str:'pr1'\", \"pr_ok\": \"str:'true'\"}}",
+   "final_outcome": "promise",
+   "final_reason": "-"
+  },
+  "checks": [
+   {
+    "behaviour": "D19 api bodies baked from code vars (verify)",
+    "status": "PASS",
+    "detail": "[{'field': 'date_of_birth', 'answer': '1988-03-14'}, {'field': 'phone_last4', 'answer': '4471'}] -> [{'ok': True, 'verified': True, 'wrong_answers_left': 3, 'all_verified': False}, {'ok': True, 'verified': True, 'wrong_answers_left': 3, 'all_verified': True}]"
+   },
+   {
+    "behaviour": "D19 create_promise body from code vars (product id from the mapped list, date from now)",
+    "status": "PASS",
+    "detail": "{\"date\": \"2026-10-14\", \"amount\": 420, \"product_id\": \"p1\"}"
+   },
+   {
+    "behaviour": "D20 amount arrives as a JSON number",
+    "status": "PASS",
+    "detail": "ledger amount 420 (int); Freya sent [{'date': '2026-10-14', 'amount': 420.0, 'product_id': 'p1', 'customer_id': 'c_117a06f3-6e9'}]"
+   },
+   {
+    "behaviour": "D22 automatic key naming, node != function",
+    "status": "INFO",
+    "detail": "n_verify: 10 keys, e.g. ['n_verify_response.data.all_verified', 'n_verify_response.data.hook_mark', 'n_verify_response.data.ok', 'n_verify_response.data.verified', 'n_verify_response.data.wrong_answers_left', 'n_verify_response.message']; verify_identity: 0 keys, e.g. []; n_account: 22 keys, e.g. ['n_account_response.data.ok', 'n_account_response.data.products.0.card_last4', 'n_account_response.data.products.0.days_late', 'n_account_response.data.products.0.minimum_payment', 'n_account_response.data.products.0.past_due', 'n_account_response.data.products.0.product_id']; get_account: 0 keys, e.g. []; n_promise: 16 keys, e.g. ['n_promise_response.data.ok', 'n_promise_response.data.promise_id', 'n_promise_response.message', 'n_promise_response.status', 'n_promise_response.status_code', 'n_promise_status_code']; create_promise: 0 keys, e.g. []"
+   },
+   {
+    "behaviour": "Mapped product list (data.products -> acct_products)",
+    "status": "INFO",
+    "detail": "in code: str []; in the variable table: str ''"
+   },
+   {
+    "behaviour": "Product list read from flattened keys <node>_response.data.products.<i>.<field>",
+    "status": "PASS",
+    "detail": "[['p1', 420]], past_due type int"
+   },
+   {
+    "behaviour": "Hooks on a pre_actions api node (pre and post)",
+    "status": "INFO",
+    "detail": "hook_pre_verify='2', hook_post_verify='2', vr_hook (mapped data.hook_mark)='post-ran', pre-hook saw body '{\"field\": \"phone_last4\", \"answer\": \"4471\", \"customer_id\": \"c_117a06f3-6e9\"}'; counts after verify 1: {'n_verify_success_count': 1, 'n_verify_status_code': 200}"
+   },
+   {
+    "behaviour": "Lifecycle close_call fires after the end node (chat route)",
+    "status": "PASS",
+    "detail": "1 close_call(s) 0.3 s after the farewell, before chat/end"
+   },
+   {
+    "behaviour": "D30 pre-hook on the lifecycle tool drops the sentinel reason",
+    "status": "PASS",
+    "detail": "close args [{'outcome': 'promise'}] -> [{'ok': True}]"
+   },
+   {
+    "behaviour": "No second close_call after chat/end",
+    "status": "PASS",
+    "detail": "1 close_call(s) after chat/end (ok)"
+   },
+   {
+    "behaviour": "ACCEPTANCE ledger: exactly 1 promise, numeric amount, reason null, outcome promise",
+    "status": "PASS",
+    "detail": "promises [{'promise_id': 'pr1', 'product_id': 'p1', 'type': 'credit_card', 'amount': 420, 'date': '2026-10-14'}], outcome 'promise', reason None"
+   }
+  ]
+ },
+ "s2b": {
+  "case": "PUB-10",
+  "customer_id": "c_29d79fc8-266",
+  "variables": {
+   "customer_id": "c_29d79fc8-266",
+   "first_name": "Grace",
+   "last_name": "Lin",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "call_id": "f99f74c9-792c-4f4a-ab98-64d48e31eafb",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "S2 opening. Send a command.",
+    "s": 1.2
+   },
+   {
+    "user": "verify date_of_birth 1989-02-23",
+    "agent": "Verify 1 back. vr_ok=true, vr_verified=true, vr_all=false, vr_left=3, vr_error=, vr_hook=post-ran. Counts {\"n_verify_success_count\": 1, \"n_verify_status_code\": 200}.",
+    "s": 2.36
+   },
+   {
+    "user": "verify phone_last4 9904",
+    "agent": "Verify 2 back. vr_ok=true, vr_verified=true, vr_all=true, vr_left=3, vr_error=, vr_hook=post-ran. Counts {\"n_verify_success_count\": 2, \"n_verify_status_code\": 200}.",
+    "s": 2.24
+   },
+   {
+    "user": "account",
+    "agent": "Account 1 back. acct_ok=true, acct_error=. Counts {\"n_account_success_count\": 1, \"n_account_status_code\": 200}.",
+    "s": 2.49
+   },
+   {
+    "user": "promise 2026-10-16",
+    "agent": "Promise 1 back. pr_ok=, pr_id=, pr_error=. Counts {\"n_promise_failure_count\": 1, \"n_promise_status_code\": 500}.",
+    "s": 3.07
+   },
+   {
+    "user": "promise 2026-10-16",
+    "agent": "Promise 2 back. pr_ok=true, pr_id=pr1, pr_error=. Counts {\"n_promise_success_count\": 1, \"n_promise_failure_count\": 1, \"n_promise_status_code\": 200}.",
+    "s": 2.85
+   },
+   {
+    "user": "timeout",
+    "agent": "Timeout 1 back. to_ok=None, to_error=None. Counts {\"n_timeout_failure_count\": 1, \"n_timeout_status_code\": 408}.",
+    "s": 2.12
+   },
+   {
+    "user": "final promise -",
+    "agent": "Final set: promise / -.",
+    "s": 2.39
+   },
+   {
+    "user": "bye",
+    "agent": "S2 farewell.",
+    "s": 16.93,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n",
+    "completed_s": 17.6
+   }
+  ],
+  "close_after_end_node_s": 0.2,
+  "closes_before_chat_end": 1,
+  "chat_end": "ok",
+  "ledger": {
+   "ok": true,
+   "case": "PUB-10",
+   "team": "ac21603b62a9d4ca4d06c1db",
+   "now": "2026-10-14T11:00",
+   "verified": {
+    "date_of_birth": true,
+    "phone_last4": true
+   },
+   "wrong": 0,
+   "hinted": false,
+   "promises": [
+    {
+     "promise_id": "pr1",
+     "product_id": "p1",
+     "type": "credit_card",
+     "amount": 365,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [],
+   "outcome": "promise",
+   "reason": null,
+   "failures": {
+    "verify_identity": 0,
+    "get_account": 0,
+    "create_promise": 1,
+    "close_call": 0
+   },
+   "calls": [
+    {
+     "n": 1,
+     "tool": "verify_identity",
+     "args": {
+      "field": "date_of_birth",
+      "answer": "1989-02-23"
+     },
+     "status": 200,
+     "result": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": false
+     }
+    },
+    {
+     "n": 2,
+     "tool": "verify_identity",
+     "args": {
+      "field": "phone_last4",
+      "answer": "9904"
+     },
+     "status": 200,
+     "result": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": true
+     }
+    },
+    {
+     "n": 3,
+     "tool": "get_account",
+     "args": {},
+     "status": 200,
+     "result": {
+      "ok": true,
+      "products": [
+       {
+        "product_id": "p1",
+        "type": "credit_card",
+        "card_last4": "7740",
+        "past_due": 365,
+        "days_late": 8,
+        "minimum_payment": 109.5
+       }
+      ]
+     }
+    },
+    {
+     "n": 4,
+     "tool": "create_promise",
+     "args": {
+      "date": "2026-10-16",
+      "amount": 365,
+      "product_id": "p1"
+     },
+     "status": 500,
+     "result": {
+      "ok": false,
+      "error": "service unavailable, nothing was recorded"
+     }
+    },
+    {
+     "n": 5,
+     "tool": "create_promise",
+     "args": {
+      "date": "2026-10-16",
+      "amount": 365,
+      "product_id": "p1"
+     },
+     "status": 200,
+     "result": {
+      "ok": true,
+      "promise_id": "pr1"
+     }
+    },
+    {
+     "n": 6,
+     "tool": "close_call",
+     "args": {
+      "outcome": "promise"
+     },
+     "status": 200,
+     "result": {
+      "ok": true
+     }
+    }
+   ],
+   "last_at": 1791645404416
+  },
+  "ended_reason": "assistant-ended-call",
+  "api_events": [
+   {
+    "event": "function_call_start",
+    "function": "verify_identity",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/verify_identity",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "field": "date_of_birth",
+      "answer": "1989-02-23",
+      "customer_id": "c_29d79fc8-266"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 1.7530393600463867
+   },
+   {
+    "event": "function_call_complete",
+    "function": "verify_identity",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": false,
+      "hook_mark": "post-ran"
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200
+    },
+    "error": null,
+    "t": 1.9627528190612793
+   },
+   {
+    "event": "function_call_start",
+    "function": "verify_identity",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/verify_identity",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "field": "phone_last4",
+      "answer": "9904",
+      "customer_id": "c_29d79fc8-266"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 3.968393325805664
+   },
+   {
+    "event": "function_call_complete",
+    "function": "verify_identity",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "verified": true,
+      "wrong_answers_left": 3,
+      "all_verified": true,
+      "hook_mark": "post-ran"
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200
+    },
+    "error": null,
+    "t": 4.162403345108032
+   },
+   {
+    "event": "function_call_start",
+    "function": "get_account",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/get_account",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "customer_id": "c_29d79fc8-266"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 6.070747137069702
+   },
+   {
+    "event": "function_call_complete",
+    "function": "get_account",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "products": [
+       {
+        "product_id": "p1",
+        "type": "credit_card",
+        "card_last4": "7740",
+        "past_due": 365,
+        "days_late": 8,
+        "minimum_payment": 109.5
+       }
+      ]
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200,
+     "header": {
+      "Date": "Sat, 10 Oct 2026 15:16:19 GMT",
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=Mh%2BhAYzyUMz0LD8i%2FBDX%2BZYpaNXOlRMerEn37dScAle1w8aU1Z1uqorAe84bVOMcFRibM8m7dt1M4SvcY6pA3NVNzoU9nz4JQEOmQF40jM%2FYQR8SCKBrSkPqrAVY6xJz27aaP%2FMqF0CpuCta1THakx6l6JLO7icBuw%3D%3D\"}]}",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Content-Encoding": "gzip",
+      "Server": "cloudflare",
+      "CF-RAY": "a48695e4c996f65d-FRA",
+      "alt-svc": "h3=\":443\"; ma=86400"
+     }
+    },
+    "error": null,
+    "t": 6.189755439758301
+   },
+   {
+    "event": "function_call_start",
+    "function": "create_promise",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/create_promise",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "date": "2026-10-16",
+      "amount": 365.0,
+      "product_id": "p1",
+      "customer_id": "c_29d79fc8-266"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 8.975248098373413
+   },
+   {
+    "event": "function_call_error",
+    "function": "create_promise",
+    "args": null,
+    "result": null,
+    "error": "API request failed: {'ok': False, 'error': 'service unavailable, nothing was recorded'}",
+    "t": 9.02141261100769
+   },
+   {
+    "event": "function_call_start",
+    "function": "create_promise",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/create_promise",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "date": "2026-10-16",
+      "amount": 365.0,
+      "product_id": "p1",
+      "customer_id": "c_29d79fc8-266"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 12.472089529037476
+   },
+   {
+    "event": "function_call_complete",
+    "function": "create_promise",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true,
+      "promise_id": "pr1"
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200,
+     "header": {
+      "Date": "Sat, 10 Oct 2026 15:16:25 GMT",
+      "Content-Type": "application/json",
+      "Content-Length": "30",
+      "Connection": "keep-alive",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=QUip%2Bozok6tpCdKzAuxofTHCcmKfHfc7BT9ZPQ8tdbbNrjvanjyJjV1okXikfvhU%2FOm31l5MkdLJaXnawffr2NED8HQ%2FHVT2SnpXYOMHK8aZDa4c2r9IK7SUGy0qbInXdxS%2BiD6e2uMXha0QYQOMPJJ4XudkGuJyZQ%3D%3D\"}]}",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Server": "cloudflare",
+      "CF-RAY": "a486960cce6548f9-FRA",
+      "alt-svc": "h3=\":443\"; ma=86400"
+     }
+    },
+    "error": null,
+    "t": 12.52501893043518
+   },
+   {
+    "event": "function_call_start",
+    "function": "close_call",
+    "args": {
+     "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/close_call",
+     "method": "POST",
+     "headers": {
+      "Content-Type": "application/json"
+     },
+     "body": {
+      "outcome": "promise",
+      "customer_id": "c_29d79fc8-266"
+     }
+    },
+    "result": null,
+    "error": null,
+    "t": 31.043987035751343
+   },
+   {
+    "event": "function_call_complete",
+    "function": "close_call",
+    "args": null,
+    "result": {
+     "status": "success",
+     "data": {
+      "ok": true
+     },
+     "message": "Successfully executed POST request",
+     "status_code": 200,
+     "header": {
+      "Date": "Sat, 10 Oct 2026 15:16:44 GMT",
+      "Content-Type": "application/json",
+      "Content-Length": "11",
+      "Connection": "keep-alive",
+      "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=bJDCfoYjB%2Bf8OAzyL1M4S8lcHRuo71UteSwtpI%2Bql1SJ%2B9jhO9AUXrpQ32Kv1%2FDXhV9wvpht7lKa40OgmVTyuYO0seomH0%2BclBGsMkGjdO1Q3PWIc63Hu6kh%2FkDBkHVvQ7h%2BxEP6OQ0NW%2FbuenKSPeDyYrHjhfuhxg%3D%3D\"}]}",
+      "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "Server": "cloudflare",
+      "CF-RAY": "a4869680e9ea975e-FRA",
+      "alt-svc": "h3=\":443\"; ma=86400"
+     }
+    },
+    "error": null,
+    "t": 31.204941987991333
+   }
+  ],
+  "vars": {
+   "init.current_turns": 0,
+   "init.total_turns": 0,
+   "talk.current_turns": 0,
+   "talk.total_turns": 7,
+   "brain.current_turns": 0,
+   "brain.total_turns": 0,
+   "end_ok.current_turns": 0,
+   "end_ok.total_turns": 0,
+   "opening.current_turns": 0,
+   "opening.total_turns": 1,
+   "n_verify.current_turns": 0,
+   "n_verify.total_turns": 0,
+   "n_account.current_turns": 0,
+   "n_account.total_turns": 0,
+   "n_promise.current_turns": 0,
+   "n_promise.total_turns": 0,
+   "n_timeout.current_turns": 0,
+   "n_timeout.total_turns": 0,
+   "talk_error.current_turns": 0,
+   "talk_error.total_turns": 0,
+   "talk_fallback.current_turns": 0,
+   "talk_fallback.total_turns": 0,
+   "call.customer_phone_number": "",
+   "call.phone_number": "",
+   "call.call_id": "f99f74c9-792c-4f4a-ab98-64d48e31eafb",
+   "call.direction": "web",
+   "system.iso_utc_now": "2026-10-10T15:16:31.906493Z",
+   "system.todays_date_en_cst": "10 October 2026 Saturday 09:16",
+   "system.todays_date_en_est": "10 October 2026 Saturday 10:16",
+   "system.todays_date_tr": "10 Ekim 2026 Cumartesi 18:16",
+   "system.todays_date_tr.iso_8601": "2026-10-10",
+   "system.uuid4()": "ec67ba3979ff45aaae80abf8f2507448",
+   "customer_id": "c_29d79fc8-266",
+   "first_name": "Grace",
+   "last_name": "Lin",
+   "title": "Ms",
+   "now": "2026-10-14T11:00",
+   "said": "bye",
+   "v_field": "phone_last4",
+   "v_answer": "9904",
+   "vr_ok": "true",
+   "vr_verified": "true",
+   "vr_all": "true",
+   "vr_left": 3,
+   "vr_error": "",
+   "vr_hook": "post-ran",
+   "route": "end_ok",
+   "say_next": "",
+   "state": "{\"runs\": 14, \"turn\": 8, \"n_verify\": 2, \"n_account\": 1, \"products\": [[\"p1\", 365]], \"n_promise\": 2, \"n_timeout\": 1}",
+   "brain_response.status": "success",
+   "brain_response.data": "null",
+   "brain_response.message": "Code executed successfully",
+   "brain_response.status_code": 200,
+   "brain_status_code": 200,
+   "brain_success_count": 14,
+   "hook_pre_verify": "2",
+   "hook_pre_body": "{\"field\": \"phone_last4\", \"answer\": \"9904\", \"customer_id\": \"c_29d79fc8-266\"}",
+   "hook_post_verify": "2",
+   "n_verify_response.status": "success",
+   "n_verify_response.data.ok": "true",
+   "n_verify_response.data.verified": "true",
+   "n_verify_response.data.wrong_answers_left": 3,
+   "n_verify_response.data.all_verified": "true",
+   "n_verify_response.data.hook_mark": "post-ran",
+   "n_verify_response.message": "Successfully executed POST request",
+   "n_verify_response.status_code": 200,
+   "n_verify_status_code": 200,
+   "n_verify_success_count": 2,
+   "dbg_verify_1": "{\"before\": {}, \"after\": {\"n_verify_success_count\": 1, \"n_verify_status_code\": 200}, \"mapped\": {\"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\", \"vr_all\": \"str:'false'\", \"vr_left\": \"int:3\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\"}, \"keys\": {\"hook_post_verify\": \"str:'1'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"date_of_birth\\\", \\\"answer\\\": \\\"1989-02-23\\\", \\\"customer_id\\\": \\\"c_29d79fc8-266\\\"}'\", \"hook_pre_verify\": \"str:'1'\", \"n_verify.current_turns\": \"int:0\", \"n_verify.total_turns\": \"int:0\", \"n_verify_response.data.all_verified\": \"str:'false'\", \"n_verify_response.data.hook_mark\": \"str:'post-ran'\", \"n_verify_response.data.ok\": \"str:'true'\", \"n_verify_response.data.verified\": \"str:'true'\", \"n_verify_response.data.wrong_answers_left\": \"int:3\", \"n_verify_response.message\": \"str:'Successfully executed POST request'\", \"n_verify_response.status\": \"str:'success'\", \"n_verify_response.status_code\": \"int:200\", \"n_verify_status_code\": \"int:200\", \"n_verify_success_count\": \"int:1\", \"vr_all\": \"str:'false'\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\", \"vr_left\": \"int:3\", \"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\"}}",
+   "dbg_verify_2": "{\"before\": {\"n_verify_success_count\": 1, \"n_verify_status_code\": 200}, \"after\": {\"n_verify_success_count\": 2, \"n_verify_status_code\": 200}, \"mapped\": {\"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\", \"vr_all\": \"str:'true'\", \"vr_left\": \"int:3\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\"}, \"keys\": {\"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"9904\\\", \\\"customer_id\\\": \\\"c_29d79fc8-266\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_verify.current_turns\": \"int:0\", \"n_verify.total_turns\": \"int:0\", \"n_verify_response.data.all_verified\": \"str:'true'\", \"n_verify_response.data.hook_mark\": \"str:'post-ran'\", \"n_verify_response.data.ok\": \"str:'true'\", \"n_verify_response.data.verified\": \"str:'true'\", \"n_verify_response.data.wrong_answers_left\": \"int:3\", \"n_verify_response.message\": \"str:'Successfully executed POST request'\", \"n_verify_response.status\": \"str:'success'\", \"n_verify_response.status_code\": \"int:200\", \"n_verify_status_code\": \"int:200\", \"n_verify_success_count\": \"int:2\", \"vr_all\": \"str:'true'\", \"vr_error\": \"str:''\", \"vr_hook\": \"str:'post-ran'\", \"vr_left\": \"int:3\", \"vr_ok\": \"str:'true'\", \"vr_verified\": \"str:'true'\"}}",
+   "acct_ok": "true",
+   "acct_products": "",
+   "acct_error": "",
+   "n_account_response.status": "success",
+   "n_account_response.data.ok": "true",
+   "n_account_response.data.products.0.product_id": "p1",
+   "n_account_response.data.products.0.type": "credit_card",
+   "n_account_response.data.products.0.card_last4": "7740",
+   "n_account_response.data.products.0.past_due": 365,
+   "n_account_response.data.products.0.days_late": 8,
+   "n_account_response.data.products.0.minimum_payment": 109.5,
+   "n_account_response.message": "Successfully executed POST request",
+   "n_account_response.status_code": 200,
+   "n_account_response.header.Date": "Sat, 10 Oct 2026 15:16:19 GMT",
+   "n_account_response.header.Content-Type": "application/json",
+   "n_account_response.header.Transfer-Encoding": "chunked",
+   "n_account_response.header.Connection": "keep-alive",
+   "n_account_response.header.Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=Mh%2BhAYzyUMz0LD8i%2FBDX%2BZYpaNXOlRMerEn37dScAle1w8aU1Z1uqorAe84bVOMcFRibM8m7dt1M4SvcY6pA3NVNzoU9nz4JQEOmQF40jM%2FYQR8SCKBrSkPqrAVY6xJz27aaP%2FMqF0CpuCta1THakx6l6JLO7icBuw%3D%3D\"}]}",
+   "n_account_response.header.Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+   "n_account_response.header.Content-Encoding": "gzip",
+   "n_account_response.header.Server": "cloudflare",
+   "n_account_response.header.CF-RAY": "a48695e4c996f65d-FRA",
+   "n_account_response.header.alt-svc": "h3=\":443\"; ma=86400",
+   "n_account_status_code": 200,
+   "n_account_success_count": 1,
+   "dbg_account_1": "{\"before\": {}, \"after\": {\"n_account_success_count\": 1, \"n_account_status_code\": 200}, \"mapped\": {\"acct_ok\": \"str:'true'\", \"acct_products\": \"str:''\", \"acct_error\": \"str:''\"}, \"keys\": {\"acct_error\": \"str:''\", \"acct_ok\": \"str:'true'\", \"acct_products\": \"str:''\", \"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"9904\\\", \\\"customer_id\\\": \\\"c_29d79fc8-266\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_account.current_turns\": \"int:0\", \"n_account.total_turns\": \"int:0\", \"n_account_response.data.ok\": \"str:'true'\", \"n_account_response.data.products.0.card_last4\": \"str:'7740'\", \"n_account_response.data.products.0.days_late\": \"int:8\", \"n_account_response.data.products.0.minimum_payment\": \"float:109.5\", \"n_account_response.data.products.0.past_due\": \"int:365\", \"n_account_response.data.products.0.product_id\": \"str:'p1'\", \"n_account_response.data.products.0.type\": \"str:'credit_card'\", \"n_account_response.header.CF-RAY\": \"str:'a48695e4c996f65d-FRA'\", \"n_account_response.header.Connection\": \"str:'keep-alive'\", \"n_account_response.header.Content-Encoding\": \"str:'gzip'\", \"n_account_response.header.Content-Type\": \"str:'application/json'\", \"n_account_response.header.Date\": \"str:'Sat, 10 Oct 2026 15:16:19 GMT'\", \"n_account_response.header.Nel\": \"str:'{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}'\", \"n_account_response.header.Report-To\": \"str:'{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=Mh\", \"n_account_response.header.Server\": \"str:'cloudflare'\", \"n_account_response.header.Transfer-Encoding\": \"str:'chunked'\", \"n_account_response.header.alt-svc\": \"str:'h3=\\\":443\\\"; ma=86400'\", \"n_account_response.message\": \"str:'Successfully executed POST request'\", \"n_account_response.status\": \"str:'success'\", \"n_account_response.status_code\": \"int:200\", \"n_account_status_code\": \"int:200\", \"n_account_success_count\": \"int:1\"}, \"products_form\": \"str\", \"products_mapped\": [], \"products\": [[\"p1\", 365]], \"past_due_type\": \"int\"}",
+   "v_product": "p1",
+   "v_amount": 365,
+   "v_date": "2026-10-16",
+   "pr_ok": "true",
+   "pr_id": "pr1",
+   "pr_error": "",
+   "n_promise_response.status": "success",
+   "n_promise_response.error": "HTTP 500",
+   "n_promise_response.message": "Successfully executed POST request",
+   "n_promise_response.status_code": 200,
+   "n_promise_response.header.Date": "Sat, 10 Oct 2026 15:16:25 GMT",
+   "n_promise_response.header.Content-Type": "application/json",
+   "n_promise_response.header.Content-Length": "30",
+   "n_promise_response.header.Connection": "keep-alive",
+   "n_promise_response.header.Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=QUip%2Bozok6tpCdKzAuxofTHCcmKfHfc7BT9ZPQ8tdbbNrjvanjyJjV1okXikfvhU%2FOm31l5MkdLJaXnawffr2NED8HQ%2FHVT2SnpXYOMHK8aZDa4c2r9IK7SUGy0qbInXdxS%2BiD6e2uMXha0QYQOMPJJ4XudkGuJyZQ%3D%3D\"}]}",
+   "n_promise_response.header.Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+   "n_promise_response.header.Server": "cloudflare",
+   "n_promise_response.header.CF-RAY": "a486960cce6548f9-FRA",
+   "n_promise_response.header.alt-svc": "h3=\":443\"; ma=86400",
+   "n_promise_status_code": 200,
+   "n_promise_failure_count": 1,
+   "dbg_promise_1": "{\"before\": {}, \"after\": {\"n_promise_failure_count\": 1, \"n_promise_status_code\": 500}, \"mapped\": {\"pr_ok\": \"str:''\", \"pr_id\": \"str:''\", \"pr_error\": \"str:''\"}, \"keys\": {\"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"9904\\\", \\\"customer_id\\\": \\\"c_29d79fc8-266\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_promise.current_turns\": \"int:0\", \"n_promise.total_turns\": \"int:0\", \"n_promise_failure_count\": \"int:1\", \"n_promise_response.error\": \"str:'HTTP 500'\", \"n_promise_response.header.CF-RAY\": \"str:'a48695f6fe45dbe3-FRA'\", \"n_promise_response.header.Connection\": \"str:'keep-alive'\", \"n_promise_response.header.Content-Length\": \"str:'64'\", \"n_promise_response.header.Content-Type\": \"str:'application/json'\", \"n_promise_response.header.Date\": \"str:'Sat, 10 Oct 2026 15:16:22 GMT'\", \"n_promise_response.header.Nel\": \"str:'{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}'\", \"n_promise_response.header.Report-To\": \"str:'{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=xM\", \"n_promise_response.header.Server\": \"str:'cloudflare'\", \"n_promise_response.header.alt-svc\": \"str:'h3=\\\":443\\\"; ma=86400'\", \"n_promise_response.message\": \"str:\\\"API request failed: {'ok': False, 'error': 'service unavailable, nothing was recorded'}\\\"\", \"n_promise_response.status\": \"str:'error'\", \"n_promise_response.status_code\": \"int:500\", \"n_promise_status_code\": \"int:500\", \"pr_error\": \"str:''\", \"pr_id\": \"str:''\", \"pr_ok\": \"str:''\"}}",
+   "n_promise_response.data.ok": "true",
+   "n_promise_response.data.promise_id": "pr1",
+   "n_promise_success_count": 1,
+   "dbg_promise_2": "{\"before\": {\"n_promise_failure_count\": 1, \"n_promise_status_code\": 500}, \"after\": {\"n_promise_success_count\": 1, \"n_promise_failure_count\": 1, \"n_promise_status_code\": 200}, \"mapped\": {\"pr_ok\": \"str:'true'\", \"pr_id\": \"str:'pr1'\", \"pr_error\": \"str:''\"}, \"keys\": {\"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"9904\\\", \\\"customer_id\\\": \\\"c_29d79fc8-266\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_promise.current_turns\": \"int:0\", \"n_promise.total_turns\": \"int:0\", \"n_promise_failure_count\": \"int:1\", \"n_promise_response.data.ok\": \"str:'true'\", \"n_promise_response.data.promise_id\": \"str:'pr1'\", \"n_promise_response.error\": \"str:'HTTP 500'\", \"n_promise_response.header.CF-RAY\": \"str:'a486960cce6548f9-FRA'\", \"n_promise_response.header.Connection\": \"str:'keep-alive'\", \"n_promise_response.header.Content-Length\": \"str:'30'\", \"n_promise_response.header.Content-Type\": \"str:'application/json'\", \"n_promise_response.header.Date\": \"str:'Sat, 10 Oct 2026 15:16:25 GMT'\", \"n_promise_response.header.Nel\": \"str:'{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}'\", \"n_promise_response.header.Report-To\": \"str:'{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=QU\", \"n_promise_response.header.Server\": \"str:'cloudflare'\", \"n_promise_response.header.alt-svc\": \"str:'h3=\\\":443\\\"; ma=86400'\", \"n_promise_response.message\": \"str:'Successfully executed POST request'\", \"n_promise_response.status\": \"str:'success'\", \"n_promise_response.status_code\": \"int:200\", \"n_promise_status_code\": \"int:200\", \"n_promise_success_count\": \"int:1\", \"pr_error\": \"str:''\", \"pr_id\": \"str:'pr1'\", \"pr_ok\": \"str:'true'\"}}",
+   "n_timeout_response.status": "error",
+   "n_timeout_response.error": "Action timed out",
+   "n_timeout_response.message": "Action 'api_call' timed out after 1ms",
+   "n_timeout_response.status_code": 408,
+   "n_timeout_status_code": 408,
+   "n_timeout_failure_count": 1,
+   "dbg_timeout_1": "{\"before\": {}, \"after\": {\"n_timeout_failure_count\": 1, \"n_timeout_status_code\": 408}, \"mapped\": {\"to_ok\": \"NoneType:None\", \"to_products\": \"NoneType:None\", \"to_error\": \"NoneType:None\"}, \"keys\": {\"hook_post_verify\": \"str:'2'\", \"hook_pre_body\": \"str:'{\\\"field\\\": \\\"phone_last4\\\", \\\"answer\\\": \\\"9904\\\", \\\"customer_id\\\": \\\"c_29d79fc8-266\\\"}'\", \"hook_pre_verify\": \"str:'2'\", \"n_timeout.current_turns\": \"int:0\", \"n_timeout.total_turns\": \"int:0\", \"n_timeout_failure_count\": \"int:1\", \"n_timeout_response.error\": \"str:'Action timed out'\", \"n_timeout_response.message\": \"str:\\\"Action 'api_call' timed out after 1ms\\\"\", \"n_timeout_response.status\": \"str:'error'\", \"n_timeout_response.status_code\": \"int:408\", \"n_timeout_status_code\": \"int:408\"}}",
+   "final_outcome": "promise",
+   "final_reason": "-"
+  },
+  "checks": [
+   {
+    "behaviour": "D23 500 envelope on create_promise (Freya side)",
+    "status": "INFO",
+    "detail": "ledger status [500, 200]; events [('function_call_error', \"API request failed: {'ok': False, 'error': 'service unavailable, nothing was recorded'}\"), ('function_call_complete', {'status': 'success', 'data': {'ok': True, 'promise_id': 'pr1'}, 'message': 'Successfully executed POST request', 'status_code': 200, 'header': {'Date': 'Sat, 10 Oct 2026 15:16:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '30', 'Connection': 'keep-alive', 'Report-To': '{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=QUip%2Bozok6tpCdKzAuxofTHCcmKfHfc7BT9ZPQ8tdbbNrjvanjyJjV1okXikfvhU%2FOm31l5MkdLJaXnawffr2NED8HQ%2FHVT2SnpXYOMHK8aZDa4c2r9IK7SUGy0qbInXdxS%2BiD6e2uMXha0QYQOMPJJ4XudkGuJyZQ%3D%3D\"}]}', 'Nel': '{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}', 'Server': 'cloudflare', 'CF-RAY': 'a486960cce6548f9-FRA', 'alt-svc': 'h3=\":443\"; ma=86400'}})]"
+   },
+   {
+    "behaviour": "D23 the failure is visible to code (counters or mapped ok)",
+    "status": "PASS",
+    "detail": "before {} after {'n_promise_failure_count': 1, 'n_promise_status_code': 500}; mapped {'pr_ok': \"str:''\", 'pr_id': \"str:''\", 'pr_error': \"str:''\"}"
+   },
+   {
+    "behaviour": "D23 the retry succeeds and is visible",
+    "status": "PASS",
+    "detail": "before {'n_promise_failure_count': 1, 'n_promise_status_code': 500} after {'n_promise_success_count': 1, 'n_promise_failure_count': 1, 'n_promise_status_code': 200}; mapped {'pr_ok': \"str:'true'\", 'pr_id': \"str:'pr1'\", 'pr_error': \"str:''\"}"
+   },
+   {
+    "behaviour": "D23 stale keys after the successful retry",
+    "status": "INFO",
+    "detail": "error-like keys seen by code after retry: {'n_promise_response.error': \"str:'HTTP 500'\", 'pr_error': \"str:''\"}"
+   },
+   {
+    "behaviour": "Transport failure (1 ms timeout on get_account): envelope, counters, stale keys",
+    "status": "INFO",
+    "detail": "before {} after {'n_timeout_failure_count': 1, 'n_timeout_status_code': 408}; mapped {'to_ok': 'NoneType:None', 'to_products': 'NoneType:None', 'to_error': 'NoneType:None'}; get_account keys {hook_post_verify: str:'2', hook_pre_body: str:'{\"field\": \"phone_last4\", \"answer\": \"9904\", \"customer_id\": \"c_29d79fc8-266\"}', hook_pre_verify: str:'2', n_timeout_response.status: str:'error', n_timeout_response.status_code: int:408, n_timeout_status_code: int:408}; events [('function_call_complete', \"{'status': 'success', 'data': {'ok': True, 'products': [{'product_id': 'p1', 'type': 'credit_card', 'card_last4': '7740', 'past_due': 365, 'days_late': 8, 'mini\")]"
+   },
+   {
+    "behaviour": "ACCEPTANCE S2b ledger: exactly 1 promise after the retry, outcome promise, reason null",
+    "status": "PASS",
+    "detail": "promises [{'promise_id': 'pr1', 'product_id': 'p1', 'type': 'credit_card', 'amount': 365, 'date': '2026-10-16'}], create_promise calls 2, outcome 'promise', reason None"
+   }
+  ]
+ },
+ "s3": {
+  "s3a": {
+   "case": "PUB-02",
+   "customer_id": "c_32561b55-73d",
+   "variables": {
+    "customer_id": "c_32561b55-73d",
+    "first_name": "Maria",
+    "last_name": "Costa",
+    "title": "Ms",
+    "now": "2026-10-14T11:00"
+   },
+   "call_id": "cd64878f-7655-456c-855e-605945d4358d",
+   "rows": [
+    {
+     "user": "Hello?",
+     "agent": "S2 opening. Send a command.",
+     "s": 1.15
+    },
+    {
+     "user": "final not_reached",
+     "agent": "Final set: not_reached / None.",
+     "s": 2.29
+    },
+    {
+     "user": "bye",
+     "agent": "S2 farewell.",
+     "s": 15.13,
+     "error": "POST /api/v2/chat/message -> 504: error code: 504\n",
+     "completed_s": 15.5
+    }
+   ],
+   "close_after_end_node_s": 0.2,
+   "closes_before_chat_end": 1,
+   "chat_end": "ok",
+   "ledger": {
+    "ok": true,
+    "case": "PUB-02",
+    "team": "ac21603b62a9d4ca4d06c1db",
+    "now": "2026-10-14T11:00",
+    "verified": {},
+    "wrong": 0,
+    "hinted": false,
+    "promises": [],
+    "notes": [],
+    "callbacks": [],
+    "transfers": [],
+    "outcome": null,
+    "reason": null,
+    "failures": {
+     "close_call": 0
+    },
+    "calls": [
+     {
+      "n": 1,
+      "tool": "close_call",
+      "args": {
+       "outcome": "not_reached"
+      },
+      "status": 200,
+      "result": {
+       "ok": false,
+       "error": "this outcome needs one of these reasons: callback, no_callback, wrong_number, deceased, unclear"
+      }
+     }
+    ],
+    "last_at": 1791645441136
+   },
+   "ended_reason": "assistant-ended-call",
+   "api_events": [
+    {
+     "event": "function_call_start",
+     "function": "close_call",
+     "args": {
+      "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/close_call",
+      "method": "POST",
+      "headers": {
+       "Content-Type": "application/json"
+      },
+      "body": {
+       "outcome": "not_reached",
+       "customer_id": "c_32561b55-73d"
+      }
+     },
+     "result": null,
+     "error": null,
+     "t": 14.224403381347656
+    },
+    {
+     "event": "function_call_complete",
+     "function": "close_call",
+     "args": null,
+     "result": {
+      "status": "success",
+      "data": {
+       "ok": false,
+       "error": "this outcome needs one of these reasons: callback, no_callback, wrong_number, deceased, unclear"
+      },
+      "message": "Successfully executed POST request",
+      "status_code": 200,
+      "header": {
+       "Date": "Sat, 10 Oct 2026 15:17:21 GMT",
+       "Content-Type": "application/json",
+       "Transfer-Encoding": "chunked",
+       "Connection": "keep-alive",
+       "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=0RsSWVUOHZR6C8Cgvb%2Fg8%2Bhq3r7LiSKhWQWVht98xeTJosogveJk%2BPMPPaPrYkpxzHltSLcdcYl%2B%2FceDFNG3GbYzBHh6azN%2BGbpRyU2GpU9Xz1%2FQm0TBR5RHZJKyJSdoZGW7dq7%2BdbM4pKkvDMbr1fTfOCqXIvRP8Q%3D%3D\"}]}",
+       "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+       "Content-Encoding": "gzip",
+       "Server": "cloudflare",
+       "CF-RAY": "a48697669a63dc5a-FRA",
+       "alt-svc": "h3=\":443\"; ma=86400"
+      }
+     },
+     "error": null,
+     "t": 14.349612474441528
+    }
+   ],
+   "vars": {
+    "init.current_turns": 0,
+    "init.total_turns": 0,
+    "talk.current_turns": 0,
+    "talk.total_turns": 1,
+    "brain.current_turns": 0,
+    "brain.total_turns": 0,
+    "end_ok.current_turns": 0,
+    "end_ok.total_turns": 0,
+    "opening.current_turns": 0,
+    "opening.total_turns": 1,
+    "n_verify.current_turns": 0,
+    "n_verify.total_turns": 0,
+    "n_account.current_turns": 0,
+    "n_account.total_turns": 0,
+    "n_promise.current_turns": 0,
+    "n_promise.total_turns": 0,
+    "n_timeout.current_turns": 0,
+    "n_timeout.total_turns": 0,
+    "talk_error.current_turns": 0,
+    "talk_error.total_turns": 0,
+    "talk_fallback.current_turns": 0,
+    "talk_fallback.total_turns": 0,
+    "call.customer_phone_number": "",
+    "call.phone_number": "",
+    "call.call_id": "cd64878f-7655-456c-855e-605945d4358d",
+    "call.direction": "web",
+    "system.iso_utc_now": "2026-10-10T15:17:10.227044Z",
+    "system.todays_date_en_cst": "10 October 2026 Saturday 09:17",
+    "system.todays_date_en_est": "10 October 2026 Saturday 10:17",
+    "system.todays_date_tr": "10 Ekim 2026 Cumartesi 18:17",
+    "system.todays_date_tr.iso_8601": "2026-10-10",
+    "system.uuid4()": "0031539d0f004a0d9be4145ab8fcf368",
+    "customer_id": "c_32561b55-73d",
+    "first_name": "Maria",
+    "last_name": "Costa",
+    "title": "Ms",
+    "now": "2026-10-14T11:00",
+    "said": "bye",
+    "final_outcome": "not_reached",
+    "route": "end_ok",
+    "say_next": "",
+    "state": "{\"runs\": 2, \"turn\": 2}",
+    "brain_response.status": "success",
+    "brain_response.data": "null",
+    "brain_response.message": "Code executed successfully",
+    "brain_response.status_code": 200,
+    "brain_status_code": 200,
+    "brain_success_count": 2
+   }
+  },
+  "s3b": {
+   "case": "PUB-02",
+   "customer_id": "c_6d0b7214-204",
+   "variables": {
+    "customer_id": "c_6d0b7214-204",
+    "first_name": "Maria",
+    "last_name": "Costa",
+    "title": "Ms",
+    "now": "2026-10-14T11:00"
+   },
+   "call_id": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+   "rows": [
+    {
+     "user": "Hello?",
+     "agent": "S2 opening. Send a command.",
+     "s": 1.18
+    },
+    {
+     "user": "final not_reached unclear",
+     "agent": "Final set: not_reached / unclear.",
+     "s": 2.57
+    }
+   ],
+   "chat_end": "ok",
+   "close_after_hangup_s": 10.7,
+   "ledger": {
+    "ok": true,
+    "case": "PUB-02",
+    "team": "ac21603b62a9d4ca4d06c1db",
+    "now": "2026-10-14T11:00",
+    "verified": {},
+    "wrong": 0,
+    "hinted": false,
+    "promises": [],
+    "notes": [],
+    "callbacks": [],
+    "transfers": [],
+    "outcome": "not_reached",
+    "reason": "unclear",
+    "failures": {
+     "close_call": 0
+    },
+    "calls": [
+     {
+      "n": 1,
+      "tool": "close_call",
+      "args": {
+       "reason": "unclear",
+       "outcome": "not_reached"
+      },
+      "status": 200,
+      "result": {
+       "ok": true
+      }
+     }
+    ],
+    "last_at": 1791645476825
+   },
+   "ended_reason": "customer-ended-call",
+   "api_events": [
+    {
+     "event": "function_call_start",
+     "function": "close_call",
+     "args": {
+      "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/close_call",
+      "method": "POST",
+      "headers": {
+       "Content-Type": "application/json"
+      },
+      "body": {
+       "reason": "unclear",
+       "outcome": "not_reached",
+       "customer_id": "c_6d0b7214-204"
+      }
+     },
+     "result": null,
+     "error": null,
+     "t": 14.131303548812866
+    },
+    {
+     "event": "function_call_complete",
+     "function": "close_call",
+     "args": null,
+     "result": {
+      "status": "success",
+      "data": {
+       "ok": true
+      },
+      "message": "Successfully executed POST request",
+      "status_code": 200,
+      "header": {
+       "Date": "Sat, 10 Oct 2026 15:17:56 GMT",
+       "Content-Type": "application/json",
+       "Content-Length": "11",
+       "Connection": "keep-alive",
+       "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=J5rn60T8%2Bmpf7Lkg0mirCbVEry1RC7LfG%2FGcvxDwwphsum%2BheoY65n6Wg3gGcJtYvOmhe3qStayZ2R3wrIQUk73sPykOrl3MBEJaCEXsj2n7PsrAVA5ydWFACoHNkez8hDVpIKP9NYs8aWlskK1bviCgqL27DsgIZA%3D%3D\"}]}",
+       "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+       "Server": "cloudflare",
+       "CF-RAY": "a48698461f181d94-FRA",
+       "alt-svc": "h3=\":443\"; ma=86400"
+      }
+     },
+     "error": null,
+     "t": 14.189772367477417
+    }
+   ],
+   "vars": {
+    "init.current_turns": 0,
+    "init.total_turns": 0,
+    "talk.current_turns": 0,
+    "talk.total_turns": 0,
+    "brain.current_turns": 0,
+    "brain.total_turns": 0,
+    "end_ok.current_turns": 0,
+    "end_ok.total_turns": 0,
+    "opening.current_turns": 0,
+    "opening.total_turns": 1,
+    "n_verify.current_turns": 0,
+    "n_verify.total_turns": 0,
+    "n_account.current_turns": 0,
+    "n_account.total_turns": 0,
+    "n_promise.current_turns": 0,
+    "n_promise.total_turns": 0,
+    "n_timeout.current_turns": 0,
+    "n_timeout.total_turns": 0,
+    "talk_error.current_turns": 0,
+    "talk_error.total_turns": 0,
+    "talk_fallback.current_turns": 0,
+    "talk_fallback.total_turns": 0,
+    "call.customer_phone_number": "",
+    "call.phone_number": "",
+    "call.call_id": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+    "call.direction": "web",
+    "system.iso_utc_now": "2026-10-10T15:17:43.936728Z",
+    "system.todays_date_en_cst": "10 October 2026 Saturday 09:17",
+    "system.todays_date_en_est": "10 October 2026 Saturday 10:17",
+    "system.todays_date_tr": "10 Ekim 2026 Cumartesi 18:17",
+    "system.todays_date_tr.iso_8601": "2026-10-10",
+    "system.uuid4()": "a16a7428eb6f4c608ff12b333d6badf3",
+    "customer_id": "c_6d0b7214-204",
+    "first_name": "Maria",
+    "last_name": "Costa",
+    "title": "Ms",
+    "now": "2026-10-14T11:00",
+    "said": "final not_reached unclear",
+    "final_outcome": "not_reached",
+    "final_reason": "unclear",
+    "route": "talk",
+    "say_next": "Final set: not_reached / unclear.",
+    "state": "{\"runs\": 1, \"turn\": 1}",
+    "brain_response.status": "success",
+    "brain_response.data": "null",
+    "brain_response.message": "Code executed successfully",
+    "brain_response.status_code": 200,
+    "brain_status_code": 200,
+    "brain_success_count": 1
+   }
+  },
+  "s3c": {
+   "case": "PUB-02",
+   "customer_id": "c_090fe016-b03",
+   "variables": {
+    "customer_id": "c_090fe016-b03",
+    "first_name": "Maria",
+    "last_name": "Costa",
+    "title": "Ms",
+    "now": "2026-10-14T11:00"
+   },
+   "call_id": "ef887365-711b-4f4d-a115-bf7b19c34fbd",
+   "rows": [
+    {
+     "user": "Hello?",
+     "agent": "S2 opening. Send a command.",
+     "s": 1.14
+    }
+   ],
+   "chat_end": "ok",
+   "close_after_hangup_s": 15.9,
+   "ledger": {
+    "ok": true,
+    "case": "PUB-02",
+    "team": "ac21603b62a9d4ca4d06c1db",
+    "now": "2026-10-14T11:00",
+    "verified": {},
+    "wrong": 0,
+    "hinted": false,
+    "promises": [],
+    "notes": [],
+    "callbacks": [],
+    "transfers": [],
+    "outcome": "not_reached",
+    "reason": "unclear",
+    "failures": {
+     "close_call": 0
+    },
+    "calls": [
+     {
+      "n": 1,
+      "tool": "close_call",
+      "args": {
+       "reason": "unclear",
+       "outcome": "not_reached"
+      },
+      "status": 200,
+      "result": {
+       "ok": true
+      }
+     }
+    ],
+    "last_at": 1791645492711
+   },
+   "ended_reason": "customer-ended-call",
+   "api_events": [
+    {
+     "event": "function_call_start",
+     "function": "close_call",
+     "args": {
+      "url": "https://freya-bank-mock.freyavoice.workers.dev/v1/close_call",
+      "method": "POST",
+      "headers": {
+       "Content-Type": "application/json"
+      },
+      "body": {
+       "reason": "unclear",
+       "outcome": "not_reached",
+       "customer_id": "c_090fe016-b03"
+      }
+     },
+     "result": null,
+     "error": null,
+     "t": 14.664982557296753
+    },
+    {
+     "event": "function_call_complete",
+     "function": "close_call",
+     "args": null,
+     "result": {
+      "status": "success",
+      "data": {
+       "ok": true
+      },
+      "message": "Successfully executed POST request",
+      "status_code": 200,
+      "header": {
+       "Date": "Sat, 10 Oct 2026 15:18:12 GMT",
+       "Content-Type": "application/json",
+       "Content-Length": "11",
+       "Connection": "keep-alive",
+       "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=Z0jdrtTYWt9zc9Xv48uvVhoiaQ3JJ2EzwzHeioGu4qbwaOKyDYaJftgc%2B7RdNBQSLKe5w9wJHxCq6gYQ3x7rDBox1Fp5hifZFS7VK7BswthYG%2BXqDYd0GZnEkLinSs%2FSVXtFG1z9%2FMG5cEv8TtB1ofWiMLW3wMmRSQ%3D%3D\"}]}",
+       "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+       "Server": "cloudflare",
+       "CF-RAY": "a48698a95b28d2e7-FRA",
+       "alt-svc": "h3=\":443\"; ma=86400"
+      }
+     },
+     "error": null,
+     "t": 14.721161842346191
+    }
+   ],
+   "vars": {
+    "init.current_turns": 0,
+    "init.total_turns": 0,
+    "talk.current_turns": 0,
+    "talk.total_turns": 0,
+    "brain.current_turns": 0,
+    "brain.total_turns": 0,
+    "end_ok.current_turns": 0,
+    "end_ok.total_turns": 0,
+    "opening.current_turns": 0,
+    "opening.total_turns": 0,
+    "n_verify.current_turns": 0,
+    "n_verify.total_turns": 0,
+    "n_account.current_turns": 0,
+    "n_account.total_turns": 0,
+    "n_promise.current_turns": 0,
+    "n_promise.total_turns": 0,
+    "n_timeout.current_turns": 0,
+    "n_timeout.total_turns": 0,
+    "talk_error.current_turns": 0,
+    "talk_error.total_turns": 0,
+    "talk_fallback.current_turns": 0,
+    "talk_fallback.total_turns": 0,
+    "customer_id": "c_090fe016-b03",
+    "first_name": "Maria",
+    "last_name": "Costa",
+    "title": "Ms",
+    "now": "2026-10-14T11:00",
+    "call.customer_phone_number": "",
+    "call.phone_number": "",
+    "call.call_id": "ef887365-711b-4f4d-a115-bf7b19c34fbd",
+    "call.direction": "web",
+    "system.iso_utc_now": "2026-10-10T15:17:57.868960Z",
+    "system.todays_date_en_cst": "10 October 2026 Saturday 09:17",
+    "system.todays_date_en_est": "10 October 2026 Saturday 10:17",
+    "system.todays_date_tr": "10 Ekim 2026 Cumartesi 18:17",
+    "system.todays_date_tr.iso_8601": "2026-10-10",
+    "system.uuid4()": "99ede598e90e45caab1661caad5aa3af"
+   }
+  },
+  "checks": [
+   {
+    "behaviour": "D28 unresolved {{final_reason}}: the close pre-hook overrides the model fill",
+    "status": "PASS",
+    "detail": "Freya start event body [{'outcome': 'not_reached', 'customer_id': 'c_32561b55-73d'}]; bank got [{'outcome': 'not_reached'}] -> [{'ok': False, 'error': 'this outcome needs one of these reasons: callback, no_callback, wrong_number, deceased, unclear'}]"
+   },
+   {
+    "behaviour": "Close on hang-up with final_* set",
+    "status": "PASS",
+    "detail": "chat/end ok; close args [{'reason': 'unclear', 'outcome': 'not_reached'}] -> [{'ok': True}] after 10.7 s; endedReason customer-ended-call"
+   },
+   {
+    "behaviour": "Close on hang-up right after the opening (final_* unset): hook default pair",
+    "status": "PASS",
+    "detail": "chat/end ok; close args [{'reason': 'unclear', 'outcome': 'not_reached'}] -> [{'ok': True}] after 15.9 s; ledger outcome 'not_reached' reason 'unclear'; endedReason customer-ended-call"
+   }
+  ]
+ }
+}

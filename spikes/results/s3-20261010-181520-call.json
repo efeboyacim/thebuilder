@@ -1,0 +1,4546 @@
+{
+ "s3a": {
+  "id": "cd64878f-7655-456c-855e-605945d4358d",
+  "externalCallId": null,
+  "sipCallId": null,
+  "workspaceId": "51ae74b7-abfc-4aa8-8762-6547bb4b6181",
+  "isArchived": false,
+  "isImported": false,
+  "phoneNumberId": null,
+  "phoneNumber": null,
+  "assistantId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+  "assistantName": "scratch 1010-161151",
+  "assistantEntityType": "workflow",
+  "assistantWorkflowId": "c2a4ce00-4eb6-435f-acec-926102431e6e",
+  "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f",
+  "originCallId": null,
+  "entityVersionNumber": 24,
+  "customerNumber": "",
+  "customerLabel": null,
+  "startedAt": "2026-10-10T15:17:06.817Z",
+  "endedAt": "2026-10-10T15:17:11.064Z",
+  "duration": 4,
+  "status": "16",
+  "type": "webCall",
+  "modality": "text",
+  "channel": null,
+  "endedReason": "assistant-ended-call",
+  "transcript": "User (0.0s): Hello?\n\nAssistant (0.0s): S2 opening. Send a command.\n\nUser (1.2s): final not_reached\n\nAssistant (2.0s): Final set: not_reached / None.\n\nUser (3.4s): bye\n\nAssistant (3.9s): S2 farewell.",
+  "messages": [
+   {
+    "role": "user",
+    "message": "Hello?",
+    "messageId": "msg_1_1791645426834",
+    "secondsFromStart": 0.008764028549194336,
+    "nodeId": "init",
+    "workflowSnapshot": {
+     "currentNode": "init",
+     "previousNode": null,
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [],
+     "enteredNodes": [],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812434+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812438+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812277+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812441+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812283+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812443+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812287+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812446+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812291+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812449+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812294+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812452+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812297+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812454+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812300+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812457+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812303+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812459+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812307+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812461+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812310+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812463+00:00"
+      },
+      "customer_id": {
+       "value": "c_32561b55-73d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812465+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812467+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812469+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812470+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812471+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812472+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812474+00:00"
+      },
+      "call.call_id": {
+       "value": "cd64878f-7655-456c-855e-605945d4358d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812475+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812477+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:06.652628Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812479+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812480+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812482+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812483+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812484+00:00"
+      },
+      "system.uuid4()": {
+       "value": "0031539d0f004a0d9be4145ab8fcf368",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812486+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:06.859Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "assistant",
+    "message": "S2 opening. Send a command.",
+    "messageId": "msg_4_1791645426900",
+    "secondsFromStart": 0.028620004653930664,
+    "nodeId": "opening",
+    "workflowSnapshot": {
+     "currentNode": "opening",
+     "previousNode": "init",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      }
+     ],
+     "enteredNodes": [
+      "opening"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851206+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812438+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812277+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812441+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812283+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812443+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812287+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812446+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851211+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851214+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812294+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812452+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812297+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812454+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812300+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812457+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812303+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812459+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812307+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812461+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812310+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812463+00:00"
+      },
+      "customer_id": {
+       "value": "c_32561b55-73d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812465+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812467+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812469+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812470+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812471+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812472+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812474+00:00"
+      },
+      "call.call_id": {
+       "value": "cd64878f-7655-456c-855e-605945d4358d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812475+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812477+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:06.652628Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812479+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812480+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812482+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812483+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812484+00:00"
+      },
+      "system.uuid4()": {
+       "value": "0031539d0f004a0d9be4145ab8fcf368",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812486+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:07.206Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"init\",\"target\":\"opening\",\"confidence\":1.0,\"reason\":\"always always\",\"branches\":[{\"target\":\"opening\",\"description\":\"always\",\"result\":true,\"condition_results\":{\"operator\":\"always\",\"result\":true}}],\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":0,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"customer_id\":\"c_32561b55-73d\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"cd64878f-7655-456c-855e-605945d4358d\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:06.652628Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"0031539d0f004a0d9be4145ab8fcf368\"}}",
+    "messageId": "msg_2_1791645426850",
+    "secondsFromStart": 0.03371262550354004,
+    "nodeId": "init",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:06.902Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"opening\",\"from_node\":\"init\",\"reason\":\"always always\"}",
+    "messageId": "msg_3_1791645426852",
+    "secondsFromStart": 0.03484606742858887,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:06.936Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"turn_completed\",\"turnIndex\":1,\"userMessageId\":\"msg_1_1791645426834\",\"finalAssistantMessageId\":\"msg_4_1791645426900\",\"responseText\":\"S2 opening. Send a command.\"}",
+    "messageId": "msg_5_1791645426921",
+    "secondsFromStart": 0.05339550971984863,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:07.248Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"conversation_resumed\",\"fromMessageId\":\"msg_4_1791645426900\",\"isBranch\":false}",
+    "messageId": "msg_1_1791645427971",
+    "secondsFromStart": 1.1547551155090332,
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.011Z"
+   },
+   {
+    "role": "user",
+    "message": "final not_reached",
+    "messageId": "msg_2_1791645427984",
+    "secondsFromStart": 1.161764144897461,
+    "nodeId": "opening",
+    "workflowSnapshot": {
+     "currentNode": "opening",
+     "previousNode": "init",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      }
+     ],
+     "enteredNodes": [
+      "opening"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851206+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812438+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812277+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812441+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812283+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812443+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812287+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812446+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851211+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851214+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812294+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812452+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812297+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812454+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812300+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812457+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812303+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812459+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812307+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812461+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812310+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812463+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812472+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812474+00:00"
+      },
+      "call.call_id": {
+       "value": "cd64878f-7655-456c-855e-605945d4358d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812475+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812477+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:07.967813Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967847+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967848+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967849+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967850+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967851+00:00"
+      },
+      "system.uuid4()": {
+       "value": "0031539d0f004a0d9be4145ab8fcf368",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812486+00:00"
+      },
+      "customer_id": {
+       "value": "c_32561b55-73d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812465+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812467+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812469+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812470+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812471+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.038Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"variable_extracted\",\"name\":\"said\",\"value\":\"final not_reached\",\"confidence\":1.0,\"source\":\"extraction\",\"source_node\":\"opening\",\"input_text\":\"final not_reached\",\"raw_response\":\"{\\\"extracted\\\": {\\\"said\\\": \\\"final not_reached\\\"}}\",\"variable_table\":{\"init.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.851206+00:00\"},\"init.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812438+00:00\"},\"talk.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812277+00:00\"},\"talk.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812441+00:00\"},\"brain.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812283+00:00\"},\"brain.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812443+00:00\"},\"end_ok.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812287+00:00\"},\"end_ok.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812446+00:00\"},\"opening.current_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.989322+00:00\"},\"opening.total_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.989325+00:00\"},\"n_verify.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812294+00:00\"},\"n_verify.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812452+00:00\"},\"n_account.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812297+00:00\"},\"n_account.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812454+00:00\"},\"n_promise.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812300+00:00\"},\"n_promise.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812457+00:00\"},\"n_timeout.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812303+00:00\"},\"n_timeout.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812459+00:00\"},\"talk_error.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812307+00:00\"},\"talk_error.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812461+00:00\"},\"talk_fallback.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812310+00:00\"},\"talk_fallback.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812463+00:00\"},\"call.customer_phone_number\":{\"value\":\"\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812472+00:00\"},\"call.phone_number\":{\"value\":\"\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812474+00:00\"},\"call.call_id\":{\"value\":\"cd64878f-7655-456c-855e-605945d4358d\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812475+00:00\"},\"call.direction\":{\"value\":\"web\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812477+00:00\"},\"system.iso_utc_now\":{\"value\":\"2026-10-10T15:17:07.967813Z\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.967847+00:00\"},\"system.todays_date_en_cst\":{\"value\":\"10 October 2026 Saturday 09:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.967848+00:00\"},\"system.todays_date_en_est\":{\"value\":\"10 October 2026 Saturday 10:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.967849+00:00\"},\"system.todays_date_tr\":{\"value\":\"10 Ekim 2026 Cumartesi 18:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.967850+00:00\"},\"system.todays_date_tr.iso_8601\":{\"value\":\"2026-10-10\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.967851+00:00\"},\"system.uuid4()\":{\"value\":\"0031539d0f004a0d9be4145ab8fcf368\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812486+00:00\"},\"customer_id\":{\"value\":\"c_32561b55-73d\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812465+00:00\"},\"first_name\":{\"value\":\"Maria\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812467+00:00\"},\"last_name\":{\"value\":\"Costa\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812469+00:00\"},\"title\":{\"value\":\"Ms\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812470+00:00\"},\"now\":{\"value\":\"2026-10-14T11:00\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812471+00:00\"}}}",
+    "messageId": "msg_3_1791645428252",
+    "secondsFromStart": 1.4350061416625977,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.257Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"opening\",\"target\":\"brain\",\"confidence\":1.0,\"reason\":\"always always\",\"branches\":[{\"target\":\"brain\",\"description\":\"always\",\"result\":true,\"condition_results\":{\"operator\":\"always\",\"result\":true}}],\"total_duration_ms\":264.6,\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":1,\"opening.total_turns\":1,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"cd64878f-7655-456c-855e-605945d4358d\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:07.967813Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"0031539d0f004a0d9be4145ab8fcf368\",\"customer_id\":\"c_32561b55-73d\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"said\":\"final not_reached\"}}",
+    "messageId": "msg_4_1791645428254",
+    "secondsFromStart": 1.4373910427093506,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.296Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"brain\",\"from_node\":\"opening\",\"reason\":\"always always\"}",
+    "messageId": "msg_5_1791645428255",
+    "secondsFromStart": 1.4381582736968994,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.341Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"code_exec\",\"args\":{\"timeout_ms\":10000,\"code\":\"\\nimport json, re\\nNODES = dict(verify=['n_verify', 'verify_identity'], account=['n_account', 'get_account'],\\n             promise=['n_promise', 'create_promise'], timeout=['n_timeout', 'get_account'])\\nMAPPED = dict(verify=['vr_ok', 'vr_verified', 'vr_all', 'vr_left', 'vr_error', 'vr_hook'],\\n              account=['acct_ok', 'acct_products', 'acct_error'],\\n              promise=['pr_ok', 'pr_id', 'pr_error'], timeout=['to_ok', 'to_products', 'to_error'])\\nRESET = dict(verify=True, account=True, promise=True, timeout=False)\\n\\n\\ndef counts(names):\\n    out = dict()\\n    for n in names:\\n        for suf in ('_success_count', '_failure_count', '_status_code'):\\n            if vars.get(n + suf) is not None:\\n                out[n + suf] = vars.get(n + suf)\\n    return out\\n\\n\\ndef seen(prefixes):\\n    out = dict()\\n    for k in sorted(vars.keys()):\\n        if any(k.startswith(p) for p in prefixes):\\n            v = vars.get(k)\\n            out[k] = type(v).__name__ + ':' + repr(v)[:100]\\n    return out\\n\\n\\ndef flat_products(node):\\n    prods = []\\n    for i in range(10):\\n        pid = vars.get(node + '_response.data.products.' + str(i) + '.product_id')\\n        if pid is None:\\n            break\\n        prods.append([str(pid), vars.get(node + '_response.data.products.' + str(i) + '.past_due')])\\n    return prods\\n\\n\\ndef as_list(v):\\n    if isinstance(v, list):\\n        return v, 'list'\\n    if isinstance(v, str) and v.strip().startswith('['):\\n        try:\\n            return json.loads(v), 'json-string'\\n        except Exception:\\n            try:\\n                import ast\\n                return ast.literal_eval(v), 'python-repr-string'\\n            except Exception:\\n                return [], 'unparsed-string'\\n    return [], type(v).__name__\\n\\n\\ntry:\\n    raw = vars.get('state')\\n    st = json.loads(raw) if isinstance(raw, str) and raw else dict()\\n    st['runs'] = st.get('runs', 0) + 1\\n    route, say = 'talk', ''\\n    pend = st.pop('pending', '')\\n    if pend:\\n        n = st.get('n_' + pend, 0) + 1\\n        st['n_' + pend] = n\\n        before = st.pop('snap', dict())\\n        after = counts(NODES[pend])\\n        mapped = dict()\\n        for k in MAPPED[pend]:\\n            v = vars.get(k)\\n            mapped[k] = type(v).__name__ + ':' + repr(v)[:160]\\n        dbg = dict(before=before, after=after, mapped=mapped, keys=seen(NODES[pend] + MAPPED[pend] + ['hook_']))\\n        if pend == 'account':\\n            lst, form = as_list(vars.get('acct_products'))\\n            dbg['products_form'] = form\\n            dbg['products_mapped'] = [[str(p.get('product_id')), p.get('past_due')] for p in lst if isinstance(p, dict)]\\n            prods = flat_products('n_account')\\n            st['products'] = prods\\n            dbg['products'] = prods\\n            dbg['past_due_type'] = type(prods[0][1]).__name__ if prods else 'none'\\n        vars['dbg_' + pend + '_' + str(n)] = json.dumps(dbg)\\n        short = ', '.join(k + '=' + str(vars.get(k))[:40] for k in MAPPED[pend] if not k.endswith('products'))\\n        say = pend.capitalize() + ' ' + str(n) + ' back. ' + short + '. Counts ' + json.dumps(after) + '.'\\n    else:\\n        said = str(vars.get('said') or '').strip()\\n        low = said.lower()\\n        st['turn'] = st.get('turn', 0) + 1\\n        m_ver = re.search(r'verify\\\\s+([a-z_0-9]+)\\\\s+(\\\\S+)', low)\\n        m_fin = re.search(r'final\\\\s+([a-z_]+)(?:\\\\s+(\\\\S+))?', low)\\n        m_date = re.search(r'(\\\\d{4}-\\\\d{2}-\\\\d{2})', low)\\n        nxt = ''\\n        if m_ver:\\n            vars['v_field'] = m_ver.group(1)\\n            vars['v_answer'] = m_ver.group(2).rstrip('.')\\n            nxt = 'verify'\\n        elif m_fin:\\n            vars['final_outcome'] = m_fin.group(1)\\n            if m_fin.group(2):\\n                vars['final_reason'] = m_fin.group(2).rstrip('.')\\n            say = 'Final set: ' + str(vars.get('final_outcome')) + ' / ' + str(vars.get('final_reason')) + '.'\\n        elif 'timeout' in low:\\n            nxt = 'timeout'\\n        elif 'account' in low:\\n            nxt = 'account'\\n        elif 'promise' in low:\\n            prods = st.get('products') or []\\n            if prods:\\n                vars['v_product'] = prods[0][0]\\n                vars['v_amount'] = float(prods[0][1])\\n                vars['v_date'] = m_date.group(1) if m_date else str(vars.get('now') or '')[:10]\\n                nxt = 'promise'\\n            else:\\n                say = 'No products yet.'\\n        elif 'bye' in low:\\n            route = 'end_ok'\\n        else:\\n            say = 'Unknown command, turn ' + str(st['turn']) + '.'\\n        if nxt:\\n            if RESET[nxt]:\\n                for k in MAPPED[nxt]:\\n                    vars[k] = ''\\n            st['pending'] = nxt\\n            st['snap'] = counts(NODES[nxt])\\n            route = 'n_' + nxt\\n    vars['route'] = route\\n    vars['say_next'] = say\\n    vars['state'] = json.dumps(st)\\nexcept Exception as e:\\n    vars['route'] = 'error'\\n    vars['say_next'] = 'Brain error ' + repr(e)[:120]\\n\"}}",
+    "messageId": "msg_6_1791645428256",
+    "secondsFromStart": 1.4388267993927002,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.397Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"code_exec\",\"result\":{\"status\":\"success\",\"data\":null,\"message\":\"Code executed successfully\",\"status_code\":200}}",
+    "messageId": "msg_7_1791645428813",
+    "secondsFromStart": 1.9963083267211914,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:08.834Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"brain\",\"target\":\"talk\",\"confidence\":1.0,\"reason\":\"route equals talk route == 'talk'\",\"branches\":[{\"target\":\"talk_error\",\"description\":\"brain_response.status == 'error'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"brain_response.status\",\"operand\":\"error\",\"result\":false}},{\"target\":\"n_verify\",\"description\":\"route == 'n_verify'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_verify\",\"result\":false}},{\"target\":\"n_account\",\"description\":\"route == 'n_account'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_account\",\"result\":false}},{\"target\":\"n_promise\",\"description\":\"route == 'n_promise'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_promise\",\"result\":false}},{\"target\":\"n_timeout\",\"description\":\"route == 'n_timeout'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_timeout\",\"result\":false}},{\"target\":\"end_ok\",\"description\":\"route == 'end_ok'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"end_ok\",\"result\":false}},{\"target\":\"talk\",\"description\":\"route == 'talk'\",\"result\":true,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"talk\",\"result\":true}},{\"target\":\"talk_fallback\",\"description\":\"always\",\"result\":null,\"condition_results\":null}],\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":1,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"cd64878f-7655-456c-855e-605945d4358d\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:07.967813Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"0031539d0f004a0d9be4145ab8fcf368\",\"customer_id\":\"c_32561b55-73d\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"said\":\"final not_reached\",\"final_outcome\":\"not_reached\",\"route\":\"talk\",\"say_next\":\"Final set: not_reached / None.\",\"state\":\"{\\\"runs\\\": 1, \\\"turn\\\": 1}\",\"brain_response.status\":\"success\",\"brain_response.data\":\"null\",\"brain_response.message\":\"Code executed successfully\",\"brain_response.status_code\":200,\"brain_status_code\":200,\"brain_success_count\":1}}",
+    "messageId": "msg_8_1791645428816",
+    "secondsFromStart": 1.9993782043457031,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:09.111Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"talk\",\"from_node\":\"brain\",\"reason\":\"route equals talk route == 'talk'\"}",
+    "messageId": "msg_9_1791645428817",
+    "secondsFromStart": 2.000213384628296,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:09.145Z"
+   },
+   {
+    "role": "assistant",
+    "message": "Final set: not_reached / None.",
+    "messageId": "msg_10_1791645428841",
+    "secondsFromStart": 2.021764039993286,
+    "nodeId": "talk",
+    "workflowSnapshot": {
+     "currentNode": "talk",
+     "previousNode": "brain",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 1,
+     "nodeTotalTurnCounts": {
+      "opening": 1
+     },
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      },
+      {
+       "from": "opening",
+       "to": "brain",
+       "reason": "always always"
+      },
+      {
+       "from": "brain",
+       "to": "talk",
+       "reason": "route equals talk route == 'talk'"
+      }
+     ],
+     "enteredNodes": [
+      "brain",
+      "opening",
+      "talk"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851206+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812438+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.816892+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.816895+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.816889+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.254790+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812287+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812446+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.254784+00:00"
+      },
+      "opening.total_turns": {
+       "value": 1,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.989325+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812294+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812452+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812297+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812454+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812300+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812457+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812303+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812459+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812307+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812461+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812310+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812463+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812472+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812474+00:00"
+      },
+      "call.call_id": {
+       "value": "cd64878f-7655-456c-855e-605945d4358d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812475+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812477+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:07.967813Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967847+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967848+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967849+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967850+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.967851+00:00"
+      },
+      "system.uuid4()": {
+       "value": "0031539d0f004a0d9be4145ab8fcf368",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812486+00:00"
+      },
+      "customer_id": {
+       "value": "c_32561b55-73d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812465+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812467+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812469+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812470+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812471+00:00"
+      },
+      "said": {
+       "value": "final not_reached",
+       "confidence": 1,
+       "source": "extraction",
+       "source_node": "opening",
+       "raw_text": "final not_reached",
+       "extracted_at": "2026-10-10T15:17:08.251945+00:00"
+      },
+      "final_outcome": {
+       "value": "not_reached",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813081+00:00"
+      },
+      "route": {
+       "value": "talk",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813085+00:00"
+      },
+      "say_next": {
+       "value": "Final set: not_reached / None.",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813087+00:00"
+      },
+      "state": {
+       "value": "{\"runs\": 1, \"turn\": 1}",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813089+00:00"
+      },
+      "brain_response.status": {
+       "value": "success",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813815+00:00"
+      },
+      "brain_response.data": {
+       "value": "null",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813818+00:00"
+      },
+      "brain_response.message": {
+       "value": "Code executed successfully",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813819+00:00"
+      },
+      "brain_response.status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813822+00:00"
+      },
+      "brain_status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.813825+00:00"
+      },
+      "brain_success_count": {
+       "value": 1,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.813828+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:09.176Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"turn_completed\",\"turnIndex\":2,\"userMessageId\":\"msg_2_1791645427984\",\"finalAssistantMessageId\":\"msg_10_1791645428841\",\"responseText\":\"Final set: not_reached / None.\"}",
+    "messageId": "msg_11_1791645428847",
+    "secondsFromStart": 2.030341863632202,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:09.228Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"conversation_resumed\",\"fromMessageId\":\"msg_10_1791645428841\",\"isBranch\":false}",
+    "messageId": "msg_1_1791645430231",
+    "secondsFromStart": 3.413835048675537,
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.236Z"
+   },
+   {
+    "role": "user",
+    "message": "bye",
+    "messageId": "msg_2_1791645430244",
+    "secondsFromStart": 3.4207639694213867,
+    "nodeId": "talk",
+    "workflowSnapshot": {
+     "currentNode": "talk",
+     "previousNode": "brain",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 1,
+     "nodeTotalTurnCounts": {
+      "opening": 1
+     },
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      },
+      {
+       "from": "opening",
+       "to": "brain",
+       "reason": "always always"
+      },
+      {
+       "from": "brain",
+       "to": "talk",
+       "reason": "route equals talk route == 'talk'"
+      }
+     ],
+     "enteredNodes": [
+      "brain",
+      "opening",
+      "talk"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851206+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812438+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.816892+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.816895+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.816889+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.254790+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812287+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812446+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.254784+00:00"
+      },
+      "opening.total_turns": {
+       "value": 1,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.989325+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812294+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812452+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812297+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812454+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812300+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812457+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812303+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812459+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812307+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812461+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812310+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812463+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812472+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812474+00:00"
+      },
+      "call.call_id": {
+       "value": "cd64878f-7655-456c-855e-605945d4358d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812475+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812477+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:10.227044Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227080+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227082+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227083+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227084+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227085+00:00"
+      },
+      "system.uuid4()": {
+       "value": "0031539d0f004a0d9be4145ab8fcf368",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812486+00:00"
+      },
+      "customer_id": {
+       "value": "c_32561b55-73d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812465+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812467+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812469+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812470+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812471+00:00"
+      },
+      "said": {
+       "value": "final not_reached",
+       "confidence": 1,
+       "source": "extraction",
+       "source_node": "opening",
+       "raw_text": "final not_reached",
+       "extracted_at": "2026-10-10T15:17:08.251945+00:00"
+      },
+      "final_outcome": {
+       "value": "not_reached",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813081+00:00"
+      },
+      "route": {
+       "value": "talk",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813085+00:00"
+      },
+      "say_next": {
+       "value": "Final set: not_reached / None.",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813087+00:00"
+      },
+      "state": {
+       "value": "{\"runs\": 1, \"turn\": 1}",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813089+00:00"
+      },
+      "brain_response.status": {
+       "value": "success",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813815+00:00"
+      },
+      "brain_response.data": {
+       "value": "null",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813818+00:00"
+      },
+      "brain_response.message": {
+       "value": "Code executed successfully",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813819+00:00"
+      },
+      "brain_response.status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813822+00:00"
+      },
+      "brain_status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.813825+00:00"
+      },
+      "brain_success_count": {
+       "value": 1,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.813828+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.302Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"variable_extracted\",\"name\":\"said\",\"value\":\"bye\",\"confidence\":1.0,\"source\":\"extraction\",\"source_node\":\"talk\",\"input_text\":\"bye\",\"raw_response\":\"{\\\"extracted\\\": {\\\"said\\\": \\\"bye\\\"}}\",\"variable_table\":{\"init.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.851206+00:00\"},\"init.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812438+00:00\"},\"talk.current_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.249125+00:00\"},\"talk.total_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.249128+00:00\"},\"brain.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:08.816889+00:00\"},\"brain.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:08.254790+00:00\"},\"end_ok.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812287+00:00\"},\"end_ok.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812446+00:00\"},\"opening.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:08.254784+00:00\"},\"opening.total_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:07.989325+00:00\"},\"n_verify.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812294+00:00\"},\"n_verify.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812452+00:00\"},\"n_account.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812297+00:00\"},\"n_account.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812454+00:00\"},\"n_promise.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812300+00:00\"},\"n_promise.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812457+00:00\"},\"n_timeout.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812303+00:00\"},\"n_timeout.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812459+00:00\"},\"talk_error.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812307+00:00\"},\"talk_error.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812461+00:00\"},\"talk_fallback.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812310+00:00\"},\"talk_fallback.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812463+00:00\"},\"call.customer_phone_number\":{\"value\":\"\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812472+00:00\"},\"call.phone_number\":{\"value\":\"\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812474+00:00\"},\"call.call_id\":{\"value\":\"cd64878f-7655-456c-855e-605945d4358d\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812475+00:00\"},\"call.direction\":{\"value\":\"web\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812477+00:00\"},\"system.iso_utc_now\":{\"value\":\"2026-10-10T15:17:10.227044Z\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.227080+00:00\"},\"system.todays_date_en_cst\":{\"value\":\"10 October 2026 Saturday 09:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.227082+00:00\"},\"system.todays_date_en_est\":{\"value\":\"10 October 2026 Saturday 10:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.227083+00:00\"},\"system.todays_date_tr\":{\"value\":\"10 Ekim 2026 Cumartesi 18:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.227084+00:00\"},\"system.todays_date_tr.iso_8601\":{\"value\":\"2026-10-10\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:10.227085+00:00\"},\"system.uuid4()\":{\"value\":\"0031539d0f004a0d9be4145ab8fcf368\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812486+00:00\"},\"customer_id\":{\"value\":\"c_32561b55-73d\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812465+00:00\"},\"first_name\":{\"value\":\"Maria\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812467+00:00\"},\"last_name\":{\"value\":\"Costa\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812469+00:00\"},\"title\":{\"value\":\"Ms\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812470+00:00\"},\"now\":{\"value\":\"2026-10-14T11:00\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:06.812471+00:00\"},\"said\":{\"value\":\"final not_reached\",\"confidence\":1.0,\"source\":\"extraction\",\"source_node\":\"opening\",\"raw_text\":\"final not_reached\",\"extracted_at\":\"2026-10-10T15:17:08.251945+00:00\"},\"final_outcome\":{\"value\":\"not_reached\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813081+00:00\"},\"route\":{\"value\":\"talk\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813085+00:00\"},\"say_next\":{\"value\":\"Final set: not_reached / None.\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813087+00:00\"},\"state\":{\"value\":\"{\\\"runs\\\": 1, \\\"turn\\\": 1}\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813089+00:00\"},\"brain_response.status\":{\"value\":\"success\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813815+00:00\"},\"brain_response.data\":{\"value\":\"null\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813818+00:00\"},\"brain_response.message\":{\"value\":\"Code executed successfully\",\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813819+00:00\"},\"brain_response.status_code\":{\"value\":200,\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":\"brain\",\"extracted_at\":\"2026-10-10T15:17:08.813822+00:00\"},\"brain_status_code\":{\"value\":200,\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:08.813825+00:00\"},\"brain_success_count\":{\"value\":1,\"confidence\":1.0,\"source\":\"tool_result\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:08.813828+00:00\"}}}",
+    "messageId": "msg_3_1791645430446",
+    "secondsFromStart": 3.629593849182129,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.456Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"talk\",\"target\":\"brain\",\"confidence\":1.0,\"reason\":\"always always\",\"branches\":[{\"target\":\"brain\",\"description\":\"always\",\"result\":true,\"condition_results\":{\"operator\":\"always\",\"result\":true}}],\"total_duration_ms\":199.6,\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":1,\"talk.total_turns\":1,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":1,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"cd64878f-7655-456c-855e-605945d4358d\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:10.227044Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"0031539d0f004a0d9be4145ab8fcf368\",\"customer_id\":\"c_32561b55-73d\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"said\":\"bye\",\"final_outcome\":\"not_reached\",\"route\":\"talk\",\"say_next\":\"Final set: not_reached / None.\",\"state\":\"{\\\"runs\\\": 1, \\\"turn\\\": 1}\",\"brain_response.status\":\"success\",\"brain_response.data\":\"null\",\"brain_response.message\":\"Code executed successfully\",\"brain_response.status_code\":200,\"brain_status_code\":200,\"brain_success_count\":1}}",
+    "messageId": "msg_4_1791645430449",
+    "secondsFromStart": 3.6322460174560547,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.495Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"brain\",\"from_node\":\"talk\",\"reason\":\"always always\"}",
+    "messageId": "msg_5_1791645430450",
+    "secondsFromStart": 3.633052110671997,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.521Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"code_exec\",\"args\":{\"timeout_ms\":10000,\"code\":\"\\nimport json, re\\nNODES = dict(verify=['n_verify', 'verify_identity'], account=['n_account', 'get_account'],\\n             promise=['n_promise', 'create_promise'], timeout=['n_timeout', 'get_account'])\\nMAPPED = dict(verify=['vr_ok', 'vr_verified', 'vr_all', 'vr_left', 'vr_error', 'vr_hook'],\\n              account=['acct_ok', 'acct_products', 'acct_error'],\\n              promise=['pr_ok', 'pr_id', 'pr_error'], timeout=['to_ok', 'to_products', 'to_error'])\\nRESET = dict(verify=True, account=True, promise=True, timeout=False)\\n\\n\\ndef counts(names):\\n    out = dict()\\n    for n in names:\\n        for suf in ('_success_count', '_failure_count', '_status_code'):\\n            if vars.get(n + suf) is not None:\\n                out[n + suf] = vars.get(n + suf)\\n    return out\\n\\n\\ndef seen(prefixes):\\n    out = dict()\\n    for k in sorted(vars.keys()):\\n        if any(k.startswith(p) for p in prefixes):\\n            v = vars.get(k)\\n            out[k] = type(v).__name__ + ':' + repr(v)[:100]\\n    return out\\n\\n\\ndef flat_products(node):\\n    prods = []\\n    for i in range(10):\\n        pid = vars.get(node + '_response.data.products.' + str(i) + '.product_id')\\n        if pid is None:\\n            break\\n        prods.append([str(pid), vars.get(node + '_response.data.products.' + str(i) + '.past_due')])\\n    return prods\\n\\n\\ndef as_list(v):\\n    if isinstance(v, list):\\n        return v, 'list'\\n    if isinstance(v, str) and v.strip().startswith('['):\\n        try:\\n            return json.loads(v), 'json-string'\\n        except Exception:\\n            try:\\n                import ast\\n                return ast.literal_eval(v), 'python-repr-string'\\n            except Exception:\\n                return [], 'unparsed-string'\\n    return [], type(v).__name__\\n\\n\\ntry:\\n    raw = vars.get('state')\\n    st = json.loads(raw) if isinstance(raw, str) and raw else dict()\\n    st['runs'] = st.get('runs', 0) + 1\\n    route, say = 'talk', ''\\n    pend = st.pop('pending', '')\\n    if pend:\\n        n = st.get('n_' + pend, 0) + 1\\n        st['n_' + pend] = n\\n        before = st.pop('snap', dict())\\n        after = counts(NODES[pend])\\n        mapped = dict()\\n        for k in MAPPED[pend]:\\n            v = vars.get(k)\\n            mapped[k] = type(v).__name__ + ':' + repr(v)[:160]\\n        dbg = dict(before=before, after=after, mapped=mapped, keys=seen(NODES[pend] + MAPPED[pend] + ['hook_']))\\n        if pend == 'account':\\n            lst, form = as_list(vars.get('acct_products'))\\n            dbg['products_form'] = form\\n            dbg['products_mapped'] = [[str(p.get('product_id')), p.get('past_due')] for p in lst if isinstance(p, dict)]\\n            prods = flat_products('n_account')\\n            st['products'] = prods\\n            dbg['products'] = prods\\n            dbg['past_due_type'] = type(prods[0][1]).__name__ if prods else 'none'\\n        vars['dbg_' + pend + '_' + str(n)] = json.dumps(dbg)\\n        short = ', '.join(k + '=' + str(vars.get(k))[:40] for k in MAPPED[pend] if not k.endswith('products'))\\n        say = pend.capitalize() + ' ' + str(n) + ' back. ' + short + '. Counts ' + json.dumps(after) + '.'\\n    else:\\n        said = str(vars.get('said') or '').strip()\\n        low = said.lower()\\n        st['turn'] = st.get('turn', 0) + 1\\n        m_ver = re.search(r'verify\\\\s+([a-z_0-9]+)\\\\s+(\\\\S+)', low)\\n        m_fin = re.search(r'final\\\\s+([a-z_]+)(?:\\\\s+(\\\\S+))?', low)\\n        m_date = re.search(r'(\\\\d{4}-\\\\d{2}-\\\\d{2})', low)\\n        nxt = ''\\n        if m_ver:\\n            vars['v_field'] = m_ver.group(1)\\n            vars['v_answer'] = m_ver.group(2).rstrip('.')\\n            nxt = 'verify'\\n        elif m_fin:\\n            vars['final_outcome'] = m_fin.group(1)\\n            if m_fin.group(2):\\n                vars['final_reason'] = m_fin.group(2).rstrip('.')\\n            say = 'Final set: ' + str(vars.get('final_outcome')) + ' / ' + str(vars.get('final_reason')) + '.'\\n        elif 'timeout' in low:\\n            nxt = 'timeout'\\n        elif 'account' in low:\\n            nxt = 'account'\\n        elif 'promise' in low:\\n            prods = st.get('products') or []\\n            if prods:\\n                vars['v_product'] = prods[0][0]\\n                vars['v_amount'] = float(prods[0][1])\\n                vars['v_date'] = m_date.group(1) if m_date else str(vars.get('now') or '')[:10]\\n                nxt = 'promise'\\n            else:\\n                say = 'No products yet.'\\n        elif 'bye' in low:\\n            route = 'end_ok'\\n        else:\\n            say = 'Unknown command, turn ' + str(st['turn']) + '.'\\n        if nxt:\\n            if RESET[nxt]:\\n                for k in MAPPED[nxt]:\\n                    vars[k] = ''\\n            st['pending'] = nxt\\n            st['snap'] = counts(NODES[nxt])\\n            route = 'n_' + nxt\\n    vars['route'] = route\\n    vars['say_next'] = say\\n    vars['state'] = json.dumps(st)\\nexcept Exception as e:\\n    vars['route'] = 'error'\\n    vars['say_next'] = 'Brain error ' + repr(e)[:120]\\n\"}}",
+    "messageId": "msg_6_1791645430451",
+    "secondsFromStart": 3.6337785720825195,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.576Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"code_exec\",\"result\":{\"status\":\"success\",\"data\":null,\"message\":\"Code executed successfully\",\"status_code\":200}}",
+    "messageId": "msg_7_1791645430675",
+    "secondsFromStart": 3.857862949371338,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.681Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"brain\",\"target\":\"end_ok\",\"confidence\":1.0,\"reason\":\"route equals end_ok route == 'end_ok'\",\"branches\":[{\"target\":\"talk_error\",\"description\":\"brain_response.status == 'error'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"brain_response.status\",\"operand\":\"error\",\"result\":false}},{\"target\":\"n_verify\",\"description\":\"route == 'n_verify'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_verify\",\"result\":false}},{\"target\":\"n_account\",\"description\":\"route == 'n_account'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_account\",\"result\":false}},{\"target\":\"n_promise\",\"description\":\"route == 'n_promise'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_promise\",\"result\":false}},{\"target\":\"n_timeout\",\"description\":\"route == 'n_timeout'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_timeout\",\"result\":false}},{\"target\":\"end_ok\",\"description\":\"route == 'end_ok'\",\"result\":true,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"end_ok\",\"result\":true}},{\"target\":\"talk\",\"description\":\"route == 'talk'\",\"result\":null,\"condition_results\":null},{\"target\":\"talk_fallback\",\"description\":\"always\",\"result\":null,\"condition_results\":null}],\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":1,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":1,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"cd64878f-7655-456c-855e-605945d4358d\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:10.227044Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"0031539d0f004a0d9be4145ab8fcf368\",\"customer_id\":\"c_32561b55-73d\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"said\":\"bye\",\"final_outcome\":\"not_reached\",\"route\":\"end_ok\",\"say_next\":\"\",\"state\":\"{\\\"runs\\\": 2, \\\"turn\\\": 2}\",\"brain_response.status\":\"success\",\"brain_response.data\":\"null\",\"brain_response.message\":\"Code executed successfully\",\"brain_response.status_code\":200,\"brain_status_code\":200,\"brain_success_count\":2}}",
+    "messageId": "msg_8_1791645430678",
+    "secondsFromStart": 3.8611927032470703,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.710Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"end_ok\",\"from_node\":\"brain\",\"reason\":\"route equals end_ok route == 'end_ok'\"}",
+    "messageId": "msg_9_1791645430679",
+    "secondsFromStart": 3.862086772918701,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.746Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"end_call\",\"args\":{\"message_mode\":\"custom\",\"spoken_message\":\"S2 farewell.\"}}",
+    "messageId": "msg_10_1791645430679",
+    "secondsFromStart": 3.8626646995544434,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:10.792Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete_deferred\",\"function\":\"end_call\",\"result\":null,\"deferred\":true}",
+    "messageId": "msg_11_1791645430680",
+    "secondsFromStart": 3.8631515502929688,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:11.068Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"call_ended\",\"reason\":\"assistant-ended-call\"}",
+    "messageId": "msg_12_1791645430692",
+    "secondsFromStart": 3.875335693359375,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:11.131Z"
+   },
+   {
+    "role": "assistant",
+    "message": "S2 farewell.",
+    "messageId": "msg_13_1791645430698",
+    "secondsFromStart": 3.8787641525268555,
+    "nodeId": "end_ok",
+    "workflowSnapshot": {
+     "currentNode": "end_ok",
+     "previousNode": "brain",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 2,
+     "nodeTotalTurnCounts": {
+      "opening": 1,
+      "talk": 1
+     },
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      },
+      {
+       "from": "opening",
+       "to": "brain",
+       "reason": "always always"
+      },
+      {
+       "from": "brain",
+       "to": "talk",
+       "reason": "route equals talk route == 'talk'"
+      },
+      {
+       "from": "talk",
+       "to": "brain",
+       "reason": "always always"
+      },
+      {
+       "from": "brain",
+       "to": "end_ok",
+       "reason": "route equals end_ok route == 'end_ok'"
+      }
+     ],
+     "enteredNodes": [
+      "brain",
+      "end_ok",
+      "opening",
+      "talk"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.851206+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812438+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.449681+00:00"
+      },
+      "talk.total_turns": {
+       "value": 1,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.249128+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.678736+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.449688+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.678739+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.678742+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:08.254784+00:00"
+      },
+      "opening.total_turns": {
+       "value": 1,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:07.989325+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812294+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812452+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812297+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812454+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812300+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812457+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812303+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812459+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812307+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812461+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812310+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812463+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812472+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812474+00:00"
+      },
+      "call.call_id": {
+       "value": "cd64878f-7655-456c-855e-605945d4358d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812475+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812477+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:10.227044Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227080+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227082+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227083+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227084+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.227085+00:00"
+      },
+      "system.uuid4()": {
+       "value": "0031539d0f004a0d9be4145ab8fcf368",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812486+00:00"
+      },
+      "customer_id": {
+       "value": "c_32561b55-73d",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812465+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812467+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812469+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812470+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:06.812471+00:00"
+      },
+      "said": {
+       "value": "bye",
+       "confidence": 1,
+       "source": "extraction",
+       "source_node": "talk",
+       "raw_text": "bye",
+       "extracted_at": "2026-10-10T15:17:10.446545+00:00"
+      },
+      "final_outcome": {
+       "value": "not_reached",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:08.813081+00:00"
+      },
+      "route": {
+       "value": "end_ok",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.674556+00:00"
+      },
+      "say_next": {
+       "value": "",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.674562+00:00"
+      },
+      "state": {
+       "value": "{\"runs\": 2, \"turn\": 2}",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.674564+00:00"
+      },
+      "brain_response.status": {
+       "value": "success",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.675387+00:00"
+      },
+      "brain_response.data": {
+       "value": "null",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.675391+00:00"
+      },
+      "brain_response.message": {
+       "value": "Code executed successfully",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.675393+00:00"
+      },
+      "brain_response.status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:10.675394+00:00"
+      },
+      "brain_status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.675397+00:00"
+      },
+      "brain_success_count": {
+       "value": 2,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:10.675401+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": true
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:11.176Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"end_call\",\"result\":{\"status\":\"success\",\"message\":\"Call ended\"}}",
+    "messageId": "msg_14_1791645430793",
+    "secondsFromStart": 3.9761641025543213,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:11.213Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"close_call\",\"args\":{\"url\":\"https://freya-bank-mock.freyavoice.workers.dev/v1/close_call\",\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\"},\"body\":{\"outcome\":\"not_reached\",\"customer_id\":\"c_32561b55-73d\"}}}",
+    "messageId": "msg_15_1791645441041",
+    "secondsFromStart": 14.224403381347656,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:21.048Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"close_call\",\"result\":{\"status\":\"success\",\"data\":{\"ok\":false,\"error\":\"this outcome needs one of these reasons: callback, no_callback, wrong_number, deceased, unclear\"},\"message\":\"Successfully executed POST request\",\"status_code\":200,\"header\":{\"Date\":\"Sat, 10 Oct 2026 15:17:21 GMT\",\"Content-Type\":\"application/json\",\"Transfer-Encoding\":\"chunked\",\"Connection\":\"keep-alive\",\"Report-To\":\"{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=0RsSWVUOHZR6C8Cgvb%2Fg8%2Bhq3r7LiSKhWQWVht98xeTJosogveJk%2BPMPPaPrYkpxzHltSLcdcYl%2B%2FceDFNG3GbYzBHh6azN%2BGbpRyU2GpU9Xz1%2FQm0TBR5RHZJKyJSdoZGW7dq7%2BdbM4pKkvDMbr1fTfOCqXIvRP8Q%3D%3D\\\"}]}\",\"Nel\":\"{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}\",\"Content-Encoding\":\"gzip\",\"Server\":\"cloudflare\",\"CF-RAY\":\"a48697669a63dc5a-FRA\",\"alt-svc\":\"h3=\\\":443\\\"; ma=86400\"}}}",
+    "messageId": "msg_16_1791645441166",
+    "secondsFromStart": 14.349612474441528,
+    "nodeId": "end_ok",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:21.172Z"
+   }
+  ],
+  "summary": "This is a brief, automated interaction where a user issues a command, 'final not_reached', which the assistant acknowledges. The user then ends the call.",
+  "cost": 0.003505,
+  "recordingUrl": "https://staging-app.freyavoice.ai/api/v2/call/cd64878f-7655-456c-855e-605945d4358d/recording",
+  "analysis": {
+   "summary": "This is a brief, automated interaction where a user issues a command, 'final not_reached', which the assistant acknowledges. The user then ends the call.",
+   "structuredData": null
+  },
+  "tags": [
+   {
+    "tag": "sentiment",
+    "source": "system",
+    "value": 0,
+    "confidence": 1,
+    "metadata": null
+   },
+   {
+    "tag": "theme:automation",
+    "source": "system",
+    "metadata": null
+   },
+   {
+    "tag": "theme:command",
+    "source": "system",
+    "metadata": null
+   },
+   {
+    "tag": "theme:termination",
+    "source": "system",
+    "metadata": null
+   },
+   {
+    "tag": "tool_calls_count",
+    "source": "tool_call",
+    "value": 3,
+    "metadata": null
+   },
+   {
+    "tag": "tool_failures_count",
+    "source": "tool_call",
+    "value": 0,
+    "metadata": null
+   },
+   {
+    "tag": "end_cause",
+    "source": "system",
+    "metadata": {
+     "cause": "assistant-ended-call"
+    }
+   }
+  ],
+  "createdAt": "2026-10-10T15:17:06.682Z",
+  "updatedAt": "2026-10-10T15:17:24.533Z",
+  "campaign": null,
+  "problems": [],
+  "piiRedactions": []
+ },
+ "s3b": {
+  "id": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+  "externalCallId": null,
+  "sipCallId": null,
+  "workspaceId": "51ae74b7-abfc-4aa8-8762-6547bb4b6181",
+  "isArchived": false,
+  "isImported": false,
+  "phoneNumberId": null,
+  "phoneNumber": null,
+  "assistantId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+  "assistantName": "scratch 1010-161151",
+  "assistantEntityType": "workflow",
+  "assistantWorkflowId": "c2a4ce00-4eb6-435f-acec-926102431e6e",
+  "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f",
+  "originCallId": null,
+  "entityVersionNumber": 24,
+  "customerNumber": "",
+  "customerLabel": null,
+  "startedAt": "2026-10-10T15:17:42.664Z",
+  "endedAt": "2026-10-10T15:17:46.918Z",
+  "duration": 4,
+  "status": "16",
+  "type": "webCall",
+  "modality": "text",
+  "channel": null,
+  "endedReason": "customer-ended-call",
+  "transcript": "User (0.0s): Hello?\n\nAssistant (0.0s): S2 opening. Send a command.\n\nUser (1.3s): final not_reached unclear\n\nAssistant (1.8s): Final set: not_reached / unclear.",
+  "messages": [
+   {
+    "role": "user",
+    "message": "Hello?",
+    "messageId": "msg_1_1791645462677",
+    "secondsFromStart": 0.006616115570068359,
+    "nodeId": "init",
+    "workflowSnapshot": {
+     "currentNode": "init",
+     "previousNode": null,
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [],
+     "enteredNodes": [],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660872+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660874+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660846+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660876+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660849+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660878+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660851+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660880+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660853+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660882+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660856+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660883+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660858+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660885+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660860+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660887+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660863+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660889+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660866+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660891+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660869+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660893+00:00"
+      },
+      "customer_id": {
+       "value": "c_6d0b7214-204",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660895+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660896+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660898+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660899+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660900+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660901+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660902+00:00"
+      },
+      "call.call_id": {
+       "value": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660903+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660904+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:42.488031Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660906+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660907+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660908+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660909+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660910+00:00"
+      },
+      "system.uuid4()": {
+       "value": "a16a7428eb6f4c608ff12b333d6badf3",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660911+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:42.695Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "assistant",
+    "message": "S2 opening. Send a command.",
+    "messageId": "msg_4_1791645462724",
+    "secondsFromStart": 0.020860910415649414,
+    "nodeId": "opening",
+    "workflowSnapshot": {
+     "currentNode": "opening",
+     "previousNode": "init",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      }
+     ],
+     "enteredNodes": [
+      "opening"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688705+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660874+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660846+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660876+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660849+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660878+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660851+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660880+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688708+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688710+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660856+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660883+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660858+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660885+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660860+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660887+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660863+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660889+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660866+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660891+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660869+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660893+00:00"
+      },
+      "customer_id": {
+       "value": "c_6d0b7214-204",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660895+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660896+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660898+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660899+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660900+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660901+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660902+00:00"
+      },
+      "call.call_id": {
+       "value": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660903+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660904+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:42.488031Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660906+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660907+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660908+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660909+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660910+00:00"
+      },
+      "system.uuid4()": {
+       "value": "a16a7428eb6f4c608ff12b333d6badf3",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660911+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:43.032Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"init\",\"target\":\"opening\",\"confidence\":1.0,\"reason\":\"always always\",\"branches\":[{\"target\":\"opening\",\"description\":\"always\",\"result\":true,\"condition_results\":{\"operator\":\"always\",\"result\":true}}],\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":0,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"customer_id\":\"c_6d0b7214-204\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"f83487e9-ead0-4e4d-8767-f63071c20afb\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:42.488031Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"a16a7428eb6f4c608ff12b333d6badf3\"}}",
+    "messageId": "msg_2_1791645462688",
+    "secondsFromStart": 0.024127960205078125,
+    "nodeId": "init",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:42.732Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"opening\",\"from_node\":\"init\",\"reason\":\"always always\"}",
+    "messageId": "msg_3_1791645462689",
+    "secondsFromStart": 0.0249478816986084,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:43.005Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"turn_completed\",\"turnIndex\":1,\"userMessageId\":\"msg_1_1791645462677\",\"finalAssistantMessageId\":\"msg_4_1791645462724\",\"responseText\":\"S2 opening. Send a command.\"}",
+    "messageId": "msg_5_1791645462735",
+    "secondsFromStart": 0.03452730178833008,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:43.091Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"conversation_resumed\",\"fromMessageId\":\"msg_4_1791645462724\",\"isBranch\":false}",
+    "messageId": "msg_1_1791645463940",
+    "secondsFromStart": 1.2760426998138428,
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:43.986Z"
+   },
+   {
+    "role": "user",
+    "message": "final not_reached unclear",
+    "messageId": "msg_2_1791645463953",
+    "secondsFromStart": 1.282616138458252,
+    "nodeId": "opening",
+    "workflowSnapshot": {
+     "currentNode": "opening",
+     "previousNode": "init",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      }
+     ],
+     "enteredNodes": [
+      "opening"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688705+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660874+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660846+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660876+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660849+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660878+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660851+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660880+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688708+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688710+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660856+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660883+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660858+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660885+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660860+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660887+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660863+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660889+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660866+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660891+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660869+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660893+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660901+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660902+00:00"
+      },
+      "call.call_id": {
+       "value": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660903+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660904+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:43.936728Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936766+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936767+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936768+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936769+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936770+00:00"
+      },
+      "system.uuid4()": {
+       "value": "a16a7428eb6f4c608ff12b333d6badf3",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660911+00:00"
+      },
+      "customer_id": {
+       "value": "c_6d0b7214-204",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660895+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660896+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660898+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660899+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660900+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.027Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"variable_extracted\",\"name\":\"said\",\"value\":\"final not_reached unclear\",\"confidence\":1.0,\"source\":\"extraction\",\"source_node\":\"opening\",\"input_text\":\"final not_reached unclear\",\"raw_response\":\"{\\\"extracted\\\": {\\\"said\\\": \\\"final not_reached unclear\\\"}}\",\"variable_table\":{\"init.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.688705+00:00\"},\"init.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660874+00:00\"},\"talk.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660846+00:00\"},\"talk.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660876+00:00\"},\"brain.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660849+00:00\"},\"brain.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660878+00:00\"},\"end_ok.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660851+00:00\"},\"end_ok.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660880+00:00\"},\"opening.current_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.958116+00:00\"},\"opening.total_turns\":{\"value\":1,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.958119+00:00\"},\"n_verify.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660856+00:00\"},\"n_verify.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660883+00:00\"},\"n_account.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660858+00:00\"},\"n_account.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660885+00:00\"},\"n_promise.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660860+00:00\"},\"n_promise.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660887+00:00\"},\"n_timeout.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660863+00:00\"},\"n_timeout.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660889+00:00\"},\"talk_error.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660866+00:00\"},\"talk_error.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660891+00:00\"},\"talk_fallback.current_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660869+00:00\"},\"talk_fallback.total_turns\":{\"value\":0,\"confidence\":1.0,\"source\":\"system\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660893+00:00\"},\"call.customer_phone_number\":{\"value\":\"\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660901+00:00\"},\"call.phone_number\":{\"value\":\"\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660902+00:00\"},\"call.call_id\":{\"value\":\"f83487e9-ead0-4e4d-8767-f63071c20afb\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660903+00:00\"},\"call.direction\":{\"value\":\"web\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660904+00:00\"},\"system.iso_utc_now\":{\"value\":\"2026-10-10T15:17:43.936728Z\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.936766+00:00\"},\"system.todays_date_en_cst\":{\"value\":\"10 October 2026 Saturday 09:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.936767+00:00\"},\"system.todays_date_en_est\":{\"value\":\"10 October 2026 Saturday 10:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.936768+00:00\"},\"system.todays_date_tr\":{\"value\":\"10 Ekim 2026 Cumartesi 18:17\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.936769+00:00\"},\"system.todays_date_tr.iso_8601\":{\"value\":\"2026-10-10\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:43.936770+00:00\"},\"system.uuid4()\":{\"value\":\"a16a7428eb6f4c608ff12b333d6badf3\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660911+00:00\"},\"customer_id\":{\"value\":\"c_6d0b7214-204\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660895+00:00\"},\"first_name\":{\"value\":\"Maria\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660896+00:00\"},\"last_name\":{\"value\":\"Costa\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660898+00:00\"},\"title\":{\"value\":\"Ms\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660899+00:00\"},\"now\":{\"value\":\"2026-10-14T11:00\",\"confidence\":1.0,\"source\":\"customer\",\"source_node\":null,\"extracted_at\":\"2026-10-10T15:17:42.660900+00:00\"}}}",
+    "messageId": "msg_3_1791645464183",
+    "secondsFromStart": 1.519282341003418,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.188Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"opening\",\"target\":\"brain\",\"confidence\":1.0,\"reason\":\"always always\",\"branches\":[{\"target\":\"brain\",\"description\":\"always\",\"result\":true,\"condition_results\":{\"operator\":\"always\",\"result\":true}}],\"total_duration_ms\":227.2,\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":1,\"opening.total_turns\":1,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"f83487e9-ead0-4e4d-8767-f63071c20afb\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:43.936728Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"a16a7428eb6f4c608ff12b333d6badf3\",\"customer_id\":\"c_6d0b7214-204\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"said\":\"final not_reached unclear\"}}",
+    "messageId": "msg_4_1791645464186",
+    "secondsFromStart": 1.5216240882873535,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.228Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"brain\",\"from_node\":\"opening\",\"reason\":\"always always\"}",
+    "messageId": "msg_5_1791645464186",
+    "secondsFromStart": 1.5224449634552002,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.271Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"code_exec\",\"args\":{\"timeout_ms\":10000,\"code\":\"\\nimport json, re\\nNODES = dict(verify=['n_verify', 'verify_identity'], account=['n_account', 'get_account'],\\n             promise=['n_promise', 'create_promise'], timeout=['n_timeout', 'get_account'])\\nMAPPED = dict(verify=['vr_ok', 'vr_verified', 'vr_all', 'vr_left', 'vr_error', 'vr_hook'],\\n              account=['acct_ok', 'acct_products', 'acct_error'],\\n              promise=['pr_ok', 'pr_id', 'pr_error'], timeout=['to_ok', 'to_products', 'to_error'])\\nRESET = dict(verify=True, account=True, promise=True, timeout=False)\\n\\n\\ndef counts(names):\\n    out = dict()\\n    for n in names:\\n        for suf in ('_success_count', '_failure_count', '_status_code'):\\n            if vars.get(n + suf) is not None:\\n                out[n + suf] = vars.get(n + suf)\\n    return out\\n\\n\\ndef seen(prefixes):\\n    out = dict()\\n    for k in sorted(vars.keys()):\\n        if any(k.startswith(p) for p in prefixes):\\n            v = vars.get(k)\\n            out[k] = type(v).__name__ + ':' + repr(v)[:100]\\n    return out\\n\\n\\ndef flat_products(node):\\n    prods = []\\n    for i in range(10):\\n        pid = vars.get(node + '_response.data.products.' + str(i) + '.product_id')\\n        if pid is None:\\n            break\\n        prods.append([str(pid), vars.get(node + '_response.data.products.' + str(i) + '.past_due')])\\n    return prods\\n\\n\\ndef as_list(v):\\n    if isinstance(v, list):\\n        return v, 'list'\\n    if isinstance(v, str) and v.strip().startswith('['):\\n        try:\\n            return json.loads(v), 'json-string'\\n        except Exception:\\n            try:\\n                import ast\\n                return ast.literal_eval(v), 'python-repr-string'\\n            except Exception:\\n                return [], 'unparsed-string'\\n    return [], type(v).__name__\\n\\n\\ntry:\\n    raw = vars.get('state')\\n    st = json.loads(raw) if isinstance(raw, str) and raw else dict()\\n    st['runs'] = st.get('runs', 0) + 1\\n    route, say = 'talk', ''\\n    pend = st.pop('pending', '')\\n    if pend:\\n        n = st.get('n_' + pend, 0) + 1\\n        st['n_' + pend] = n\\n        before = st.pop('snap', dict())\\n        after = counts(NODES[pend])\\n        mapped = dict()\\n        for k in MAPPED[pend]:\\n            v = vars.get(k)\\n            mapped[k] = type(v).__name__ + ':' + repr(v)[:160]\\n        dbg = dict(before=before, after=after, mapped=mapped, keys=seen(NODES[pend] + MAPPED[pend] + ['hook_']))\\n        if pend == 'account':\\n            lst, form = as_list(vars.get('acct_products'))\\n            dbg['products_form'] = form\\n            dbg['products_mapped'] = [[str(p.get('product_id')), p.get('past_due')] for p in lst if isinstance(p, dict)]\\n            prods = flat_products('n_account')\\n            st['products'] = prods\\n            dbg['products'] = prods\\n            dbg['past_due_type'] = type(prods[0][1]).__name__ if prods else 'none'\\n        vars['dbg_' + pend + '_' + str(n)] = json.dumps(dbg)\\n        short = ', '.join(k + '=' + str(vars.get(k))[:40] for k in MAPPED[pend] if not k.endswith('products'))\\n        say = pend.capitalize() + ' ' + str(n) + ' back. ' + short + '. Counts ' + json.dumps(after) + '.'\\n    else:\\n        said = str(vars.get('said') or '').strip()\\n        low = said.lower()\\n        st['turn'] = st.get('turn', 0) + 1\\n        m_ver = re.search(r'verify\\\\s+([a-z_0-9]+)\\\\s+(\\\\S+)', low)\\n        m_fin = re.search(r'final\\\\s+([a-z_]+)(?:\\\\s+(\\\\S+))?', low)\\n        m_date = re.search(r'(\\\\d{4}-\\\\d{2}-\\\\d{2})', low)\\n        nxt = ''\\n        if m_ver:\\n            vars['v_field'] = m_ver.group(1)\\n            vars['v_answer'] = m_ver.group(2).rstrip('.')\\n            nxt = 'verify'\\n        elif m_fin:\\n            vars['final_outcome'] = m_fin.group(1)\\n            if m_fin.group(2):\\n                vars['final_reason'] = m_fin.group(2).rstrip('.')\\n            say = 'Final set: ' + str(vars.get('final_outcome')) + ' / ' + str(vars.get('final_reason')) + '.'\\n        elif 'timeout' in low:\\n            nxt = 'timeout'\\n        elif 'account' in low:\\n            nxt = 'account'\\n        elif 'promise' in low:\\n            prods = st.get('products') or []\\n            if prods:\\n                vars['v_product'] = prods[0][0]\\n                vars['v_amount'] = float(prods[0][1])\\n                vars['v_date'] = m_date.group(1) if m_date else str(vars.get('now') or '')[:10]\\n                nxt = 'promise'\\n            else:\\n                say = 'No products yet.'\\n        elif 'bye' in low:\\n            route = 'end_ok'\\n        else:\\n            say = 'Unknown command, turn ' + str(st['turn']) + '.'\\n        if nxt:\\n            if RESET[nxt]:\\n                for k in MAPPED[nxt]:\\n                    vars[k] = ''\\n            st['pending'] = nxt\\n            st['snap'] = counts(NODES[nxt])\\n            route = 'n_' + nxt\\n    vars['route'] = route\\n    vars['say_next'] = say\\n    vars['state'] = json.dumps(st)\\nexcept Exception as e:\\n    vars['route'] = 'error'\\n    vars['say_next'] = 'Brain error ' + repr(e)[:120]\\n\"}}",
+    "messageId": "msg_6_1791645464187",
+    "secondsFromStart": 1.5231397151947021,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.305Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"code_exec\",\"result\":{\"status\":\"success\",\"data\":null,\"message\":\"Code executed successfully\",\"status_code\":200}}",
+    "messageId": "msg_7_1791645464445",
+    "secondsFromStart": 1.7806923389434814,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.451Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"brain\",\"target\":\"talk\",\"confidence\":1.0,\"reason\":\"route equals talk route == 'talk'\",\"branches\":[{\"target\":\"talk_error\",\"description\":\"brain_response.status == 'error'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"brain_response.status\",\"operand\":\"error\",\"result\":false}},{\"target\":\"n_verify\",\"description\":\"route == 'n_verify'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_verify\",\"result\":false}},{\"target\":\"n_account\",\"description\":\"route == 'n_account'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_account\",\"result\":false}},{\"target\":\"n_promise\",\"description\":\"route == 'n_promise'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_promise\",\"result\":false}},{\"target\":\"n_timeout\",\"description\":\"route == 'n_timeout'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"n_timeout\",\"result\":false}},{\"target\":\"end_ok\",\"description\":\"route == 'end_ok'\",\"result\":false,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"end_ok\",\"result\":false}},{\"target\":\"talk\",\"description\":\"route == 'talk'\",\"result\":true,\"condition_results\":{\"operator\":\"equals\",\"variable\":\"route\",\"operand\":\"talk\",\"result\":true}},{\"target\":\"talk_fallback\",\"description\":\"always\",\"result\":null,\"condition_results\":null}],\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":1,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"f83487e9-ead0-4e4d-8767-f63071c20afb\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:43.936728Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"a16a7428eb6f4c608ff12b333d6badf3\",\"customer_id\":\"c_6d0b7214-204\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"said\":\"final not_reached unclear\",\"final_outcome\":\"not_reached\",\"final_reason\":\"unclear\",\"route\":\"talk\",\"say_next\":\"Final set: not_reached / unclear.\",\"state\":\"{\\\"runs\\\": 1, \\\"turn\\\": 1}\",\"brain_response.status\":\"success\",\"brain_response.data\":\"null\",\"brain_response.message\":\"Code executed successfully\",\"brain_response.status_code\":200,\"brain_status_code\":200,\"brain_success_count\":1}}",
+    "messageId": "msg_8_1791645464448",
+    "secondsFromStart": 1.7839224338531494,
+    "nodeId": "brain",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.713Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"talk\",\"from_node\":\"brain\",\"reason\":\"route equals talk route == 'talk'\"}",
+    "messageId": "msg_9_1791645464449",
+    "secondsFromStart": 1.7847955226898193,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.818Z"
+   },
+   {
+    "role": "assistant",
+    "message": "Final set: not_reached / unclear.",
+    "messageId": "msg_10_1791645464473",
+    "secondsFromStart": 1.8066160678863525,
+    "nodeId": "talk",
+    "workflowSnapshot": {
+     "currentNode": "talk",
+     "previousNode": "brain",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 1,
+     "nodeTotalTurnCounts": {
+      "opening": 1
+     },
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      },
+      {
+       "from": "opening",
+       "to": "brain",
+       "reason": "always always"
+      },
+      {
+       "from": "brain",
+       "to": "talk",
+       "reason": "route equals talk route == 'talk'"
+      }
+     ],
+     "enteredNodes": [
+      "brain",
+      "opening",
+      "talk"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.688705+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660874+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.448604+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.448606+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.448600+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.186227+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660851+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660880+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.186220+00:00"
+      },
+      "opening.total_turns": {
+       "value": 1,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.958119+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660856+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660883+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660858+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660885+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660860+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660887+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660863+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660889+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660866+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660891+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660869+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660893+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660901+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660902+00:00"
+      },
+      "call.call_id": {
+       "value": "f83487e9-ead0-4e4d-8767-f63071c20afb",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660903+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660904+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:43.936728Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936766+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936767+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936768+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936769+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:43.936770+00:00"
+      },
+      "system.uuid4()": {
+       "value": "a16a7428eb6f4c608ff12b333d6badf3",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660911+00:00"
+      },
+      "customer_id": {
+       "value": "c_6d0b7214-204",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660895+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660896+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660898+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660899+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:42.660900+00:00"
+      },
+      "said": {
+       "value": "final not_reached unclear",
+       "confidence": 1,
+       "source": "extraction",
+       "source_node": "opening",
+       "raw_text": "final not_reached unclear",
+       "extracted_at": "2026-10-10T15:17:44.183435+00:00"
+      },
+      "final_outcome": {
+       "value": "not_reached",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.444581+00:00"
+      },
+      "final_reason": {
+       "value": "unclear",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.444584+00:00"
+      },
+      "route": {
+       "value": "talk",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.444586+00:00"
+      },
+      "say_next": {
+       "value": "Final set: not_reached / unclear.",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.444587+00:00"
+      },
+      "state": {
+       "value": "{\"runs\": 1, \"turn\": 1}",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.444588+00:00"
+      },
+      "brain_response.status": {
+       "value": "success",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.445357+00:00"
+      },
+      "brain_response.data": {
+       "value": "null",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.445360+00:00"
+      },
+      "brain_response.message": {
+       "value": "Code executed successfully",
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.445362+00:00"
+      },
+      "brain_response.status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": "brain",
+       "extracted_at": "2026-10-10T15:17:44.445364+00:00"
+      },
+      "brain_status_code": {
+       "value": 200,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.445367+00:00"
+      },
+      "brain_success_count": {
+       "value": 1,
+       "confidence": 1,
+       "source": "tool_result",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:44.445369+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.861Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"turn_completed\",\"turnIndex\":2,\"userMessageId\":\"msg_2_1791645463953\",\"finalAssistantMessageId\":\"msg_10_1791645464473\",\"responseText\":\"Final set: not_reached / unclear.\"}",
+    "messageId": "msg_11_1791645464484",
+    "secondsFromStart": 1.8204622268676758,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:44.936Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"conversation_resumed\",\"fromMessageId\":\"msg_10_1791645464473\",\"isBranch\":false}",
+    "messageId": "msg_1_1791645466583",
+    "secondsFromStart": 3.9192752838134766,
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:46.589Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"close_call\",\"args\":{\"url\":\"https://freya-bank-mock.freyavoice.workers.dev/v1/close_call\",\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\"},\"body\":{\"reason\":\"unclear\",\"outcome\":\"not_reached\",\"customer_id\":\"c_6d0b7214-204\"}}}",
+    "messageId": "msg_2_1791645476795",
+    "secondsFromStart": 14.131303548812866,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:56.805Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"close_call\",\"result\":{\"status\":\"success\",\"data\":{\"ok\":true},\"message\":\"Successfully executed POST request\",\"status_code\":200,\"header\":{\"Date\":\"Sat, 10 Oct 2026 15:17:56 GMT\",\"Content-Type\":\"application/json\",\"Content-Length\":\"11\",\"Connection\":\"keep-alive\",\"Report-To\":\"{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=J5rn60T8%2Bmpf7Lkg0mirCbVEry1RC7LfG%2FGcvxDwwphsum%2BheoY65n6Wg3gGcJtYvOmhe3qStayZ2R3wrIQUk73sPykOrl3MBEJaCEXsj2n7PsrAVA5ydWFACoHNkez8hDVpIKP9NYs8aWlskK1bviCgqL27DsgIZA%3D%3D\\\"}]}\",\"Nel\":\"{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}\",\"Server\":\"cloudflare\",\"CF-RAY\":\"a48698461f181d94-FRA\",\"alt-svc\":\"h3=\\\":443\\\"; ma=86400\"}}}",
+    "messageId": "msg_3_1791645476854",
+    "secondsFromStart": 14.189772367477417,
+    "nodeId": "talk",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:56.887Z"
+   }
+  ],
+  "summary": "The user provides a command to the assistant to set a final status to \"not_reached / unclear\". The assistant confirms that the status has been set accordingly.",
+  "cost": 0.001648,
+  "recordingUrl": "https://staging-app.freyavoice.ai/api/v2/call/f83487e9-ead0-4e4d-8767-f63071c20afb/recording",
+  "analysis": {
+   "summary": "The user provides a command to the assistant to set a final status to \"not_reached / unclear\". The assistant confirms that the status has been set accordingly.",
+   "structuredData": null
+  },
+  "tags": [
+   {
+    "tag": "sentiment",
+    "source": "system",
+    "value": 0,
+    "confidence": 1,
+    "metadata": null
+   },
+   {
+    "tag": "theme:command",
+    "source": "system",
+    "metadata": null
+   },
+   {
+    "tag": "theme:status",
+    "source": "system",
+    "metadata": null
+   },
+   {
+    "tag": "tool_calls_count",
+    "source": "tool_call",
+    "value": 1,
+    "metadata": null
+   },
+   {
+    "tag": "tool_failures_count",
+    "source": "tool_call",
+    "value": 0,
+    "metadata": null
+   }
+  ],
+  "createdAt": "2026-10-10T15:17:42.539Z",
+  "updatedAt": "2026-10-10T15:17:57.079Z",
+  "campaign": null,
+  "problems": [],
+  "piiRedactions": []
+ },
+ "s3c": {
+  "id": "ef887365-711b-4f4d-a115-bf7b19c34fbd",
+  "externalCallId": null,
+  "sipCallId": null,
+  "workspaceId": "51ae74b7-abfc-4aa8-8762-6547bb4b6181",
+  "isArchived": false,
+  "isImported": false,
+  "phoneNumberId": null,
+  "phoneNumber": null,
+  "assistantId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+  "assistantName": "scratch 1010-161151",
+  "assistantEntityType": "workflow",
+  "assistantWorkflowId": "c2a4ce00-4eb6-435f-acec-926102431e6e",
+  "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f",
+  "originCallId": null,
+  "entityVersionNumber": 24,
+  "customerNumber": "",
+  "customerLabel": null,
+  "startedAt": "2026-10-10T15:17:58.022Z",
+  "endedAt": "2026-10-10T15:17:59.432Z",
+  "duration": 1,
+  "status": "16",
+  "type": "webCall",
+  "modality": "text",
+  "channel": null,
+  "endedReason": "customer-ended-call",
+  "transcript": "User (0.0s): Hello?\n\nAssistant (0.0s): S2 opening. Send a command.",
+  "messages": [
+   {
+    "role": "user",
+    "message": "Hello?",
+    "messageId": "msg_1_1791645478036",
+    "secondsFromStart": 0.0069921016693115234,
+    "nodeId": "init",
+    "workflowSnapshot": {
+     "currentNode": "init",
+     "previousNode": null,
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [],
+     "enteredNodes": [],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017986+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017988+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017956+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017989+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017959+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017992+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017962+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017994+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017964+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017996+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017967+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017998+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017969+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018000+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017973+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018002+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017976+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018004+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017979+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018006+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017982+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018009+00:00"
+      },
+      "customer_id": {
+       "value": "c_090fe016-b03",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018011+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018013+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018014+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018015+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018016+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018017+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018018+00:00"
+      },
+      "call.call_id": {
+       "value": "ef887365-711b-4f4d-a115-bf7b19c34fbd",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018020+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018022+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:57.868960Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018023+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018024+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018025+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018026+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018027+00:00"
+      },
+      "system.uuid4()": {
+       "value": "99ede598e90e45caab1661caad5aa3af",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018029+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:58.054Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "assistant",
+    "message": "S2 opening. Send a command.",
+    "messageId": "msg_4_1791645478090",
+    "secondsFromStart": 0.022166967391967773,
+    "nodeId": "opening",
+    "workflowSnapshot": {
+     "currentNode": "opening",
+     "previousNode": "init",
+     "nodeTurnCount": 0,
+     "totalTurnCount": 0,
+     "nodeTotalTurnCounts": {},
+     "transitionHistory": [
+      {
+       "from": "init",
+       "to": "opening",
+       "reason": "always always"
+      }
+     ],
+     "enteredNodes": [
+      "opening"
+     ],
+     "variableTable": {
+      "init.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.049776+00:00"
+      },
+      "init.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017988+00:00"
+      },
+      "talk.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017956+00:00"
+      },
+      "talk.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017989+00:00"
+      },
+      "brain.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017959+00:00"
+      },
+      "brain.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017992+00:00"
+      },
+      "end_ok.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017962+00:00"
+      },
+      "end_ok.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017994+00:00"
+      },
+      "opening.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.049780+00:00"
+      },
+      "opening.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.049782+00:00"
+      },
+      "n_verify.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017967+00:00"
+      },
+      "n_verify.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017998+00:00"
+      },
+      "n_account.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017969+00:00"
+      },
+      "n_account.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018000+00:00"
+      },
+      "n_promise.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017973+00:00"
+      },
+      "n_promise.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018002+00:00"
+      },
+      "n_timeout.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017976+00:00"
+      },
+      "n_timeout.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018004+00:00"
+      },
+      "talk_error.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017979+00:00"
+      },
+      "talk_error.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018006+00:00"
+      },
+      "talk_fallback.current_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.017982+00:00"
+      },
+      "talk_fallback.total_turns": {
+       "value": 0,
+       "confidence": 1,
+       "source": "system",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018009+00:00"
+      },
+      "customer_id": {
+       "value": "c_090fe016-b03",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018011+00:00"
+      },
+      "first_name": {
+       "value": "Maria",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018013+00:00"
+      },
+      "last_name": {
+       "value": "Costa",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018014+00:00"
+      },
+      "title": {
+       "value": "Ms",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018015+00:00"
+      },
+      "now": {
+       "value": "2026-10-14T11:00",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018016+00:00"
+      },
+      "call.customer_phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018017+00:00"
+      },
+      "call.phone_number": {
+       "value": "",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018018+00:00"
+      },
+      "call.call_id": {
+       "value": "ef887365-711b-4f4d-a115-bf7b19c34fbd",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018020+00:00"
+      },
+      "call.direction": {
+       "value": "web",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018022+00:00"
+      },
+      "system.iso_utc_now": {
+       "value": "2026-10-10T15:17:57.868960Z",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018023+00:00"
+      },
+      "system.todays_date_en_cst": {
+       "value": "10 October 2026 Saturday 09:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018024+00:00"
+      },
+      "system.todays_date_en_est": {
+       "value": "10 October 2026 Saturday 10:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018025+00:00"
+      },
+      "system.todays_date_tr": {
+       "value": "10 Ekim 2026 Cumartesi 18:17",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018026+00:00"
+      },
+      "system.todays_date_tr.iso_8601": {
+       "value": "2026-10-10",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018027+00:00"
+      },
+      "system.uuid4()": {
+       "value": "99ede598e90e45caab1661caad5aa3af",
+       "confidence": 1,
+       "source": "customer",
+       "source_node": null,
+       "extracted_at": "2026-10-10T15:17:58.018029+00:00"
+      }
+     },
+     "identity": {
+      "agentId": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+      "entityVersionId": "f6fe7a4e-469a-46e7-a589-8096ae07115f"
+     },
+     "controlFlags": {
+      "terminalActionFired": false
+     }
+    },
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:58.379Z",
+    "wasBlocked": false
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"route_evaluated\",\"matched\":true,\"from_node\":\"init\",\"target\":\"opening\",\"confidence\":1.0,\"reason\":\"always always\",\"branches\":[{\"target\":\"opening\",\"description\":\"always\",\"result\":true,\"condition_results\":{\"operator\":\"always\",\"result\":true}}],\"variable_table\":{\"init.current_turns\":0,\"init.total_turns\":0,\"talk.current_turns\":0,\"talk.total_turns\":0,\"brain.current_turns\":0,\"brain.total_turns\":0,\"end_ok.current_turns\":0,\"end_ok.total_turns\":0,\"opening.current_turns\":0,\"opening.total_turns\":0,\"n_verify.current_turns\":0,\"n_verify.total_turns\":0,\"n_account.current_turns\":0,\"n_account.total_turns\":0,\"n_promise.current_turns\":0,\"n_promise.total_turns\":0,\"n_timeout.current_turns\":0,\"n_timeout.total_turns\":0,\"talk_error.current_turns\":0,\"talk_error.total_turns\":0,\"talk_fallback.current_turns\":0,\"talk_fallback.total_turns\":0,\"customer_id\":\"c_090fe016-b03\",\"first_name\":\"Maria\",\"last_name\":\"Costa\",\"title\":\"Ms\",\"now\":\"2026-10-14T11:00\",\"call.customer_phone_number\":\"\",\"call.phone_number\":\"\",\"call.call_id\":\"ef887365-711b-4f4d-a115-bf7b19c34fbd\",\"call.direction\":\"web\",\"system.iso_utc_now\":\"2026-10-10T15:17:57.868960Z\",\"system.todays_date_en_cst\":\"10 October 2026 Saturday 09:17\",\"system.todays_date_en_est\":\"10 October 2026 Saturday 10:17\",\"system.todays_date_tr\":\"10 Ekim 2026 Cumartesi 18:17\",\"system.todays_date_tr.iso_8601\":\"2026-10-10\",\"system.uuid4()\":\"99ede598e90e45caab1661caad5aa3af\"}}",
+    "messageId": "msg_2_1791645478049",
+    "secondsFromStart": 0.027532100677490234,
+    "nodeId": "init",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:58.094Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"node_enter\",\"node\":\"opening\",\"from_node\":\"init\",\"reason\":\"always always\"}",
+    "messageId": "msg_3_1791645478050",
+    "secondsFromStart": 0.02847123146057129,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:58.126Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"turn_completed\",\"turnIndex\":1,\"userMessageId\":\"msg_1_1791645478036\",\"finalAssistantMessageId\":\"msg_4_1791645478090\",\"responseText\":\"S2 opening. Send a command.\"}",
+    "messageId": "msg_5_1791645478108",
+    "secondsFromStart": 0.04379153251647949,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:58.434Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"conversation_resumed\",\"fromMessageId\":\"msg_4_1791645478090\",\"isBranch\":false}",
+    "messageId": "msg_1_1791645479167",
+    "secondsFromStart": 1.1453197002410889,
+    "duration": 0,
+    "timestamp": "2026-10-10T15:17:59.171Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_start\",\"function\":\"close_call\",\"args\":{\"url\":\"https://freya-bank-mock.freyavoice.workers.dev/v1/close_call\",\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\"},\"body\":{\"reason\":\"unclear\",\"outcome\":\"not_reached\",\"customer_id\":\"c_090fe016-b03\"}}}",
+    "messageId": "msg_2_1791645492686",
+    "secondsFromStart": 14.664982557296753,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:18:12.694Z"
+   },
+   {
+    "role": "system",
+    "message": "{\"event\":\"function_call_complete\",\"function\":\"close_call\",\"result\":{\"status\":\"success\",\"data\":{\"ok\":true},\"message\":\"Successfully executed POST request\",\"status_code\":200,\"header\":{\"Date\":\"Sat, 10 Oct 2026 15:18:12 GMT\",\"Content-Type\":\"application/json\",\"Content-Length\":\"11\",\"Connection\":\"keep-alive\",\"Report-To\":\"{\\\"group\\\":\\\"cf-nel\\\",\\\"max_age\\\":604800,\\\"endpoints\\\":[{\\\"url\\\":\\\"https://a.nel.cloudflare.com/report/v4?s=Z0jdrtTYWt9zc9Xv48uvVhoiaQ3JJ2EzwzHeioGu4qbwaOKyDYaJftgc%2B7RdNBQSLKe5w9wJHxCq6gYQ3x7rDBox1Fp5hifZFS7VK7BswthYG%2BXqDYd0GZnEkLinSs%2FSVXtFG1z9%2FMG5cEv8TtB1ofWiMLW3wMmRSQ%3D%3D\\\"}]}\",\"Nel\":\"{\\\"report_to\\\":\\\"cf-nel\\\",\\\"success_fraction\\\":0.0,\\\"max_age\\\":604800}\",\"Server\":\"cloudflare\",\"CF-RAY\":\"a48698a95b28d2e7-FRA\",\"alt-svc\":\"h3=\\\":443\\\"; ma=86400\"}}}",
+    "messageId": "msg_3_1791645492743",
+    "secondsFromStart": 14.721161842346191,
+    "nodeId": "opening",
+    "duration": 0,
+    "timestamp": "2026-10-10T15:18:12.769Z"
+   }
+  ],
+  "summary": "The user initiated the conversation with a greeting. The assistant provided a system-like response, \"S2 opening. Send a command.\"",
+  "recordingUrl": "https://staging-app.freyavoice.ai/api/v2/call/ef887365-711b-4f4d-a115-bf7b19c34fbd/recording",
+  "analysis": {
+   "summary": "The user initiated the conversation with a greeting. The assistant provided a system-like response, \"S2 opening. Send a command.\"",
+   "structuredData": null
+  },
+  "tags": [
+   {
+    "tag": "sentiment",
+    "source": "system",
+    "value": 0,
+    "confidence": 1,
+    "metadata": null
+   },
+   {
+    "tag": "theme:greeting",
+    "source": "system",
+    "metadata": null
+   },
+   {
+    "tag": "tool_calls_count",
+    "source": "tool_call",
+    "value": 1,
+    "metadata": null
+   },
+   {
+    "tag": "tool_failures_count",
+    "source": "tool_call",
+    "value": 0,
+    "metadata": null
+   }
+  ],
+  "createdAt": "2026-10-10T15:17:57.902Z",
+  "updatedAt": "2026-10-10T15:18:12.966Z",
+  "campaign": null,
+  "problems": [],
+  "piiRedactions": []
+ }
+}
