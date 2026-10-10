@@ -171,17 +171,17 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
 
 - `plan.md` and `docs/design.md` are approved and committed. Architecture: hybrid compiler with a hub-and-spoke "brain" (see `docs/design.md`). Work follows `plan.md`, one item at a time.
 - The organisers' answers above are in `plan.md` Decisions. Where `docs/design.md` still plans directory or multi-file ingest, custom customers or scarce slots, the answers win.
-- Items 01–03 are done (see `plan.md` Done). G1's S1 part: the hub stays. Next: item 04 (spikes S2, S2b, S3 on practice sessions), which makes the final G1 call.
+- Items 01–04 are done (see `plan.md` Done). **G1 final: the hub stays as designed** (no L1–L3). Next: item 05 (builder skeleton).
 - Local facts:
   - `python3` on this machine is the Windows Store stub. Run `python` (3.10.11) locally; keep `python3` in the form command.
   - `env.sh` is verified. `FREYA_BANK_TEAM_KEY` was regenerated on 2026-10-10 (32 chars). Keep it from now on: practice sessions belong to it.
-  - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes; `spikes/s1_loop.py` restores the base agent after each run.
+  - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes; `spikes/s1_loop.py` and `spikes/s2_api.py` restore the base agent after each run.
   - Plan Z agents from item 02: slot `brief-a` = agent `413df77e-9c57-43be-951b-42fcd0edf06f` (A), slot `brief-b` = agent `cd5d5f42-5205-4277-a490-c0bd5c21afae` (A+B). Their files are in `results/02-planz/`.
   - Run `run_cases.py` and builders in the background and wait for the completion notice. A 10-case run took 95 to 168 s.
   - The kit builder (Claude Agent SDK) run from inside a Claude Code session needs the host's `CLAUDE*`/`ANTHROPIC*` variables unset, a `python3` → `python` shim on `PATH` and `PYTHONUTF8=1`.
 - Mock bank facts learned in item 01:
   - It rejects a close_call reason outside its outcome table (`ok:false`); the ledger outcome then stays empty.
-  - A failed create_promise returns `ok:false` "service unavailable, nothing was recorded", not an HTTP 500.
+  - A failed create_promise is an HTTP 500 with the body `ok:false` "service unavailable, nothing was recorded" (the ledger shows status 500; corrected in item 04).
   - The ledger (`/v1/practice/ledger/<customer_id>`) also shows `verified`, `wrong`, `hinted`, `failures` and every call with args and result: useful for debugging.
 - Platform facts learned in item 02:
   - The event model can go down: around 13:45–14:00 UTC every agent, the base agent too, went silent after the first customer turn. Before debugging an all-fail run, run one case on `scratch` as a control.
@@ -194,3 +194,10 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
   - The chat route skips a first code node, returns 504 after 60 s while the engine finishes the turn, and returns 504 on the farewell turn too. Read the reply from the call's messages then.
   - `date` extraction anchors to the real clock, not to `now`.
   - Each code run copies its whole code into the transcript (`function_call_start`).
+- Platform facts learned in item 04 (full table in `docs/spikes.md`, design rules in `plan.md` Decisions):
+  - Code runs now take 0.16–0.22 s median.
+  - An api_request node's automatic keys are named after the node: `<node>_response.data.*`, `<node>_success_count`, `<node>_failure_count`, `<node>_status_code`.
+  - A mapped list never lands; read the flattened keys `<node>_response.data.<list>.<i>.<field>`.
+  - An HTTP 500 or a timeout raises the failure count and leaves mapped variables untouched; `<node>_response.error` stays stale after a later success.
+  - The lifecycle close fires after the end node and on hang-up, and its pre-hook runs and reads call variables. An unresolved lifecycle placeholder is filled by a model with free text.
+  - In a simulation the first code node runs before the opening; only the chat route skips it.
