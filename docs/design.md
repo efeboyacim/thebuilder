@@ -171,6 +171,18 @@ exhausted situation for lookup, record_promise, book_callback and transfer. Offe
 deadline) and clamps ladder dates into that range; a refusal of any offer on the table is a flat refusal and uses
 the next ladder step of the product's band. Fixture: `tests/fixtures/spec-a-v1.json`.
 
+**Item 12 sections.** `negotiation.amounts`: `accept_range` (floor_to_due, due_only), `too_much` and `below_floor`
+(offer_floor or refusal + template; `named_amount` is the customer's amount), `floor_offers` (how often those two may
+offer the floor) and `same_amount_template` (a ladder step that keeps the floor already offered and only moves the
+date, so the floor is not named twice). `events[]`: id, trigger (extraction label), stages, `min_occurrences`,
+`suppresses` (event ids and `persuasion`), `below_min_template` (said while it occurred fewer times), `template`,
+`on_yes`/`on_no` (a yes/no question), `then`, `then_before_verification`; targets are a situation, `continue` or
+`not_specified`. List order is precedence (the extraction enum keeps it). `side_questions`: `answers[]` (id, trigger,
+template) and `other` (answer_from_facts → a `talk_<stage>_llm` twin that answers from `{{facts}}`, empty before
+verification, then says `{{say_next}}`; or no_info → the fixed sentence). New extraction fields: `x_event`, `x_reply`
+(yes/no to the agent's question) in every stage that has events, `x_amount` in negotiate and confirm. A customer
+amount below the full amount sets `said_too_much`. Every call has a 40-turn guard (`engine.TURN_LIMIT`).
+
 ### 2.3 Expressions
 
 Some values are computed per call: deadlines, floors, ladder steps, band selectors, callback days, `earliest_date`.
@@ -226,6 +238,11 @@ Every one that is used produces a trace `warning`.
 | Non-answer to an offer (item 11) | A flat refusal (uses an attempt) |
 | Repeating a refused offer (item 11) | Not repeated: the step is skipped |
 | Tool retries (item 11) | 1 retry with the same values, then the stage's hang-up situation |
+| Accepted customer amounts (item 12) | From the floor up to the full amount |
+| Too much, below the floor (item 12) | A flat refusal |
+| Floor offers (item 12) | 1 |
+| Other side questions (item 12) | The no-information sentence |
+| An event target (item 12) | Continue with what the agent was asking |
 
 ---
 

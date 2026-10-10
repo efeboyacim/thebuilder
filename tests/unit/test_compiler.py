@@ -57,7 +57,8 @@ def test_api_nodes_bake_the_brain_arguments(wf, spec):
 
 def test_talk_nodes_extract_the_stage_contract(wf):
     ident = {f["name"]: f for f in wf["nodes"]["talk_identity"]["extraction_schema"]}
-    assert set(ident) == {"x_main", "x_side_q", "x_said", "x_answer"}
+    assert set(ident) == {"x_main", "x_side_q", "x_said", "x_answer", "x_event", "x_reply"}
+    assert ident["x_event"]["enum_values"] == ["human", "no_talk", "none"]
     assert ident["x_main"]["enum_values"][:3] == ["answers", "refuses", "unclear"] and all(
         f["min_confidence"] == compiler.MIN_CONFIDENCE for f in ident.values())
     opening = {f["name"]: f for f in wf["nodes"]["opening"]["extraction_schema"]}

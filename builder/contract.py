@@ -3,29 +3,37 @@
 The compiler builds every talk node's extraction schema from `extraction(spec)`; the local replay checks its acts
 against it. The brain (builder/engine.py) reads these fields as x_<slot>. Builder side only: not part of the brain.
 """
-from builder.engine import SIDE_Q, STAGES, x_var
+from builder.engine import STAGES, x_var
 
 MAIN = dict(open=("confirmed", "someone_else", "unclear"),
             third=("gives_time", "no_time", "offers_to_pay", "customer_available", "unclear"),
             identity=("answers", "refuses", "unclear"),
             negotiate=("accepts", "refuses", "too_much", "proposes", "unclear"),
             confirm=("yes", "no", "change", "unclear"))
-STAGE_SLOTS = dict(open=(), third=("day", "time"), identity=("answer",), negotiate=("day",), confirm=("day",))
+STAGE_SLOTS = dict(open=(), third=("day", "time"), identity=("answer",), negotiate=("day", "amount"),
+                   confirm=("day", "amount"))
 DAY_TEXT = dict(
     third="The day named in the LAST message exactly as said (for example a weekday, tomorrow, or a date); none if "
           "absent.",
     negotiate="The day or period the person offers or agrees to pay on in the LAST message, exactly as said, with "
               "every word that places it (a weekday with this or next, a date, a day of the month, tomorrow, a "
-              "number of days, a week or a month, or an event such as a payday). none if absent, and none when the person only says they cannot pay on "
-              "a day.",
+              "number of days, a week or a month, or an event such as a payday). none if absent, and none when the "
+              "person only says they cannot pay on a day.",
     confirm="A different day the person now wants to pay on in the LAST message, exactly as said; none if absent or "
             "if they only repeat the day that was read back.")
+AMOUNT_TEXT = ("An amount of money the person themselves offers to pay in the LAST message, exactly as said, in "
+               "digits or words (or words such as the minimum, the full amount); none if absent, and none when they "
+               "only repeat or refuse the amount the agent named.")
+REPLY_TEXT = ("The person's answer to a yes/no question the agent asked just before: yes, no, or none when the LAST "
+              "message does not answer it.")
 
 
 def extraction(S):
     """{stage: [field]} with name, type, enum (or none) and description, generated from the spec."""
     conf = S["opening"]["confirmation"]
     terms = S["third_party"].get("terminations") or []
+    events = S.get("events") or []
+    answers = (S.get("side_questions") or {}).get("answers") or []
     who = "the person the call is for"
     meaning = dict(
         confirmed="the person confirms they are " + who + ". Counts: " + "; ".join(conf.get("counts_as_yes") or [])
@@ -44,6 +52,9 @@ def extraction(S):
         yes="the person clearly confirms what was read back",
         no="the person does not confirm what was read back",
         change="the person wants to change the date or the amount")
+    side_desc = ("A question the person asks in their LAST message: " +
+                 "".join(a["id"] + " (" + a.get("trigger", "") + "), " for a in answers) +
+                 "purpose (what the call is about), other (any other question), none.")
     out = dict()
     for stage in STAGES:
         mains = list(MAIN[stage])
@@ -53,12 +64,18 @@ def extraction(S):
                 mains.append(t["id"])
                 desc.append(t["id"] + ": " + t.get("trigger", "") + ".")
         fields = [dict(name=x_var("main"), type="string", enum=mains + ["none"], description=" ".join(desc)),
-                  dict(name=x_var("side_q"), type="string", enum=list(SIDE_Q) + ["none"],
-                       description="A question the person asks in their LAST message: robot (whether the agent is a "
-                                   "robot or an AI), scam (whether the call is a scam), purpose (what the call is "
-                                   "about), other (any other question), none."),
+                  dict(name=x_var("side_q"), type="string", enum=[a["id"] for a in answers] + ["purpose", "other", "none"],
+                       description=side_desc),
                   dict(name=x_var("said"), type="string", enum=None,
                        description="The person's LAST message, word for word.")]
+        evs = [e for e in events if stage in (e.get("stages") or [])]
+        if evs:
+            fields.append(dict(name=x_var("event"), type="string", enum=[e["id"] for e in evs] + ["none"],
+                               description="What the person says in their LAST message, if it is one of these "
+                                           "(when several fit, the first listed): " +
+                                           " ".join(e["id"] + ": " + e.get("trigger", "") + "." for e in evs) +
+                                           " none: none of these."))
+            fields.append(dict(name=x_var("reply"), type="string", enum=["yes", "no", "none"], description=REPLY_TEXT))
         if "answer" in STAGE_SLOTS[stage]:
             fields.append(dict(name=x_var("answer"), type="string", enum=None, description=(
                 "The answer to the security question in the LAST message exactly as said, in the person's own "
@@ -68,5 +85,7 @@ def extraction(S):
         if "time" in STAGE_SLOTS[stage]:
             fields.append(dict(name=x_var("time"), type="string", enum=None, description=(
                 "The clock time named in the LAST message exactly as said; none if absent.")))
+        if "amount" in STAGE_SLOTS[stage]:
+            fields.append(dict(name=x_var("amount"), type="string", enum=None, description=AMOUNT_TEXT))
         out[stage] = fields
     return out

@@ -20,6 +20,16 @@ SAY_AGAIN = "I am sorry, could you say that again?"
 SYSTEM_PROMPT = ("You are the bank's phone agent. In every turn, say exactly the text your current instructions give "
                  "you, word for word, and nothing else. Never call a tool.")
 TALK_TASK = "Say exactly this text, word for word, and nothing else: {{say_next}}. No tool call is allowed."
+TWIN_STAGES = ("open", "identity", "negotiate", "confirm")
+TWIN_TASK = (
+    "The customer just asked: {{side_question}} "
+    "Facts you may use (they may be empty): {{facts}} "
+    "First answer the question in one short sentence, using only these facts. If the facts do not answer it, say "
+    "exactly: {no_info} Never invent a figure, a date, a reason or a rule; never offer any reduction, waiver, plan, "
+    "term or option of your own; never ask how much the customer can pay. If the facts are empty, do not mention "
+    "the reason for the call, any account, product, amount or debt. "
+    "Then say exactly this text, word for word: {{say_next}} "
+    "Say nothing else. No tool call is allowed.")
 
 
 class CompileError(Exception):
@@ -194,12 +204,20 @@ def compile_workflow(spec, api):
     opening = spec["opening"]["template"]
     nodes["opening"] = talk_node("opening", opening, "Say exactly this text, word for word, and nothing else: "
                                  + opening + " No tool call is allowed.", fields["open"])
-    targets = [engine.talk_node(s) for s in engine.STAGES] + [engine.api_node(r) for r in roles] + [engine.END]
+    twins = list(TWIN_STAGES) if engine.llm_answers(spec) else []
+    targets = [engine.talk_node(s) for s in engine.STAGES] + [engine.llm_node(s) for s in twins] +         [engine.api_node(r) for r in roles] + [engine.END]
     nodes["brain"] = code_node("brain", code, [when("brain_response.status", "error", "talk_error")]
                                + [when("route", t, t) for t in targets] + [always("talk_fallback")])
     for stage in engine.STAGES:
         name = engine.talk_node(stage)
         nodes[name] = talk_node(name, "{{say_next}}", TALK_TASK, fields[stage])
+    no_info = spec["side_questions"]["other"]["no_info_template"]
+    for stage in twins:
+        name = engine.llm_node(stage)
+        task = TWIN_TASK.replace("{no_info}", no_info)
+        node = talk_node(name, "", task, fields[stage])
+        node["on_enter"] = {"type": "llm", "prompt": task}
+        nodes[name] = node
     every = union_fields(fields)
     nodes["talk_fallback"] = talk_node("talk_fallback", "{{say_fallback}}", TALK_TASK.replace("say_next", "say_fallback"), every)
     nodes["talk_error"] = talk_node("talk_error", SAY_AGAIN, f"Say exactly: {SAY_AGAIN} No tool call is allowed.", every)

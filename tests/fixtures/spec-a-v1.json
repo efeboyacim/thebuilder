@@ -488,7 +488,32 @@
   ],
   "non_answer_is_refusal": true,
   "dedupe_refused_offers": true,
-  "on_exhausted": "no_promise_refused"
+  "on_exhausted": "no_promise_refused",
+  "amounts": {
+   "accept_range": "floor_to_due",
+   "too_much": {
+    "policy": "offer_floor",
+    "template": "I understand. The lowest amount I can record is {{amount}}, and the rest stays overdue. Can you pay {{amount}} on {{date}}?",
+    "refs": [
+     "R41"
+    ]
+   },
+   "below_floor": {
+    "policy": "offer_floor",
+    "template": "I cannot record {{named_amount}}. The lowest amount I can record is {{amount}}, and the rest stays overdue. Can you pay {{amount}} on {{date}}?",
+    "refs": [
+     "R42"
+    ]
+   },
+   "floor_offers": 1,
+   "same_amount_template": "Could you make that payment on {{date}} instead?",
+   "refs": [
+    "R39",
+    "R41",
+    "R42",
+    "R44"
+   ]
+  }
  },
  "confirm": {
   "mode": "not_specified",
@@ -535,6 +560,161 @@
   },
   "refs": [
    "R54"
+  ]
+ },
+ "events": [
+  {
+   "id": "hardship",
+   "trigger": "the customer mentions illness, a death in the family or job loss",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [
+    "persuasion",
+    "restructuring"
+   ],
+   "below_min_template": "not_specified",
+   "template": "I am sorry to hear that. I can connect you with our customer support team. Would you like that?",
+   "on_yes": "transferred_support",
+   "on_no": "no_promise_hardship",
+   "then": "not_specified",
+   "then_before_verification": "not_specified",
+   "refs": [
+    "R49"
+   ]
+  },
+  {
+   "id": "paid",
+   "trigger": "the customer says they already paid this past-due amount",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "not_specified",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "paid",
+   "then_before_verification": "not_specified",
+   "refs": [
+    "R56"
+   ]
+  },
+  {
+   "id": "dispute",
+   "trigger": "the customer says the debt is not theirs, that they never had the product, or that it was closed or paid off in the past",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "not_specified",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "no_promise_dispute",
+   "then_before_verification": "not_specified",
+   "refs": [
+    "R57"
+   ]
+  },
+  {
+   "id": "restructuring",
+   "trigger": "the customer asks for a new payment plan or lower instalments",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "not_specified",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "transferred_restructuring",
+   "then_before_verification": "not_specified",
+   "refs": [
+    "R58"
+   ]
+  },
+  {
+   "id": "human",
+   "trigger": "the customer asks to speak to a human",
+   "stages": [
+    "open",
+    "identity",
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 2,
+   "suppresses": [],
+   "below_min_template": "Can I help you with anything first?",
+   "template": "not_specified",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "transferred_human",
+   "then_before_verification": "not_specified",
+   "refs": [
+    "R59"
+   ]
+  },
+  {
+   "id": "no_talk",
+   "trigger": "the customer says they do not want to talk",
+   "stages": [
+    "open",
+    "identity",
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 2,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "not_specified",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "no_promise_refused",
+   "then_before_verification": "not_verified_declined",
+   "refs": [
+    "R62"
+   ]
+  }
+ ],
+ "side_questions": {
+  "answers": [
+   {
+    "id": "robot",
+    "trigger": "whether the agent is a robot or an AI",
+    "template": "I am Freya Bank's digital assistant.",
+    "refs": [
+     "R14"
+    ]
+   },
+   {
+    "id": "scam",
+    "trigger": "whether the call is a scam",
+    "template": "You can verify this call by phoning Freya Bank's customer service number.",
+    "refs": [
+     "R60"
+    ]
+   }
+  ],
+  "other": {
+   "policy": "answer_from_facts",
+   "no_info_template": "I am sorry, I do not have that information.",
+   "refs": [
+    "R61"
+   ]
+  },
+  "refs": [
+   "R14",
+   "R60",
+   "R61"
   ]
  },
  "situations": [
@@ -924,76 +1104,6 @@
    ]
   },
   {
-   "id": "X3",
-   "text": "If the person asks whether the agent is a robot or an AI, say that you are Freya Bank's digital assistant and continue. Before confirmation, the ask that follows the answer counts as the second ask.",
-   "stage": "any",
-   "class": "speech",
-   "trigger": "",
-   "refs": [
-    "R14"
-   ]
-  },
-  {
-   "id": "X4",
-   "text": "If the person asks \"Is this a scam?\", say they can verify the call by phoning Freya Bank's customer service number, and continue. Before confirmation, the ask that follows the answer counts as the second ask.",
-   "stage": "any",
-   "class": "speech",
-   "trigger": "",
-   "refs": [
-    "R60"
-   ]
-  },
-  {
-   "id": "X10",
-   "text": "Ask for the full past-due amount first. Never ask \"how much can you pay?\". The agent proposes every amount.",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "any amount is asked for or proposed by the agent",
-   "refs": [
-    "R39"
-   ]
-  },
-  {
-   "id": "X12",
-   "text": "If the customer says the full amount is too much, offer the floor, once, and say that the rest stays overdue. If the customer refuses the floor, treat it as a flat refusal (X15). In the late band, attempt 2 may name the floor again, on the deadline.",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer says the full amount is too much",
-   "refs": [
-    "R41"
-   ]
-  },
-  {
-   "id": "X13",
-   "text": "If the customer proposes an amount from the floor up to the full past-due amount, both included, accept it. Below the floor, say it cannot be recorded and offer the floor once. If the customer does not accept the floor, treat it as a flat refusal (X15).",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer proposes an amount",
-   "refs": [
-    "R42"
-   ]
-  },
-  {
-   "id": "X14",
-   "text": "A date or an amount the customer proposes is never a refusal. Handle it with the date rules (X5 to X9) and the amount rules (X10 to X13).",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer proposes a date or an amount",
-   "refs": [
-    "R44"
-   ]
-  },
-  {
-   "id": "X19",
-   "text": "If the customer mentions illness, a death in the family or job loss, say one short sentence of sympathy and make no persuasion attempt. Offer to connect them with the customer support team. If they accept, call transfer_to_agent with queue support and close as transferred / support. If they decline, close as no_promise / hardship. This rule comes before the persuasion attempts (X15 to X17) and the restructuring transfer (X25). If the customer still names a date or an amount themselves, record the promise under the date and amount rules.",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer mentions illness, a death in the family or job loss",
-   "refs": [
-    "R49"
-   ]
-  },
-  {
    "id": "X20",
    "text": "Never offer a discount, a waiver, an instalment plan or any term that is not in this brief.",
    "stage": "negotiate",
@@ -1011,66 +1121,6 @@
    "trigger": "a promise was recorded for the product, or the customer asks to change or cancel it",
    "refs": [
     "R53"
-   ]
-  },
-  {
-   "id": "X23",
-   "text": "If the customer says \"I already paid\" (a payment of this past-due amount), say that payments can take one business day to appear, take no promise, and close as paid with no reason.",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer says they already paid this past-due amount",
-   "refs": [
-    "R56"
-   ]
-  },
-  {
-   "id": "X24",
-   "text": "If the customer says \"This debt is not mine\" or \"I never had this product\", or claims the product was closed or paid off in the past: do not argue and do not take a promise. Close as no_promise / dispute.",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer disputes the debt or the product",
-   "refs": [
-    "R57"
-   ]
-  },
-  {
-   "id": "X25",
-   "text": "A request for a new payment plan or lower instalments: do not describe a plan. Call transfer_to_agent with queue restructuring and close as transferred / restructuring (the hardship rule X19 comes first).",
-   "stage": "negotiate",
-   "class": "flow",
-   "trigger": "the customer asks for a new payment plan or lower instalments",
-   "refs": [
-    "R58"
-   ]
-  },
-  {
-   "id": "X26",
-   "text": "A request for a human, at any stage before or after verification: ask once whether you can help first. If they insist, call transfer_to_agent with queue general and close as transferred / human. If a promise was already recorded, the close is still transferred / human.",
-   "stage": "any",
-   "class": "flow",
-   "trigger": "the person asks for a human",
-   "refs": [
-    "R59"
-   ]
-  },
-  {
-   "id": "X27",
-   "text": "A question that cannot be answered from the tools: say you do not have that information. Do not invent figures, dates or reasons.",
-   "stage": "any",
-   "class": "speech",
-   "trigger": "",
-   "refs": [
-    "R61"
-   ]
-  },
-  {
-   "id": "X28",
-   "text": "If the customer says twice that they do not want to talk: after identity is verified, close as no_promise / refused; before identity is verified, close as not_verified / declined. A request for a human (X26) is handled at any point.",
-   "stage": "any",
-   "class": "flow",
-   "trigger": "the customer says for the second time that they do not want to talk",
-   "refs": [
-    "R62"
    ]
   },
   {
@@ -1182,7 +1232,7 @@
   {
    "rule": "R14",
    "paths": [
-    "residual:X3"
+    "side_questions.answers[robot]"
    ]
   },
   {
@@ -1358,7 +1408,7 @@
    "rule": "R39",
    "paths": [
     "negotiation.first_ask.amount",
-    "residual:X10"
+    "negotiation.amounts"
    ]
   },
   {
@@ -1370,13 +1420,16 @@
   {
    "rule": "R41",
    "paths": [
-    "residual:X12"
+    "negotiation.amounts.too_much",
+    "negotiation.amounts.floor_offers",
+    "negotiation.ladder[1]"
    ]
   },
   {
    "rule": "R42",
    "paths": [
-    "residual:X13"
+    "negotiation.amounts.accept_range",
+    "negotiation.amounts.below_floor"
    ]
   },
   {
@@ -1389,7 +1442,8 @@
   {
    "rule": "R44",
    "paths": [
-    "residual:X14"
+    "negotiation.amounts",
+    "negotiation.vague"
    ]
   },
   {
@@ -1422,9 +1476,9 @@
   {
    "rule": "R49",
    "paths": [
-    "residual:X19",
     "situations[transferred_support]",
-    "situations[no_promise_hardship]"
+    "situations[no_promise_hardship]",
+    "events[hardship]"
    ]
   },
   {
@@ -1473,49 +1527,49 @@
   {
    "rule": "R56",
    "paths": [
-    "residual:X23",
-    "situations[paid]"
+    "situations[paid]",
+    "events[paid]"
    ]
   },
   {
    "rule": "R57",
    "paths": [
-    "residual:X24",
-    "situations[no_promise_dispute]"
+    "situations[no_promise_dispute]",
+    "events[dispute]"
    ]
   },
   {
    "rule": "R58",
    "paths": [
-    "residual:X25",
-    "situations[transferred_restructuring]"
+    "situations[transferred_restructuring]",
+    "events[restructuring]"
    ]
   },
   {
    "rule": "R59",
    "paths": [
-    "residual:X26",
-    "situations[transferred_human]"
+    "situations[transferred_human]",
+    "events[human]"
    ]
   },
   {
    "rule": "R60",
    "paths": [
-    "residual:X4"
+    "side_questions.answers[scam]"
    ]
   },
   {
    "rule": "R61",
    "paths": [
-    "residual:X27"
+    "side_questions.other"
    ]
   },
   {
    "rule": "R62",
    "paths": [
-    "residual:X28",
     "situations[no_promise_refused]",
-    "situations[not_verified_declined]"
+    "situations[not_verified_declined]",
+    "events[no_talk]"
    ]
   },
   {

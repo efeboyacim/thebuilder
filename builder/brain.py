@@ -13,7 +13,7 @@ import ast, builtins, copy, json, pathlib, re
 from builder import engine, exprs, policy_lib
 from builder import spec as sp
 
-_DROP = ("refs", "when", "phrases", "residual_rules", "rule_index", "forbidden_codes", "required_content",
+_DROP = ("refs", "when", "trigger", "phrases", "residual_rules", "rule_index", "forbidden_codes", "required_content",
          "forbidden_before_verification", "does_not_count", "spec_version")
 MAX_BYTES = 80_000  # S1b ran 60 KB; item 11 measured the brain on Freya at about 62 KB
 

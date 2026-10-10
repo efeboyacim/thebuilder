@@ -130,17 +130,9 @@ Rules for the spec:
    situation when the material uses notes, else "".
 6. Rules the sections cannot express go to residual_rules: class speech (wording or tone only) or flow (changes a
    tool call, an outcome, an amount, a date or a count; give its trigger). Dates and the calendar, bands and
-   deadlines, the floor, the persuasion ladder and tool failures have their own sections (calendar, products,
-   negotiation, failure_policy). Other amount rules (an amount said to be too much, below the floor, or proposed by
-   the customer), events (a payment already made, a dispute, hardship, a request for a human or for a new plan, not
-   wanting to talk), side questions, notes and several products belong in residual_rules in this spec version: put
-   each one there, complete and with every value.
-11. Dates: the engine resolves every day a customer names against the call's current date and checks every date it
-   would record or offer against the calendar and the product's deadline (today or later, a business day, not after
-   the deadline), then applies negotiation.non_business_day or negotiation.after_deadline. Ladder dates are kept
-   inside that range by the engine; write the expressions as the material states them.
-12. negotiation.ladder: one step per persuasion attempt the material describes, in order. A step applies to the bands
-   it lists (empty = every band); a product gets at most its band's attempts. The first ask is not an attempt.
+   deadlines, the floor, amounts, the persuasion ladder, tool failures, events and side questions have their own
+   sections (calendar, products, negotiation, failure_policy, events, side_questions). Notes and rules for several
+   products belong in residual_rules in this spec version: put each one there, complete and with every value.
 7. rule_index: every digest rule with status binding appears exactly once, with the spec paths that carry it and/or
    residual:<id>. Paths are dotted, list items by [index] or [id] (situations[some_id], identity.questions[0]).
 8. refs: the ids of the digest rules a part comes from.
@@ -148,6 +140,18 @@ Rules for the spec:
 10. opening.forbidden_before_verification: the words the material forbids before verification, plus the spoken name
    of every product kind when it forbids naming the product. No template spoken before verification (opening,
    third_party, identity, and the situations those stages reach) may contain one of them.
+11. Dates: the engine resolves every day a customer names against the call's current date and checks every date it
+   would record or offer against the calendar and the product's deadline (today or later, a business day, not after
+   the deadline), then applies negotiation.non_business_day or negotiation.after_deadline. Ladder dates are kept
+   inside that range by the engine; write the expressions as the material states them.
+12. negotiation.ladder: one step per persuasion attempt the material describes, in order. A step applies to the bands
+   it lists (empty = every band); a product gets at most its band's attempts. The first ask is not an attempt.
+13. events: one entry per thing a customer may say that changes the call, in the material's order of precedence
+   (a rule that one comes before another puts it first; suppresses lists what it blocks). A rule that applies before
+   and after verification with different outcomes is one entry with then and then_before_verification. A request that
+   applies only when repeated, with a question from the agent in between, is min_occurrences 2 with
+   below_min_template. A yes/no offer (for example a transfer) is template + on_yes + on_no.
+14. side_questions: answers for the questions the material gives a fixed answer to; other for the rest.
 
 Engine placeholders per template (besides call-variable names):
 {templates}
@@ -343,7 +347,7 @@ def expressions_text():
         lines.append(f"  {path}: {', '.join(shown)}; returns {returns[sp.EXPR_TYPES[path]]}")
     lines.append("  (today and d are dates, now a date-time; ref, kind, due_amount, days_overdue are the product's "
                  "bound item roles; floor is the product's floor from products.floor, deadline the latest date of its "
-                 "band, said_too_much true once the customer said the full amount is too much.)")
+                 "band, said_too_much true once the customer said the full amount is too much or proposed less.)")
     return "\n".join(lines)
 
 

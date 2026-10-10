@@ -42,6 +42,13 @@ TEMPLATES = {
     "negotiation.vague.propose_template": OFFER_VARS,
     "negotiation.ask_date_template": PRODUCT_VARS + ("deadline", ITEM_FIELDS),
     "negotiation.ladder[].template": OFFER_VARS,
+    "negotiation.amounts.too_much.template": OFFER_VARS,
+    "negotiation.amounts.below_floor.template": OFFER_VARS + ("named_amount",),
+    "negotiation.amounts.same_amount_template": OFFER_VARS,
+    "events[].below_min_template": (),
+    "events[].template": (),
+    "side_questions.answers[].template": (),
+    "side_questions.other.no_info_template": (),
     "confirm.readback_template": ("items", "question"),
     "confirm.item_template": ("product_name", "amount", "date"),
     "confirm.recording_template": (),
@@ -52,7 +59,10 @@ TEMPLATES = {
     "situations[].farewell": ("callback_date", "callback_time"),
 }
 # Texts anyone may hear before identity is verified (situations reached from these stages are added).
-PRE_VERIFICATION = [p for p in TEMPLATES if p.split(".")[0] in ("opening", "third_party", "identity")]
+PRE_VERIFICATION = [p for p in TEMPLATES if p.split(".")[0] in ("opening", "third_party", "identity", "side_questions")]
+PRE_STAGES = ("open", "third", "identity")
+TARGETS = ("on_yes", "on_no", "then", "then_before_verification")
+SIDE_RESERVED = ("purpose", "other", "none")
 
 # Expression language: names per expression, helpers everywhere.
 HELPERS = ("is_business_day", "add_business_days", "add_calendar_days", "weekday", "roll", "last_bd_of_week",
@@ -436,8 +446,8 @@ def validate(spec, api, brief_text="", rule_ids=None, known_ids=None):
         return Report(errors, warnings, info)
     ctx = _Ctx(spec, api)
     for check in (_check_bindings, _check_codes, _check_situations, _check_templates, _check_expressions,
-                  _check_identity, _check_calendar, _check_callback, _check_negotiation, _check_pre_verification,
-                  _check_phrases):
+                  _check_identity, _check_calendar, _check_callback, _check_negotiation, _check_events,
+                  _check_pre_verification, _check_phrases):
         try:
             errors += check(ctx, brief_text)
         except Exception as e:  # noqa: BLE001 - a malformed part is already a schema error; keep validating
@@ -468,6 +478,9 @@ def facts(spec):
             "situations": len(spec.get("situations") or []),
             "bands": [b.get("id") for b in (spec.get("products") or {}).get("bands") or [] if isinstance(b, dict)],
             "ladder_steps": len((spec.get("negotiation") or {}).get("ladder") or []),
+            "events": [e.get("id") for e in spec.get("events") or [] if isinstance(e, dict)],
+            "side_questions": [a.get("id") for a in (spec.get("side_questions") or {}).get("answers") or []
+                               if isinstance(a, dict)],
             "identity_questions": [q.get("field") for q in (spec.get("identity") or {}).get("questions") or []
                                    if isinstance(q, dict)]}
 
@@ -679,6 +692,38 @@ def _check_negotiation(ctx, _):
     return errs
 
 
+def _check_events(ctx, _):
+    s, errs = ctx.spec, []
+    sit_ids = {x.get("id") for x in s.get("situations") or [] if isinstance(x, dict)}
+    evs = [e for e in s.get("events") or [] if isinstance(e, dict)]
+    ids = [e.get("id") for e in evs]
+    side = [a.get("id") for a in (s.get("side_questions") or {}).get("answers") or [] if isinstance(a, dict)]
+    for d in sorted({i for i in ids if ids.count(i) > 1 and isinstance(i, str)}):
+        errs.append(f"events: id {d!r} is used twice")
+    for d in sorted({i for i in side if side.count(i) > 1 and isinstance(i, str)}):
+        errs.append(f"side_questions.answers: id {d!r} is used twice")
+    for i, a in enumerate(side):
+        if a in SIDE_RESERVED:
+            errs.append(f"side_questions.answers[{i}].id: {a!r} is reserved; choose another id")
+    for i, e in enumerate(evs):
+        w = f"events[{i}]"
+        if e.get("id") == "none":
+            errs.append(f"{w}.id: 'none' is reserved")
+        for j, x in enumerate(e.get("suppresses") or []):
+            if x != "persuasion" and x not in ids:
+                errs.append(f"{w}.suppresses[{j}]: {x!r} is neither an event id nor 'persuasion'")
+        for k in TARGETS:
+            v = e.get(k)
+            if isinstance(v, str) and v not in ("continue", NS) and v not in sit_ids:
+                errs.append(f"{w}.{k}: {v!r} is not a situation id, 'continue' or 'not_specified'")
+        asks = any(e.get(k) not in (None, NS) for k in ("on_yes", "on_no"))
+        if asks and e.get("template") in (None, NS):
+            errs.append(f"{w}.template: on_yes/on_no need a template that asks the question")
+        if not asks and e.get("then") in (None, NS) and e.get("below_min_template") in (None, NS):
+            errs.append(f"{w}: the event does nothing; set then, or a question with on_yes and on_no")
+    return errs
+
+
 def _check_callback(ctx, _):
     cb, errs = ((ctx.spec.get("third_party") or {}).get("callback") or {}), []
     wins = cb.get("windows")
@@ -702,6 +747,15 @@ def _pre_verification_texts(ctx):
         if not pre:
             continue
         for _, sid in expand(s, pattern):
+            if sid in sits:
+                i, x = sits[sid]
+                out += [(f"situations[{i}].{k}", x.get(k)) for k in ("say", "farewell") if isinstance(x.get(k), str)]
+    for n, e in enumerate(s.get("events") or []):
+        if not isinstance(e, dict) or not set(e.get("stages") or []) & set(PRE_STAGES):
+            continue
+        out += [(f"events[{n}].{k}", e.get(k)) for k in ("template", "below_min_template") if isinstance(e.get(k), str)]
+        keys = ["then_before_verification"] if e.get("then_before_verification") not in (None, NS) else ["then", "on_yes"]
+        for sid in [e.get(k) for k in keys + ["on_no"]]:
             if sid in sits:
                 i, x = sits[sid]
                 out += [(f"situations[{i}].{k}", x.get(k)) for k in ("say", "farewell") if isinstance(x.get(k), str)]

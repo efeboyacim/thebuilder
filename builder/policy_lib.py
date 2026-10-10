@@ -464,6 +464,34 @@ def resolve_day(text, today, weekday_mode="nearest", order="day_month_year"):
     return None
 
 
+# ---------- amounts ----------
+
+def parse_amount(text, due=None, floor=None):
+    """The amount a customer offers: digits ('82.40', '3,100', '90 pounds and 5 pence'), words ('nine hundred and
+    twelve forty', 'four hundred point five'), or the minimum / the full amount. None when it names none."""
+    s = " " + str(text or "").lower().replace("-", " ") + " "
+    if re.search(r"\b(minimum|least)\b", s) and floor is not None:
+        return float(floor)
+    if re.search(r"\b(full|whole|everything|all of it|entire|the lot)\b", s) and due is not None:
+        return float(due)
+    nums = re.findall(r"\d[\d,]*(?:\.\d+)?", s)
+    if nums:
+        v = float(nums[0].replace(",", ""))
+        if len(nums) > 1 and "." not in nums[0] and re.search(r"\b(pence|cents?|p)\b", s) and float(nums[1]) < 100:
+            v += float(nums[1]) / 100
+        return v
+    words = spoken_numbers(s)
+    if not words:
+        return None
+    v = float(words[0][0])
+    if len(words) > 1 and words[1][0] < 100:
+        if re.search(r"\bpoint\b", s):
+            v += float("0." + str(words[1][0]))
+        elif v >= 100 or re.search(r"\b(pounds?|euros?|dollars?|pence|cents?)\b", s):
+            v += words[1][0] / 100.0
+    return v
+
+
 # ---------- times ----------
 
 def parse_time(text):
