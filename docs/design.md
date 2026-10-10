@@ -129,7 +129,7 @@ which was chosen without looking at Brief A.
 |---|---|
 | `bindings.call_vars` | Call-variable role → variable name. Roles (`builder/bindings.py`): `customer_key`, `clock`, `given_name`, `family_name`, `honorific`, `company`; the last three optional |
 | `bindings.tools`, `bindings.request` | Tool role (`verify`, `lookup`, `record_promise`, `record_note`, `book_callback`, `transfer`, `close`) → tool name. Per tool role, per body field path: source (`call_var`, `engine`, `literal`, `template`) and converter (`number_2dp`, `cents_int`, `string_2dp`, `date_iso`, `time_hhmm`, `datetime_join`). Engine roles per tool role are fixed in `TOOL_ROLES` (e.g. question, answer; product_ref, amount, date; queue; outcome, reason) |
-| `bindings.response` | Per tool role, response role → body path: `ok`, `error`, `verified`, `all_verified`, `attempts_left`, `hint`, `products`, `promise_ref`; and `item`: item role → path inside one product (`ref`, `kind`, `due_amount`, `days_overdue`). Label and floor fields are read by their API name from the raw row |
+| `bindings.response` | Per tool role, response role → body path: `ok`, `error`, `verified`, `fully_verified`, `attempts_left`, `hint`, `products`, `promise_ref`; and `item`: item role → path inside one product (`ref`, `kind`, `due_amount`, `days_overdue`). Label and floor fields are read by their API name from the raw row |
 | `opening` | tts template; required content; words forbidden before verification; confirmation semantics (what counts, max asks, whether an answered question uses an ask); `unclear` situation |
 | `third_party` | Callback model: `day_set` expression, `windows[]`, inclusive, granularity, `min_lead`, after-now, `re_asks`. Situations (wrong number, deceased, others) with required sentences. Disclosure ban |
 | `identity` | Ordered `questions[]`, each with: openapi field value, ask text, normalizer pipeline (digit words, strip, upper, date parse with `day_first`), `complete_pattern`, accumulation across turns, `ask_when`. Limits: `total`, `per_question`, `on_wrong` ∈ {repeat, next}. Hints: value, action text, `counts_as_wrong`. Decline: explain-once text, max refusals, whether a purpose question counts as a refusal, counter scope. `authorised_parties` |
@@ -145,6 +145,19 @@ which was chosen without looking at Brief A.
 | `residual_rules[]` | Rule text, stage, class ∈ {speech, flow}, trigger (for flow), how it is executed |
 | `rule_index` | Every digest rule → spec paths, or a residual id. 100% coverage is required |
 | `forbidden_codes` | Codes the agent must never send |
+
+**Spec v0 (item 07).** `builder/spec_schema.json` holds the slice sections in their final generic form:
+`call_variables`, `bindings`, `calendar` (business weekdays and explicit holidays only), `opening` (template,
+required content, forbidden words, confirmation counting), `third_party` (callback model with a `day_rule`
+expression, windows and limits; `terminations[]` such as a wrong number, each pointing to a situation), `identity`,
+`disclosure` (intro, one sentence per product, a name per product kind), `negotiation.first_ask`, `confirm`
+(read-back, question, recording sentences), `situations[]`, `closing` (outcome table, `transfer_overrides_promise`,
+hang-up situation per stage with `stated_in_brief`), `phrases`, `residual_rules`, `rule_index`, `forbidden_codes`.
+Every other rule (dates, amounts, persuasion, events, notes, several products, failures) is a residual rule in v0;
+items 11, 12 and 14 add their sections and move those rules out. `refs` are digest rule ids; template placeholders
+are `{{name}}`; codes are checked against the tool API's enums, or must occur verbatim in the brief. Validation
+(`builder/spec.py`) checks expressions against the AST whitelist and their names; evaluating them on synthetic
+inputs needs `policy_lib` and comes with item 08.
 
 ### 2.3 Expressions
 
@@ -466,7 +479,7 @@ the patterns `fak_[A-Za-z0-9]+` and `sk-ant-[A-Za-z0-9-]+`. A unit test checks t
 | 13 `day_month_swapped` → ask the month as a word; not counted | code | Hint role, `counts_as_wrong=false` | — |
 | 14 After 3 wrong: no debt, app or branch, not_verified/failed | code, end | Situation farewell | — |
 | 15 Decline: explain once; still declining → declined; asking what the call is about counts as declining; second refusal closes | ext, code | `identity.main=refuses`, `side_q=purpose` → decline counter with the spec's scope | Clash with the asks_back style (open question) |
-| 16 get_account after both questions pass | route | The brain routes to `api_get_account` only when the `all_verified` role is true | — |
+| 16 get_account after both questions pass | route | The brain routes to `api_get_account` only when the `fully_verified` role is true | — |
 | 17 "collections team", late payment, product in words, past-due amount, days late | code, tts | Disclosure template; product naming per type via response bindings | — |
 | §7 Business days, holidays | code | `calendar` | — |
 | 18 Deadline and persuasion attempts by band | code | `bands[]`: selector, deadline expression, attempts | — |

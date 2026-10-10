@@ -59,7 +59,7 @@ def test_happy_path_records_a_promise_and_closes(a):
     status, v = a("lookup")
     assert v["ok"] is False and "before identity" in a.stub.ledger["violations"][0]
     v = verify_all(a, CUSTOMER_A["identity"]["answers"])
-    assert v["all_verified"] is True and a.stub.ledger["verified"]
+    assert v["fully_verified"] is True and a.stub.ledger["verified"]
     _, look = a("lookup")
     assert [(p["ref"], p["kind"], p["due_amount"], p["days_overdue"]) for p in look["products"]] == [
         ("p1", "credit_card", 420.0, 9), ("p2", "car_loan", 610.0, 3)]
@@ -134,9 +134,9 @@ def test_renamed_api_cents_joined_datetime_and_nested_ok(r):
     _, v = r("verify", question="postcode", answer="AB12")
     assert v["ok"] and v["hint"] == "partial_postcode" and v["attempts_left"] == 2
     _, v = r("verify", question="postcode", answer="ab12cd")  # compared without case
-    assert v["verified"] and v["all_verified"] is False
+    assert v["verified"] and v["fully_verified"] is False
     _, v = r("verify", question="birth_year", answer="1979")
-    assert v["all_verified"] is True
+    assert v["fully_verified"] is True
     _, look = r("lookup")
     assert look["products"][0]["ref"] == "A-1" and look["products"][0]["raw"]["overdraft_limit"] == 1000.0
     _, p = r("record_promise", product_ref="A-1", amount=250.5, date="2026-10-16")

@@ -26,7 +26,7 @@
             "reason": {"source": "engine", "value": "reason"}}
  },
  "response": {
-  "verify": {"ok": "status.ok", "error": "status.message", "verified": "passed", "all_verified": "all_passed",
+  "verify": {"ok": "status.ok", "error": "status.message", "verified": "passed", "fully_verified": "all_passed",
              "attempts_left": "attempts_remaining", "hint": "hint"},
   "lookup": {"ok": "status.ok", "products": "accounts",
              "item": {"ref": "account_ref", "kind": "category", "due_amount": "overdue_amount",

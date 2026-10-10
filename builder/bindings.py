@@ -23,7 +23,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from builder import toolapi as ta
 
 TOOL_ROLES = {
-    "verify": {"request": ("question", "answer"), "response": ("verified", "all_verified", "attempts_left", "hint")},
+    "verify": {"request": ("question", "answer"), "response": ("verified", "fully_verified", "attempts_left", "hint")},
     "lookup": {"request": (), "response": ("products",), "item": ("ref", "kind", "due_amount", "days_overdue")},
     "record_promise": {"request": ("product_ref", "amount", "date"), "response": ("promise_ref",)},
     "record_note": {"request": ("product_ref", "note_reason", "note_text"), "response": ()},
@@ -38,7 +38,7 @@ SOURCES = ("call_var", "engine", "literal", "template")
 ESSENTIAL = {"verify": ("answer",), "record_promise": ("product_ref", "amount", "date"),
              "record_note": ("product_ref",), "book_callback": ("date",), "close": ("outcome",)}
 NUMBER_ROLES = ("amount",)
-RESPONSE_TYPES = {"ok": ("boolean",), "verified": ("boolean",), "all_verified": ("boolean",),
+RESPONSE_TYPES = {"ok": ("boolean",), "verified": ("boolean",), "fully_verified": ("boolean",),
                   "attempts_left": ("integer", "number"), "hint": ("string",), "error": ("string",),
                   "products": ("array",), "promise_ref": ("string", "integer")}
 ITEM_TYPES = {"ref": ("string", "integer"), "kind": ("string",), "due_amount": ("number", "integer"),

@@ -1,0 +1,363 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Phone-agent spec",
+ "description": "Everything a generic policy engine needs to run one bank's late-payment calls. Write every value from the brief material and the tool API. A switch the brief does not settle is the string \"not_specified\": never fill it from habit or from another bank. Templates are what the agent says, word for word; placeholders are {{name}}.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["spec_version", "call_variables", "bindings", "calendar", "opening", "third_party", "identity",
+              "disclosure", "negotiation", "confirm", "situations", "closing", "phrases", "residual_rules",
+              "rule_index", "forbidden_codes"],
+ "$defs": {
+  "ns": {"const": "not_specified"},
+  "refs": {"type": "array", "items": {"type": "string", "pattern": "^R[0-9]+$"},
+           "description": "Ids of the digest rules this part comes from."},
+  "text": {"type": "string", "minLength": 1},
+  "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+  "situation_ref": {"anyOf": [{"$ref": "#/$defs/id"}, {"$ref": "#/$defs/ns"}],
+                    "description": "The id of an entry in situations[], or not_specified."},
+  "count": {"anyOf": [{"type": "integer", "minimum": 0}, {"$ref": "#/$defs/ns"}]},
+  "switch": {"anyOf": [{"type": "boolean"}, {"$ref": "#/$defs/ns"}]},
+  "optional_text": {"anyOf": [{"$ref": "#/$defs/text"}, {"$ref": "#/$defs/ns"}]},
+  "hhmm": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"},
+  "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+  "expr": {"type": "string", "minLength": 1,
+           "description": "An expression in the spec expression language (see the prompt)."},
+  "stage": {"enum": ["open", "third", "identity", "negotiate", "confirm", "close", "any"]},
+  "hangup": {"type": "object", "additionalProperties": false, "required": ["situation", "stated_in_brief"],
+             "properties": {"situation": {"$ref": "#/$defs/id"}, "stated_in_brief": {"type": "boolean"}}},
+  "field_binding": {
+   "type": "object", "additionalProperties": false, "required": ["source", "value"],
+   "properties": {
+    "source": {"enum": ["call_var", "engine", "literal", "template"]},
+    "value": {"description": "call_var: a call-variable role. engine: an engine role, or a list of two roles for a joined field. literal: the fixed value. template: a string with {{role}} placeholders."},
+    "convert": {"type": "string", "description": "Optional converter, for engine values only."}
+   }
+  }
+ },
+ "properties": {
+  "spec_version": {"const": "0"},
+
+  "call_variables": {
+   "description": "Every variable the brief says a call starts with, under its exact name.",
+   "type": "array", "minItems": 1,
+   "items": {"type": "object", "additionalProperties": false, "required": ["name", "meaning"],
+             "properties": {"name": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
+                            "meaning": {"$ref": "#/$defs/text"}}}
+  },
+
+  "bindings": {
+   "description": "How the engine's roles map onto this tool API. The roles, converters and rules are listed in the prompt.",
+   "type": "object", "additionalProperties": false, "required": ["call_vars", "tools", "request", "response"],
+   "properties": {
+    "call_vars": {"type": "object", "additionalProperties": {"type": "string"},
+                  "description": "Call-variable role -> call-variable name."},
+    "tools": {"type": "object", "additionalProperties": {"type": "string"},
+              "description": "Tool role -> tool name. Bind every tool of the API that fits a role."},
+    "request": {"type": "object",
+                "additionalProperties": {"type": "object", "additionalProperties": {"$ref": "#/$defs/field_binding"}},
+                "description": "Tool role -> {body field path -> field binding}. Every required body field is bound."},
+    "response": {"type": "object",
+                 "additionalProperties": {"type": "object", "additionalProperties": {
+                   "anyOf": [{"type": "string"}, {"type": "object", "additionalProperties": {"type": "string"}}]}},
+                 "description": "Tool role -> {response role -> response path}; the product list role also has item: {item role -> path inside one item}."}
+   }
+  },
+
+  "calendar": {
+   "type": "object", "additionalProperties": false, "required": ["business_weekdays", "holidays", "refs"],
+   "properties": {
+    "business_weekdays": {"anyOf": [{"type": "array", "minItems": 1, "items": {"enum": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]}},
+                                    {"$ref": "#/$defs/ns"}]},
+    "holidays": {"type": "array", "items": {"$ref": "#/$defs/date"},
+                 "description": "Every non-business date as an explicit date. A holiday given by name becomes its dates for this year and the next two. Empty when the brief names none."},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "opening": {
+   "type": "object", "additionalProperties": false,
+   "required": ["template", "required_content", "forbidden_before_verification", "confirmation", "refs"],
+   "properties": {
+    "template": {"$ref": "#/$defs/text",
+                 "description": "The agent's first words, spoken to whoever answers, ending with the question that asks whether the intended person is on the line. Only call-variable placeholders."},
+    "required_content": {"type": "array", "items": {"$ref": "#/$defs/text"},
+                         "description": "Each thing the brief requires in the first words, as a short phrase."},
+    "forbidden_before_verification": {"type": "array", "items": {"$ref": "#/$defs/text"},
+                                      "description": "Words the agent must not say to anyone before identity is verified: the brief's words, plus the spoken name of every product kind when the brief forbids naming the product. Lower case."},
+    "confirmation": {
+     "type": "object", "additionalProperties": false,
+     "required": ["counts_as_yes", "does_not_count", "max_asks", "question_then_reask_counts", "reask_template",
+                  "on_unclear", "refs"],
+     "properties": {
+      "counts_as_yes": {"type": "array", "items": {"$ref": "#/$defs/text"},
+                        "description": "Answers that confirm the intended person is speaking, as the brief lists them (a description such as 'their own name' is fine)."},
+      "does_not_count": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+      "max_asks": {"$ref": "#/$defs/count",
+                   "description": "Asks of the confirmation question in total, the first one included."},
+      "question_then_reask_counts": {"$ref": "#/$defs/switch",
+                                     "description": "true when the brief says: if the person asks a question instead, answer it, and the ask after the answer counts as the next ask."},
+      "reask_template": {"$ref": "#/$defs/text"},
+      "on_unclear": {"$ref": "#/$defs/situation_ref", "description": "Situation when the person is still not confirmed after max_asks."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "third_party": {
+   "description": "Someone other than the intended person is on the line.",
+   "type": "object", "additionalProperties": false,
+   "required": ["may_answer_identity", "ask_reachable_template", "deflect_template", "callback", "on_no_answer",
+                "terminations", "refs"],
+   "properties": {
+    "may_answer_identity": {"$ref": "#/$defs/switch", "description": "Whether a third party may answer the security questions."},
+    "ask_reachable_template": {"$ref": "#/$defs/text",
+                               "description": "Asks when the intended person can be reached, without saying why the agent calls."},
+    "deflect_template": {"$ref": "#/$defs/text",
+                         "description": "Reply when a third party asks about the call or the account or offers to help; reveals nothing and asks again when the person can be reached."},
+    "callback": {
+     "type": "object", "additionalProperties": false,
+     "required": ["enabled", "day_rule", "windows", "start_inclusive", "end_inclusive", "after_now",
+                  "min_lead_minutes", "granularity_minutes", "retry_asks", "ask_time_template", "invalid_template",
+                  "on_booked", "on_invalid_exhausted", "refs"],
+     "properties": {
+      "enabled": {"$ref": "#/$defs/switch", "description": "Whether the agent books a callback for a third party."},
+      "day_rule": {"anyOf": [{"$ref": "#/$defs/expr"}, {"$ref": "#/$defs/ns"}],
+                   "description": "Boolean expression over d (the offered date), today and now: true when a callback on d is allowed."},
+      "windows": {"anyOf": [{"type": "array", "minItems": 1, "items": {
+                    "type": "object", "additionalProperties": false, "required": ["start", "end"],
+                    "properties": {"start": {"$ref": "#/$defs/hhmm"}, "end": {"$ref": "#/$defs/hhmm"}}}},
+                            {"$ref": "#/$defs/ns"}],
+                  "description": "Allowed clock times on an allowed day."},
+      "start_inclusive": {"$ref": "#/$defs/switch"},
+      "end_inclusive": {"$ref": "#/$defs/switch"},
+      "after_now": {"$ref": "#/$defs/switch", "description": "The callback must be later than the current time."},
+      "min_lead_minutes": {"$ref": "#/$defs/count"},
+      "granularity_minutes": {"$ref": "#/$defs/count", "description": "Callback times must fall on this grid."},
+      "retry_asks": {"$ref": "#/$defs/count",
+                     "description": "How many times the agent asks for another time after an offer that is not allowed, before giving up."},
+      "ask_time_template": {"$ref": "#/$defs/text", "description": "Asks for a clock time when only a day was given."},
+      "invalid_template": {"$ref": "#/$defs/text",
+                           "description": "Says the offered day or time is not possible and asks for another one, naming the allowed days and times in words."},
+      "on_booked": {"$ref": "#/$defs/situation_ref"},
+      "on_invalid_exhausted": {"$ref": "#/$defs/situation_ref"},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "on_no_answer": {"$ref": "#/$defs/situation_ref",
+                     "description": "Situation when the third party gives no usable answer to when the person can be reached."},
+    "terminations": {
+     "description": "Facts about the line or the intended person, learnt before identity is verified, that end the call at once with no further question (each from the brief). Requests and refusals (wanting a human, not wanting to talk, asking to stop) are not terminations: they are events, which this spec version keeps in residual_rules.",
+     "type": "array",
+     "items": {"type": "object", "additionalProperties": false, "required": ["id", "trigger", "stages", "situation", "refs"],
+               "properties": {"id": {"$ref": "#/$defs/id"},
+                              "trigger": {"$ref": "#/$defs/text", "description": "What the person says, in the brief's words; it becomes an extraction label."},
+                              "stages": {"type": "array", "minItems": 1, "items": {"enum": ["open", "third", "identity"]}},
+                              "situation": {"$ref": "#/$defs/id"},
+                              "refs": {"$ref": "#/$defs/refs"}}}
+    },
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "identity": {
+   "type": "object", "additionalProperties": false,
+   "required": ["questions", "one_at_a_time", "limits", "hints", "decline", "on_failed", "refs"],
+   "properties": {
+    "questions": {
+     "description": "The security questions in the order they are asked.",
+     "type": "array", "minItems": 1,
+     "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["field", "ask_template", "reask_template", "answer_type", "digits_count", "api_format",
+                   "complete_pattern", "numeric_date_order", "refs"],
+      "properties": {
+       "field": {"type": "string", "minLength": 1,
+                 "description": "The value the verification tool takes to name this question (one of its enum values)."},
+       "ask_template": {"$ref": "#/$defs/text"},
+       "reask_template": {"$ref": "#/$defs/text", "description": "Asks the same question again after a wrong or unreadable answer."},
+       "answer_type": {"enum": ["date", "digits", "year", "letters_digits", "text"]},
+       "digits_count": {"$ref": "#/$defs/count", "description": "For digits: the exact number of digits expected."},
+       "api_format": {"$ref": "#/$defs/text", "description": "The form the tool expects, in words or as a pattern."},
+       "complete_pattern": {"$ref": "#/$defs/text",
+                            "description": "Python regular expression that the normalised answer must match in full before the tool is called."},
+       "numeric_date_order": {"enum": ["day_month_year", "month_day_year", "year_month_day", "not_specified"],
+                              "description": "For a date said only in numbers: the order to read it in."},
+       "refs": {"$ref": "#/$defs/refs"}
+      }
+     }
+    },
+    "one_at_a_time": {"$ref": "#/$defs/switch"},
+    "limits": {
+     "type": "object", "additionalProperties": false,
+     "required": ["total_wrong", "per_question_wrong", "on_wrong", "refs"],
+     "properties": {
+      "total_wrong": {"$ref": "#/$defs/count", "description": "Wrong answers in total that end the check."},
+      "per_question_wrong": {"$ref": "#/$defs/count", "description": "Wrong answers to one question that end the check."},
+      "on_wrong": {"enum": ["repeat_same", "next_question", "not_specified"],
+                   "description": "After a wrong answer that does not end the check: ask the same question again, or move on."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "hints": {
+     "description": "Hints the verification tool can return, and what the agent does with each.",
+     "type": "array",
+     "items": {"type": "object", "additionalProperties": false,
+               "required": ["value", "question", "say_template", "counts_as_wrong", "refs"],
+               "properties": {"value": {"$ref": "#/$defs/text", "description": "The hint value exactly as the tool returns it."},
+                              "question": {"type": "string", "minLength": 1, "description": "The question field it applies to, or any."},
+                              "say_template": {"$ref": "#/$defs/text"},
+                              "counts_as_wrong": {"$ref": "#/$defs/switch"},
+                              "refs": {"$ref": "#/$defs/refs"}}}
+    },
+    "decline": {
+     "type": "object", "additionalProperties": false,
+     "required": ["explain_template", "max_refusals", "purpose_question", "on_declined", "refs"],
+     "properties": {
+      "explain_template": {"$ref": "#/$defs/text", "description": "Said when the person does not want to answer: why the questions are asked."},
+      "max_refusals": {"$ref": "#/$defs/count", "description": "The refusal that closes the call (a second refusal closes = 2)."},
+      "purpose_question": {"enum": ["counts_as_refusal", "own_counter", "not_a_refusal", "not_specified"],
+                           "description": "Asking what the call is about instead of answering: counted with refusals, counted on its own counter with the same limit, or not a refusal."},
+      "on_declined": {"$ref": "#/$defs/situation_ref"},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "on_failed": {"$ref": "#/$defs/situation_ref", "description": "Situation when the check fails."},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "disclosure": {
+   "description": "What the agent says right after identity is verified, before asking for anything.",
+   "type": "object", "additionalProperties": false,
+   "required": ["intro_template", "product_template", "product_names", "refs"],
+   "properties": {
+    "intro_template": {"$ref": "#/$defs/text", "description": "Said once: who is calling and why."},
+    "product_template": {"$ref": "#/$defs/text", "description": "One sentence per product."},
+    "product_names": {"type": "array", "minItems": 1,
+                      "items": {"type": "object", "additionalProperties": false, "required": ["kind", "name_template", "refs"],
+                                "properties": {"kind": {"type": "string", "minLength": 1, "description": "The product kind value as the lookup tool returns it."},
+                                               "name_template": {"$ref": "#/$defs/text", "description": "The product in words; may use fields of the product row as {{field}}."},
+                                               "refs": {"$ref": "#/$defs/refs"}}}},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "negotiation": {
+   "type": "object", "additionalProperties": false, "required": ["first_ask", "refs"],
+   "properties": {
+    "first_ask": {
+     "type": "object", "additionalProperties": false,
+     "required": ["amount", "date", "scope", "template", "template_multi", "refs"],
+     "properties": {
+      "amount": {"$ref": "#/$defs/expr", "description": "Expression for the amount of the first ask, per product."},
+      "date": {"$ref": "#/$defs/expr", "description": "Expression for the date of the first ask."},
+      "scope": {"enum": ["all_products", "each_product", "not_specified"],
+                "description": "With several products: one first ask for all of them, or one per product."},
+      "template": {"$ref": "#/$defs/text", "description": "The first ask, with one product."},
+      "template_multi": {"$ref": "#/$defs/optional_text", "description": "The first ask, with several products."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "confirm": {
+   "type": "object", "additionalProperties": false,
+   "required": ["mode", "readback_template", "item_template", "question", "needs_clear_yes", "on_change",
+                "recording_template", "recorded_template", "after_recorded_sentence", "change_after_record_template", "refs"],
+   "properties": {
+    "mode": {"enum": ["all_at_once", "per_product", "not_specified"]},
+    "readback_template": {"$ref": "#/$defs/text", "description": "The read-back; contains {{items}} and {{question}}."},
+    "item_template": {"$ref": "#/$defs/text", "description": "One agreed promise inside the read-back."},
+    "question": {"$ref": "#/$defs/text", "description": "The confirmation question, exactly as the brief words it."},
+    "needs_clear_yes": {"$ref": "#/$defs/switch"},
+    "on_change": {"enum": ["recheck_and_read_back", "not_specified"],
+                  "description": "The customer changes a value at the confirmation step."},
+    "recording_template": {"$ref": "#/$defs/text", "description": "Said before the bank write; claims nothing."},
+    "recorded_template": {"$ref": "#/$defs/text", "description": "Said after the tool confirmed the write."},
+    "after_recorded_sentence": {"$ref": "#/$defs/optional_text", "description": "A sentence the brief requires after a recorded promise."},
+    "change_after_record_template": {"$ref": "#/$defs/optional_text", "description": "Reply when the customer wants to change a recorded promise."},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "situations": {
+   "description": "Every way a call can end. One entry per (outcome, reason) and per distinct thing to say.",
+   "type": "array", "minItems": 1,
+   "items": {
+    "type": "object", "additionalProperties": false,
+    "required": ["id", "when", "outcome", "reason", "queue", "note_reason", "say", "farewell", "refs"],
+    "properties": {
+     "id": {"$ref": "#/$defs/id"},
+     "when": {"$ref": "#/$defs/text"},
+     "outcome": {"type": "string", "minLength": 1, "description": "The close tool's outcome value."},
+     "reason": {"type": "string", "description": "The close tool's reason value; empty when the outcome takes none."},
+     "queue": {"type": "string", "description": "The transfer queue when this situation hands the call over; empty otherwise."},
+     "note_reason": {"type": "string", "description": "The note reason a product gets in this situation when notes are written; empty otherwise."},
+     "say": {"type": "string", "description": "Sentences the brief requires right before the farewell; empty when none."},
+     "farewell": {"$ref": "#/$defs/text", "description": "The last words of the call."},
+     "refs": {"$ref": "#/$defs/refs"}
+    }
+   }
+  },
+
+  "closing": {
+   "type": "object", "additionalProperties": false,
+   "required": ["outcome_table", "transfer_overrides_promise", "hangup", "refs"],
+   "properties": {
+    "outcome_table": {"type": "array", "minItems": 1,
+                      "items": {"type": "object", "additionalProperties": false, "required": ["outcome", "reasons"],
+                                "properties": {"outcome": {"type": "string", "minLength": 1},
+                                               "reasons": {"type": "array", "items": {"type": "string", "minLength": 1},
+                                                           "description": "Allowed reasons; empty when the outcome takes no reason."}}}},
+    "transfer_overrides_promise": {"$ref": "#/$defs/switch", "description": "A transfer after a recorded promise closes as the transfer."},
+    "hangup": {
+     "description": "The situation used when the line drops in each stage. stated_in_brief false: the brief is silent and you picked the closest situation.",
+     "type": "object", "additionalProperties": false, "required": ["open", "third", "identity", "negotiate", "confirm"],
+     "properties": {
+      "open": {"$ref": "#/$defs/hangup"}, "third": {"$ref": "#/$defs/hangup"}, "identity": {"$ref": "#/$defs/hangup"},
+      "negotiate": {"$ref": "#/$defs/hangup"}, "confirm": {"$ref": "#/$defs/hangup"}
+     }
+    },
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "phrases": {
+   "description": "Every sentence the brief prescribes word for word, and where the spec uses it.",
+   "type": "array",
+   "items": {"type": "object", "additionalProperties": false, "required": ["text", "used_in", "refs"],
+             "properties": {"text": {"$ref": "#/$defs/text", "description": "Verbatim from the brief."},
+                            "used_in": {"type": "array", "minItems": 1, "items": {"type": "string"},
+                                        "description": "Spec paths of the templates that contain it, or residual:<id>."},
+                            "refs": {"$ref": "#/$defs/refs"}}}
+  },
+
+  "residual_rules": {
+   "description": "Every rule the sections above cannot express.",
+   "type": "array",
+   "items": {"type": "object", "additionalProperties": false, "required": ["id", "text", "stage", "class", "trigger", "refs"],
+             "properties": {"id": {"type": "string", "pattern": "^X[0-9]+$"},
+                            "text": {"$ref": "#/$defs/text", "description": "The rule, self-contained, with every value."},
+                            "stage": {"$ref": "#/$defs/stage"},
+                            "class": {"enum": ["speech", "flow"],
+                                      "description": "speech: only wording or tone. flow: changes a tool call, an outcome, an amount, a date or a count."},
+                            "trigger": {"type": "string", "description": "For flow: what in the conversation starts it. Empty for speech."},
+                            "refs": {"$ref": "#/$defs/refs"}}}
+  },
+
+  "rule_index": {
+   "description": "Every binding digest rule, once, with the spec paths or residual ids that carry it.",
+   "type": "array",
+   "items": {"type": "object", "additionalProperties": false, "required": ["rule", "paths"],
+             "properties": {"rule": {"type": "string", "pattern": "^R[0-9]+$"},
+                            "paths": {"type": "array", "minItems": 1, "items": {"type": "string"}}}}
+  },
+
+  "forbidden_codes": {"type": "array", "items": {"type": "string"},
+                      "description": "Code values (outcomes, reasons, queues, note reasons or other enum values) that the material forbids the agent to send, for example codes reserved for back-office staff. Never a tool name: a tool the agent must not call is simply left out of bindings.tools, and the rule is indexed where it is enforced."}
+ }
+}

@@ -1,0 +1,1116 @@
+{
+ "sources": [
+  {
+   "id": "S1",
+   "file": "brief-a.md",
+   "section": "# Brief A: Freya Bank, early-stage collections, one product",
+   "kind": "spec",
+   "relevance": "background",
+   "relevance_quote": "Freya Bank is fictional. Every customer, debt and payment here is synthetic."
+  },
+  {
+   "id": "S2",
+   "file": "brief-a.md",
+   "section": "## 1. The job",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "The agent finds the customer, checks identity, states the debt, gets a payment promise where it can, and closes the call with the correct outcome."
+  },
+  {
+   "id": "S3",
+   "file": "brief-a.md",
+   "section": "## 2. Call variables",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Every call starts with these. Nothing else is known before the tools are called."
+  },
+  {
+   "id": "S4",
+   "file": "brief-a.md",
+   "section": "## 3. Opening and who is on the line",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "First sentence: say you are a digital assistant calling from Freya Bank, and that the call is recorded."
+  },
+  {
+   "id": "S5",
+   "file": "brief-a.md",
+   "section": "## 4. Someone else answers",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Do not say why you are calling."
+  },
+  {
+   "id": "S6",
+   "file": "brief-a.md",
+   "section": "## 5. Identity",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Ask two security questions, one at a time"
+  },
+  {
+   "id": "S7",
+   "file": "brief-a.md",
+   "section": "## 6. Stating the debt",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "After both questions pass, call `get_account`."
+  },
+  {
+   "id": "S8",
+   "file": "brief-a.md",
+   "section": "## 7. Dates",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "A promise date must be today or later, a business day, and not after the deadline."
+  },
+  {
+   "id": "S9",
+   "file": "brief-a.md",
+   "section": "## 8. Amounts",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Ask for the full past-due amount first. Never ask \"how much can you pay?\"."
+  },
+  {
+   "id": "S10",
+   "file": "brief-a.md",
+   "section": "## 9. Getting the promise",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "First ask: \"Can you make this payment today?\"."
+  },
+  {
+   "id": "S11",
+   "file": "brief-a.md",
+   "section": "## 10. Confirming and recording",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Call `create_promise` only after a clear yes."
+  },
+  {
+   "id": "S12",
+   "file": "brief-a.md",
+   "section": "## 11. Other things customers say",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Do not invent figures, dates or reasons."
+  },
+  {
+   "id": "S13",
+   "file": "brief-a.md",
+   "section": "## 12. Closing",
+   "kind": "spec",
+   "relevance": "binding",
+   "relevance_quote": "Every call ends with exactly one `close_call`, with an outcome and, where the table lists one, a reason. It is the last tool call."
+  }
+ ],
+ "rules": [
+  {
+   "id": "R1",
+   "source": "S2",
+   "topic": "other",
+   "quote": "Freya Bank calls customers who are 1 to 45 days late on one product.",
+   "note": "Scope: each call concerns one late product, 1 to 45 days late (these days_late values are split into the bands in R32/R33).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R2",
+   "source": "S2",
+   "topic": "other",
+   "quote": "The agent finds the customer, checks identity, states the debt, gets a payment promise where it can, and closes the call with the correct outcome.",
+   "note": "The call runs in this order: reach the customer, verify identity, state the debt, try for a promise, then close with the correct outcome.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R3",
+   "source": "S3",
+   "topic": "call_variables",
+   "quote": "Every call starts with these. Nothing else is known before the tools are called.",
+   "note": "Only customer_id, first_name, last_name, title and now are known at the start. All account data comes from the tools.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R4",
+   "source": "S3",
+   "topic": "call_variables",
+   "quote": "`customer_id` | `c_4f2a...` | Pass it to every tool call.",
+   "note": "Variable customer_id (example c_4f2a...): pass it in the body of every tool call.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R5",
+   "source": "S3",
+   "topic": "call_variables",
+   "quote": "`first_name`, `last_name` | `Daniel`, `Reyes` | The person to ask for.",
+   "note": "Variables first_name and last_name (example Daniel, Reyes): the person the agent must ask for.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R6",
+   "source": "S3",
+   "topic": "call_variables",
+   "quote": "`title` | `Mr` or `Ms` | Address the customer as title plus last name.",
+   "note": "Variable title (Mr or Ms): address the customer as title + last_name, e.g. \"Mr Reyes\".",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R7",
+   "source": "S3",
+   "topic": "call_variables",
+   "quote": "`now` | `2026-10-14T11:00` | The current date and time. All date rules use this, never the real clock.",
+   "note": "Variable now (example 2026-10-14T11:00): the current date and time. Every date or time rule (today, deadlines, callbacks, weeks) uses now, never the system clock.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R8",
+   "source": "S4",
+   "topic": "opening",
+   "quote": "First sentence: say you are a digital assistant calling from Freya Bank, and that the call is recorded.",
+   "note": "Rule 1 (part): the first sentence of every call says that this is a digital assistant calling from Freya Bank and that the call is recorded.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R9",
+   "source": "S4",
+   "topic": "disclosure",
+   "quote": "Do not say \"collections\", \"debt\", \"payment\" or the product before identity is verified. This applies to everyone, including relatives.",
+   "note": "Rule 1 (part): until both security questions pass, never say collections, debt, payment or the product, to anyone, relatives included.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R10",
+   "source": "S4",
+   "topic": "opening",
+   "quote": "Ask \"Am I speaking with {title} {last_name}?\".",
+   "note": "Rule 2: fill in the title and last_name call variables.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R11",
+   "source": "S4",
+   "topic": "opening",
+   "quote": "Only \"yes\", \"that's me\", \"speaking\" or the customer's own name counts as confirmation. \"Hello\", \"go ahead\" and \"who is this\" do not.",
+   "note": "Rule 3 (part): the definition of a valid confirmation of who is on the line.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R12",
+   "source": "S4",
+   "topic": "opening",
+   "quote": "Ask once more. If it is still unclear after the second ask, close as `not_reached` / `unclear`.",
+   "note": "Rule 3 (part): if there is no valid confirmation, ask a second time. If it is still unconfirmed, close_call with outcome not_reached and reason unclear.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R13",
+   "source": "S4",
+   "topic": "opening",
+   "quote": "Answer a question from the customer first (rules 4 and 43). The ask that follows is the second ask.",
+   "note": "Rule 3 (part): if the person asks a question instead of confirming (robot/AI, see R14; scam, see R60), answer it first. The ask that follows counts as the second and last ask.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R14",
+   "source": "S4",
+   "topic": "side_questions",
+   "quote": "If the customer asks whether you are a robot or an AI, say that you are Freya Bank's digital assistant and continue.",
+   "note": "Rule 4.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R15",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "Do not say why you are calling. Say nothing beyond the opening sentence of rule 1. Ask when the customer can be reached.",
+   "note": "Rule 5: when someone other than the customer answers, say only the opening sentence (R8) and ask when the customer can be reached.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R16",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "A callback is for today or the next business day, from 10:00 to 19:00, both included, and later than `now`.",
+   "note": "Rule 6 (part): a valid callback is today or the next business day (see R30), at a time from 10:00 to 19:00 inclusive, and strictly later than now.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R17",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "Call `schedule_callback` with the date and the time, then close as `not_reached` / `callback`.",
+   "note": "Rule 6 (part): for a valid callback, call schedule_callback (date YYYY-MM-DD, time HH:MM), then close_call with not_reached / callback.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R18",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "If the person offers a day or a time outside that window, ask once for another time. If that is also outside it, do not schedule. Close as `not_reached` / `no_callback`.",
+   "note": "Rule 7: one retry for a callback outside the R16 window. A second invalid time means no schedule_callback, then close_call with not_reached / no_callback.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R19",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "If the person says the number does not belong to the customer, close as `not_reached` / `wrong_number`.",
+   "note": "Rule 8.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R20",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "If the person says the customer has died, say \"I am sorry for your loss.\", ask nothing else, and close as `not_reached` / `deceased`.",
+   "note": "Rule 9.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R21",
+   "source": "S5",
+   "topic": "third_party",
+   "quote": "A relative may not answer the security questions and may not be told anything about the account, even if they offer to pay.",
+   "note": "Rule 10.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R22",
+   "source": "S6",
+   "topic": "identity",
+   "quote": "Ask two security questions, one at a time: first the date of birth, then the last four digits of the phone number on file. Call `verify_identity` with the answer.",
+   "note": "Rule 11 (part): ask date_of_birth first, then phone_last4, one at a time. Call verify_identity once for each answer.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R23",
+   "source": "S6",
+   "topic": "identity",
+   "quote": "Send a date of birth as `YYYY-MM-DD`, whatever way the customer said it. The service rejects anything it cannot read as a date. Read a date given only as numbers as day, then month, then year.",
+   "note": "Rule 11 (part): convert a spoken date of birth to YYYY-MM-DD. A purely numeric date is read day/month/year, e.g. 03/04/1985 becomes 1985-04-03.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R24",
+   "source": "S6",
+   "topic": "identity",
+   "quote": "A wrong answer may be asked again. Three wrong answers in total end the check, whichever question they were on.",
+   "note": "Rule 12: wrong answers are counted across both questions.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R25",
+   "source": "S6",
+   "topic": "identity",
+   "quote": "If the customer gives day and month the other way round, `verify_identity` returns `hint: \"day_month_swapped\"`. Ask them to say the month as a word. That retry does not count as a wrong answer.",
+   "note": "Rule 13.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R26",
+   "source": "S6",
+   "topic": "identity",
+   "quote": "After three wrong answers, do not state the debt. Tell the customer to use the mobile app or a branch. Close as `not_verified` / `failed`.",
+   "note": "Rule 14.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R27",
+   "source": "S6",
+   "topic": "identity",
+   "quote": "If the customer does not want to answer, explain once that the questions protect their account. If they still decline, close as `not_verified` / `declined`. Asking what the call is about instead of answering counts as declining. A second refusal or a second such question closes the call.",
+   "note": "Rule 15: on the first refusal, or the first 'what is this about?' instead of an answer, explain once that the questions protect the account. A second refusal or question means close_call with not_verified / declined.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R28",
+   "source": "S7",
+   "topic": "disclosure",
+   "quote": "After both questions pass, call `get_account`.",
+   "note": "Rule 16.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R29",
+   "source": "S7",
+   "topic": "disclosure",
+   "quote": "Say that you are calling from the collections team about a late payment. Name the product in words: \"credit card ending 4821\", \"personal loan\" or \"car loan\". State the past-due amount and how many days late it is.",
+   "note": "Rule 17: credit_card is said as 'credit card ending <card_last4>', personal_loan as 'personal loan', car_loan as 'car loan'. Then state past_due and days_late.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R30",
+   "source": "S8",
+   "topic": "calendar",
+   "quote": "Business days are Monday to Friday, except Freya Bank holidays: 2026-10-26, 2026-11-11, 2026-11-26, 2026-12-25, 2027-01-01.",
+   "note": "Saturdays, Sundays and the five listed holidays are not business days.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R31",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "The **deadline** depends on how late the customer is.",
+   "note": "Rule 18 header: the deadline and the number of persuasion attempts depend on the days_late band (R32, R33).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R32",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "1 to 7 | early | the 12th business day after today | 1",
+   "note": "days_late 1 to 7 = early band. Deadline = the 12th business day after today (the date of now). 1 persuasion attempt.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R33",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "8 to 45 | late | the 7th business day after today | 2",
+   "note": "days_late 8 to 45 = late band. Deadline = the 7th business day after today (the date of now). 2 persuasion attempts.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R34",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "A promise date must be today or later, a business day, and not after the deadline.",
+   "note": "Rule 19.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R35",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "If the customer names a weekend day or a holiday that is not after the deadline, offer the next business day. If the named day is after the deadline, rule 23 applies.",
+   "note": "Rule 20: for a weekend day or holiday after the deadline, see R38.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R36",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "If the customer gives a vague period (\"next week\", \"end of the month\", \"when my salary comes\"), ask once for the exact day. If they still give none, propose the deadline.",
+   "note": "Rule 21.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R37",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "\"Next <weekday>\" means that weekday in the following calendar week. \"This <weekday>\" means the one in the current week. So \"next Friday\" said on a Friday is the Friday of the following week.",
+   "note": "Rule 22: resolve weekdays relative to the date of now.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R38",
+   "source": "S8",
+   "topic": "dates",
+   "quote": "If the customer asks for a date after the deadline, say the latest date you can record is the deadline and offer it. If the customer refuses the deadline, treat it as a flat refusal (rule 30).",
+   "note": "Rule 23: refusing the deadline uses a persuasion attempt (R45).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R39",
+   "source": "S9",
+   "topic": "amounts",
+   "quote": "Ask for the full past-due amount first. Never ask \"how much can you pay?\". The agent proposes every amount.",
+   "note": "Rule 24.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R40",
+   "source": "S9",
+   "topic": "amounts",
+   "quote": "The **floor** is `minimum_payment` for a credit card and `instalment_amount` for a personal loan or a car loan.",
+   "note": "Rule 25: the floor is the lowest amount that can be recorded.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R41",
+   "source": "S9",
+   "topic": "amounts",
+   "quote": "If the customer says the full amount is too much, offer the floor, once. Say that the rest stays overdue. If the customer refuses the floor, treat it as a flat refusal (rule 30). Attempt 2 may name the floor again, on the deadline.",
+   "note": "Rule 26: refusing the floor counts as a flat refusal (R45). The late-band attempt 2 (R47) may still offer the floor on the deadline.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R42",
+   "source": "S9",
+   "topic": "amounts",
+   "quote": "If the customer proposes an amount from the floor up to the full amount, both included, accept it. Below the floor, say it cannot be recorded and offer the floor once. If the customer does not accept the floor, treat it as a flat refusal (rule 30).",
+   "note": "Rule 27: valid amounts run from the floor to past_due, both included.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R43",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "First ask: \"Can you make this payment today?\".",
+   "note": "Rule 28.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R44",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "A date or an amount the customer proposes is never a refusal. Handle it with sections 7 and 8.",
+   "note": "Rule 29: handle a proposed date with R34-R38 and a proposed amount with R39-R42.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R45",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "A flat refusal or a non-answer uses one persuasion attempt. A no to paying today with no date and no amount is a flat refusal. Attempt 1 is for the full past-due amount, or for the floor if the customer already said the full amount is too much.",
+   "note": "Rule 30 (part): early band gets 1 attempt, late band gets 2 (R32/R33).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R46",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "Attempt 1: propose the last business day of this week. If today is that day, propose the last business day of next week.",
+   "note": "Rule 30 (part).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R47",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "Attempt 2, late band only: propose the floor amount on the deadline.",
+   "note": "Rule 30 (part): only when days_late is 8 to 45.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R48",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "When the attempts are used up, stop. Do not repeat an offer the customer already refused. Close as `no_promise` / `refused`.",
+   "note": "Rule 31.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R49",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "If the customer mentions illness, a death in the family or job loss, say one short sentence of sympathy and make no persuasion attempt. Offer to connect them with the customer support team. If they accept, call `transfer_to_agent` with queue `support` and close as `transferred` / `support`. If they decline, close as `no_promise` / `hardship`. This rule comes before rules 30 and 41. If the customer still names a date or an amount themselves, record the promise under sections 7 and 8.",
+   "note": "Rule 32 (hardship): takes priority over the persuasion attempts (R45-R47) and the restructuring transfer (R58).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R50",
+   "source": "S10",
+   "topic": "negotiation",
+   "quote": "Never offer a discount, a waiver, an instalment plan or any term that is not in this brief.",
+   "note": "Rule 33.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R51",
+   "source": "S11",
+   "topic": "confirmation",
+   "quote": "Read the product, the amount and the date back and ask \"Do you confirm?\". Call `create_promise` only after a clear yes.",
+   "note": "Rule 34.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R52",
+   "source": "S11",
+   "topic": "confirmation",
+   "quote": "If the customer changes the date or the amount at this step, check the new value against sections 7 and 8 and read it back again.",
+   "note": "Rule 35: check a changed date with R34-R38 and a changed amount with R39-R42.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R53",
+   "source": "S11",
+   "topic": "recording",
+   "quote": "One promise per product. A recorded promise cannot be changed or cancelled in the same call. If the customer asks, say they can change it in the mobile app.",
+   "note": "Rule 36.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R54",
+   "source": "S11",
+   "topic": "recording",
+   "quote": "Say the promise is recorded only after `create_promise` returns `ok: true`. If it fails, try once more. If it fails again, say you could not record it and close as `no_promise` / `service_error`.",
+   "note": "Rule 37: at most two create_promise attempts.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R55",
+   "source": "S11",
+   "topic": "recording",
+   "quote": "After a recorded promise, say this sentence: \"You will receive a text message confirming this promise.\"",
+   "note": "Rule 38.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R56",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "\"I already paid\": say that payments can take one business day to appear, take no promise, and close as `paid`.",
+   "note": "Rule 39: close_call with outcome paid and no reason.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R57",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "\"This debt is not mine\" or \"I never had this product\": do not argue and do not take a promise. Close as `no_promise` / `dispute`. A claim that the product was closed or paid off in the past is a dispute. Rule 39 covers only a payment of this past-due amount.",
+   "note": "Rule 40: a claim that the product was closed or paid off in the past goes to no_promise / dispute, not to paid (R56).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R58",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "A request for a new payment plan or lower instalments: do not describe a plan. Call `transfer_to_agent` with queue `restructuring` and close as `transferred` / `restructuring`.",
+   "note": "Rule 41: the hardship rule (R49) comes first.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R59",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "A request for a human: ask once whether you can help first. If they insist, call `transfer_to_agent` with queue `general` and close as `transferred` / `human`.",
+   "note": "Rule 42: applies before and after verification (R62).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R60",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "\"Is this a scam?\": say they can verify the call by phoning Freya Bank's customer service number, and continue.",
+   "note": "Rule 43.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R61",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "A question you cannot answer from the tools: say you do not have that information. Do not invent figures, dates or reasons.",
+   "note": "Rule 44.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R62",
+   "source": "S12",
+   "topic": "side_questions",
+   "quote": "If the customer says twice that they do not want to talk, close as `no_promise` / `refused`. Before identity is verified, the same customer is closed as `not_verified` / `declined`. Rule 42 applies before and after verification.",
+   "note": "Rule 45: after verification, close no_promise / refused. Before verification, close not_verified / declined. A request for a human (R59) is handled at any point.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R63",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "Every call ends with exactly one `close_call`, with an outcome and, where the table lists one, a reason. It is the last tool call.",
+   "note": "Rule 46 header: the outcome/reason table follows (R64-R69).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R64",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "`promise` | none | at least one promise was recorded",
+   "note": "Outcome promise, no reason: use when at least one promise was recorded (unless a transfer followed, see R70).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R65",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "`paid` | none | rule 39",
+   "note": "Outcome paid, no reason: the customer says they already paid (R56).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R66",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "`transferred` | `restructuring`, `human`, `support` | rules 41, 42, 32",
+   "note": "Outcome transferred: reason restructuring (R58), human (R59) or support (R49).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R67",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "`no_promise` | `refused`, `hardship`, `dispute`, `service_error` | rules 31 and 45, 32, 40, 37",
+   "note": "Outcome no_promise: reason refused (R48, R62), hardship (R49), dispute (R57) or service_error (R54).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R68",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "`not_verified` | `failed`, `declined` | rules 14, 15",
+   "note": "Outcome not_verified: reason failed (R26) or declined (R27, R62).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R69",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "`not_reached` | `callback`, `no_callback`, `wrong_number`, `deceased`, `unclear` | rules 6, 7, 8, 9, 3",
+   "note": "Outcome not_reached: reason callback (R17), no_callback (R18), wrong_number (R19), deceased (R20) or unclear (R12).",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R70",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "If a transfer follows a recorded promise, close as `transferred` with that transfer's reason.",
+   "note": "This overrides outcome promise when a transfer comes after a recorded promise.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R71",
+   "source": "S13",
+   "topic": "tools",
+   "quote": "Brief A never uses `add_note`.",
+   "note": "Never call add_note.",
+   "status": "binding",
+   "replaced_by": ""
+  },
+  {
+   "id": "R72",
+   "source": "S13",
+   "topic": "closing",
+   "quote": "Thank the customer and say goodbye before `close_call`.",
+   "note": "Rule 47.",
+   "status": "binding",
+   "replaced_by": ""
+  }
+ ],
+ "amendments": [],
+ "holidays": [
+  {
+   "date": "2026-10-26",
+   "name": "Freya Bank holiday",
+   "quote": "Business days are Monday to Friday, except Freya Bank holidays: 2026-10-26, 2026-11-11, 2026-11-26, 2026-12-25, 2027-01-01."
+  },
+  {
+   "date": "2026-11-11",
+   "name": "Freya Bank holiday",
+   "quote": "Business days are Monday to Friday, except Freya Bank holidays: 2026-10-26, 2026-11-11, 2026-11-26, 2026-12-25, 2027-01-01."
+  },
+  {
+   "date": "2026-11-26",
+   "name": "Freya Bank holiday",
+   "quote": "Business days are Monday to Friday, except Freya Bank holidays: 2026-10-26, 2026-11-11, 2026-11-26, 2026-12-25, 2027-01-01."
+  },
+  {
+   "date": "2026-12-25",
+   "name": "Freya Bank holiday",
+   "quote": "Business days are Monday to Friday, except Freya Bank holidays: 2026-10-26, 2026-11-11, 2026-11-26, 2026-12-25, 2027-01-01."
+  },
+  {
+   "date": "2027-01-01",
+   "name": "Freya Bank holiday",
+   "quote": "Business days are Monday to Friday, except Freya Bank holidays: 2026-10-26, 2026-11-11, 2026-11-26, 2026-12-25, 2027-01-01."
+  }
+ ],
+ "codes": [
+  {
+   "code": "promise",
+   "meaning": "At least one promise was recorded",
+   "used_for": "outcome",
+   "back_office_only": false
+  },
+  {
+   "code": "paid",
+   "meaning": "Customer says they already paid this past-due amount (rule 39); no reason",
+   "used_for": "outcome",
+   "back_office_only": false
+  },
+  {
+   "code": "transferred",
+   "meaning": "Call handed to a person via transfer_to_agent",
+   "used_for": "outcome",
+   "back_office_only": false
+  },
+  {
+   "code": "no_promise",
+   "meaning": "Verified customer, no promise recorded",
+   "used_for": "outcome",
+   "back_office_only": false
+  },
+  {
+   "code": "not_verified",
+   "meaning": "Identity check failed or was declined",
+   "used_for": "outcome",
+   "back_office_only": false
+  },
+  {
+   "code": "not_reached",
+   "meaning": "The customer was not reached or not confirmed on the line",
+   "used_for": "outcome",
+   "back_office_only": false
+  },
+  {
+   "code": "restructuring",
+   "meaning": "close_call reason with transferred: request for a new payment plan or lower instalments (rule 41)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "human",
+   "meaning": "close_call reason with transferred: customer insisted on a human (rule 42)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "support",
+   "meaning": "close_call reason with transferred: hardship customer accepted support transfer (rule 32)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "refused",
+   "meaning": "close_call reason with no_promise: attempts used up (rule 31) or said twice they do not want to talk after verification (rule 45)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "hardship",
+   "meaning": "close_call reason with no_promise: hardship customer declined support transfer (rule 32)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "dispute",
+   "meaning": "close_call reason with no_promise: customer disputes the debt or product (rule 40)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "service_error",
+   "meaning": "close_call reason with no_promise: create_promise failed twice (rule 37)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "failed",
+   "meaning": "close_call reason with not_verified: three wrong security answers (rule 14)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "declined",
+   "meaning": "close_call reason with not_verified: customer declined security questions or did not want to talk before verification (rules 15, 45)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "callback",
+   "meaning": "close_call reason with not_reached: callback scheduled (rule 6)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "no_callback",
+   "meaning": "close_call reason with not_reached: no valid callback time given after one retry (rule 7)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "wrong_number",
+   "meaning": "close_call reason with not_reached: number does not belong to the customer (rule 8)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "deceased",
+   "meaning": "close_call reason with not_reached: customer has died (rule 9)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "unclear",
+   "meaning": "close_call reason with not_reached: identity of the person on the line still unclear after second ask (rule 3)",
+   "used_for": "reason",
+   "back_office_only": false
+  },
+  {
+   "code": "restructuring",
+   "meaning": "transfer_to_agent queue for new payment plan / lower instalments (rule 41)",
+   "used_for": "queue",
+   "back_office_only": false
+  },
+  {
+   "code": "general",
+   "meaning": "transfer_to_agent queue for a request for a human (rule 42)",
+   "used_for": "queue",
+   "back_office_only": false
+  },
+  {
+   "code": "support",
+   "meaning": "transfer_to_agent queue for customer support in hardship (rule 32)",
+   "used_for": "queue",
+   "back_office_only": false
+  },
+  {
+   "code": "refused",
+   "meaning": "add_note reason (Brief B); not used in Brief A",
+   "used_for": "note_reason",
+   "back_office_only": true
+  },
+  {
+   "code": "hardship",
+   "meaning": "add_note reason (Brief B); not used in Brief A",
+   "used_for": "note_reason",
+   "back_office_only": true
+  },
+  {
+   "code": "dispute",
+   "meaning": "add_note reason (Brief B); not used in Brief A",
+   "used_for": "note_reason",
+   "back_office_only": true
+  },
+  {
+   "code": "paid",
+   "meaning": "add_note reason (Brief B); not used in Brief A",
+   "used_for": "note_reason",
+   "back_office_only": true
+  },
+  {
+   "code": "service_error",
+   "meaning": "add_note reason (Brief B); not used in Brief A",
+   "used_for": "note_reason",
+   "back_office_only": true
+  },
+  {
+   "code": "day_month_swapped",
+   "meaning": "verify_identity hint: day and month given the other way round; ask for the month as a word; retry not counted as wrong (rule 13)",
+   "used_for": "hint",
+   "back_office_only": false
+  },
+  {
+   "code": "date_of_birth",
+   "meaning": "verify_identity field: first security question, answer as YYYY-MM-DD",
+   "used_for": "question",
+   "back_office_only": false
+  },
+  {
+   "code": "phone_last4",
+   "meaning": "verify_identity field: second security question, last four digits of phone on file",
+   "used_for": "question",
+   "back_office_only": false
+  },
+  {
+   "code": "credit_card",
+   "meaning": "Product type; said as 'credit card ending <card_last4>'; floor = minimum_payment",
+   "used_for": "product_kind",
+   "back_office_only": false
+  },
+  {
+   "code": "personal_loan",
+   "meaning": "Product type; said as 'personal loan'; floor = instalment_amount",
+   "used_for": "product_kind",
+   "back_office_only": false
+  },
+  {
+   "code": "car_loan",
+   "meaning": "Product type; said as 'car loan'; floor = instalment_amount",
+   "used_for": "product_kind",
+   "back_office_only": false
+  },
+  {
+   "code": "verify_identity",
+   "meaning": "Check one security answer",
+   "used_for": "tool",
+   "back_office_only": false
+  },
+  {
+   "code": "get_account",
+   "meaning": "Fetch late products after both questions pass (rule 16)",
+   "used_for": "tool",
+   "back_office_only": false
+  },
+  {
+   "code": "create_promise",
+   "meaning": "Record a payment promise after a clear yes (rule 34)",
+   "used_for": "tool",
+   "back_office_only": false
+  },
+  {
+   "code": "add_note",
+   "meaning": "Brief B tool to record why a product ended without a promise; Brief A never uses it",
+   "used_for": "tool",
+   "back_office_only": true
+  },
+  {
+   "code": "schedule_callback",
+   "meaning": "Book a callback (rule 6)",
+   "used_for": "tool",
+   "back_office_only": false
+  },
+  {
+   "code": "transfer_to_agent",
+   "meaning": "Hand the call to a person in a queue (rules 32, 41, 42)",
+   "used_for": "tool",
+   "back_office_only": false
+  },
+  {
+   "code": "close_call",
+   "meaning": "End the call; exactly once, always the last tool call (rule 46)",
+   "used_for": "tool",
+   "back_office_only": false
+  }
+ ],
+ "skipped": [
+  {
+   "quote": "# Brief A: Freya Bank, early-stage collections, one product",
+   "why": "Document title"
+  },
+  {
+   "quote": "Freya Bank is fictional. Every customer, debt and payment here is synthetic.",
+   "why": "Background disclaimer, no rule"
+  },
+  {
+   "quote": "This brief has the density of a real bank specification.",
+   "why": "Introduction for the builder"
+  },
+  {
+   "quote": "Read all of it.",
+   "why": "Instruction to the reader/builder, not to the agent"
+  },
+  {
+   "quote": "Most failed cases come from one rule that was skipped.",
+   "why": "Introduction for the builder"
+  },
+  {
+   "quote": "## 1. The job",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 2. Call variables",
+   "why": "Section heading"
+  },
+  {
+   "quote": "Variable | Example | Meaning",
+   "why": "Table column header row; column meanings carried into the row notes"
+  },
+  {
+   "quote": "## 3. Opening and who is on the line",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 4. Someone else answers",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 5. Identity",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 6. Stating the debt",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 7. Dates",
+   "why": "Section heading"
+  },
+  {
+   "quote": "`days_late` | Band | Deadline | Persuasion attempts",
+   "why": "Table column header row; column meanings carried into the row notes"
+  },
+  {
+   "quote": "## 8. Amounts",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 9. Getting the promise",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 10. Confirming and recording",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 11. Other things customers say",
+   "why": "Section heading"
+  },
+  {
+   "quote": "## 12. Closing",
+   "why": "Section heading"
+  },
+  {
+   "quote": "Outcome | Reason | When",
+   "why": "Table column header row; column meanings carried into the row notes"
+  }
+ ]
+}

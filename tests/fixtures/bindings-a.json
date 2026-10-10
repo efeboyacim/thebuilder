@@ -26,7 +26,7 @@
             "reason": {"source": "engine", "value": "reason"}}
  },
  "response": {
-  "verify": {"ok": "ok", "error": "error", "verified": "verified", "all_verified": "all_verified",
+  "verify": {"ok": "ok", "error": "error", "verified": "verified", "fully_verified": "all_verified",
              "attempts_left": "wrong_answers_left", "hint": "hint"},
   "lookup": {"ok": "ok", "error": "error", "products": "products",
              "item": {"ref": "product_id", "kind": "type", "due_amount": "past_due", "days_overdue": "days_late"}},

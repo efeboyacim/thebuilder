@@ -141,15 +141,15 @@ class StubBank:
         for h in self.hints:
             if h.get("question") == q and _norm(h.get("answer")) == _norm(given):
                 self.ledger["hinted"] += 1
-                return self._ok("verify", tool, {"verified": False, "all_verified": self._all_passed(),
+                return self._ok("verify", tool, {"verified": False, "fully_verified": self._all_passed(),
                                                  "attempts_left": left(), "hint": h["hint"]})
         if _norm(given) == _norm(self.answers[q]):
             self.passed.add(q)
             self.ledger["verified"] = self._all_passed()
-            return self._ok("verify", tool, {"verified": True, "all_verified": self._all_passed(),
+            return self._ok("verify", tool, {"verified": True, "fully_verified": self._all_passed(),
                                              "attempts_left": left()})
         self.ledger["wrong"] += 1
-        return self._ok("verify", tool, {"verified": False, "all_verified": self._all_passed(),
+        return self._ok("verify", tool, {"verified": False, "fully_verified": self._all_passed(),
                                          "attempts_left": left()})
 
     def _lookup(self, tool, v):

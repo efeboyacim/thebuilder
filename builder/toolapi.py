@@ -289,7 +289,7 @@ def example(schema):
     if typ == "array":
         return [example(schema.get("items") or {})]
     if typ == "string":
-        return {"date": "2000-01-03", "date-time": "2000-01-03T10:00:00", "time": "10:00"}.get(fmt, "text")
+        return {"date": "2000-01-03", "date-time": "2000-01-03T08:15:00", "time": "08:15"}.get(fmt, "text")
     return {"integer": 1, "number": 1.5, "boolean": True}.get(typ, "text")
 
 

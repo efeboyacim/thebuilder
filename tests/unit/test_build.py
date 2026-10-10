@@ -44,10 +44,39 @@ def test_slot_option_and_env(tmp_path, monkeypatch):
     assert name.startswith("env-")
 
 
+SPEC = "tests/fixtures/spec-a-v0.json"
+
+
 def test_unfinished_stage_is_an_error_with_a_trace(tmp_path, monkeypatch):
     monkeypatch.chdir(ROOT)
-    code, ev, _ = run(tmp_path, A, API)
-    assert code == 1 and ev[-1]["status"] == "error" and "not implemented" in ev[-1]["error"]
+    code, ev, _ = run(tmp_path, A, API, "--spec", SPEC, environ={"BUILDER_OUT_DIR": str(tmp_path / "out")})
+    assert code == 1 and ev[-1]["status"] == "error" and "stage compile is not implemented" in ev[-1]["error"]
+
+
+def test_given_spec_until_spec(tmp_path, monkeypatch):
+    monkeypatch.chdir(ROOT)
+    code, ev, _ = run(tmp_path, A, API, "--until", "spec", "--spec", SPEC,
+                      environ={"BUILDER_OUT_DIR": str(tmp_path / "out")})
+    assert code == 0 and ev[-1]["stopped_after"] == "spec"
+    (check,) = [e for e in ev if e["ev"] == "check"]
+    (spec,) = [e for e in ev if e["ev"] == "spec"]
+    assert check["name"] == "spec_validate_given" and check["ok"] and spec["given"] == SPEC
+    assert not [e for e in ev if e["ev"] == "model_call"]
+    ns = [e["text"] for e in ev if e["ev"] == "warning" and e["text"].startswith("not_specified:")]
+    assert len(ns) == len(spec["not_specified"]) > 0
+
+
+def test_invalid_given_spec_fails_the_spec_stage(tmp_path, monkeypatch):
+    monkeypatch.chdir(ROOT)
+    bad = json.loads((ROOT / SPEC).read_text(encoding="utf-8"))
+    bad["situations"][0]["outcome"] = "maybe"
+    path = tmp_path / "bad.json"
+    path.write_text(json.dumps(bad), encoding="utf-8")
+    (tmp_path / "t").mkdir()
+    code, ev, _ = run(tmp_path / "t", A, API, "--until", "spec", "--spec", str(path))
+    (stage,) = [e for e in ev if e["ev"] == "stage" and e["name"] == "spec"]
+    assert code == 1 and stage["ok"] is False and "'maybe' is not one of the tool's values" in json.dumps(ev)
+    assert ev[-1]["error"].startswith("SpecError") and not [e for e in ev if e["ev"] == "error"]
 
 
 def test_bad_input_still_writes_a_trace(tmp_path, monkeypatch):

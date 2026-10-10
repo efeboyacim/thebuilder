@@ -12,15 +12,17 @@ brief material, read in the order given. Options:
     --spec FILE     compile this spec instead of building one with the LLM (test fixtures only)
 
 Writes traces/<slot>-<UTC time>.jsonl (env BUILDER_TRACE_DIR moves it) and echoes every trace event to stdout.
+Artifacts (digest, spec, checks) go to out/<slot>/ (env BUILDER_OUT_DIR moves out/).
 """
-import argparse, os, platform, subprocess, sys, time, traceback
+import argparse, json, os, platform, subprocess, sys, time, traceback
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 if sys.path and Path(sys.path[0] or ".").resolve() == ROOT / "builder":
     sys.path[0] = str(ROOT)  # import as the `builder` package; builder/trace.py must not shadow stdlib `trace`
 
-from builder import ingest, toolapi  # noqa: E402
+from builder import ingest, specgen, toolapi  # noqa: E402
+from builder import spec as sp  # noqa: E402
 from builder.trace import Trace  # noqa: E402
 
 STAGES = ("ingest", "toolapi", "spec", "compile", "freya")
@@ -89,7 +91,32 @@ def stage_toolapi(ctx):
         for n, t in api.tools.items()}}
 
 
-STAGE_FUNCS = {"toolapi": stage_toolapi}
+def stage_spec(ctx):
+    args, trace, api = ctx["args"], ctx["trace"], ctx["api"]
+    out_dir = os.path.join(ctx["out_root"], ctx["slot"])
+    if args.spec:
+        with open(args.spec, encoding="utf-8") as f:
+            spec = json.load(f)
+        report = sp.validate(spec, api, "\n".join(b.text for b in ctx["inputs"].briefs))
+        trace.event("check", name="spec_validate_given", ok=report.ok, errors=report.errors[:60],
+                    n_errors=len(report.errors), warnings=report.warnings[:20])
+        if report.errors:
+            raise sp.SpecError(f"{args.spec}: {len(report.errors)} validation error(s); first: {report.errors[0]}")
+        summary = {"given": args.spec, **report.info}
+    else:
+        spec, report, summary = specgen.run(ctx, out_dir)
+    for path in report.info.get("not_specified") or []:
+        trace.warning(f"not_specified: {path} (neutral behaviour)")
+    for stage in report.info.get("hangup_chosen_by_model") or []:
+        trace.warning(f"hang-up situation in stage {stage} is not stated in the brief; the model chose the closest one")
+    trace.event("spec", **summary)
+    ctx["spec"] = spec
+    return {"out": out_dir, "rules": summary.get("rules"), "coverage": summary.get("coverage"),
+            "repair_rounds": summary.get("repair_rounds"), "not_specified": len(report.info.get("not_specified") or []),
+            "residuals": report.info.get("residuals")}
+
+
+STAGE_FUNCS = {"toolapi": stage_toolapi, "spec": stage_spec}
 
 
 def run_stages(ctx):
@@ -162,13 +189,14 @@ def main(argv=None, trace_dir=None, environ=None):
         for w in inputs.warnings:
             trace.warning(w)
         trace.event("stage", name="ingest", ok=True, seconds=round(time.time() - t0, 1), summary=ingest_summary(inputs))
-        ctx = {"args": args, "inputs": inputs, "trace": trace, "slot": slot, "done": "ingest"}
+        ctx = {"args": args, "inputs": inputs, "trace": trace, "slot": slot, "done": "ingest",
+               "out_root": environ.get("BUILDER_OUT_DIR") or str(ROOT / "out")}
         try:
             run_stages(ctx)
             status = "stopped" if args.until else "ok"
         except Exception as e:  # noqa: BLE001 - every failure ends in a run_end event
             error, status = f"{type(e).__name__}: {e}", "error"
-            if not isinstance(e, (StageNotReady, toolapi.ToolAPIError)):
+            if not isinstance(e, (StageNotReady, toolapi.ToolAPIError, sp.SpecError, specgen.SpecGenError)):
                 trace.event("error", text=error, traceback=traceback.format_exc()[-2000:])
         done = ctx["done"]
     trace.close(status, stopped_after=done if status == "stopped" else None, error=error,

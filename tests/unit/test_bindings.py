@@ -133,7 +133,7 @@ def test_response_roles_round_trip(api_r, b_r):
     body = bd.build_response(b_r, "verify", {"ok": True, "verified": False, "attempts_left": 1, "hint": "partial_postcode"})
     assert body == {"status": {"ok": True}, "passed": False, "attempts_remaining": 1, "hint": "partial_postcode"}
     assert ta.check(api_r.tools["verify_identity"].response_schema, body) == []
-    assert bd.read_response(b_r, "verify", body) == {"ok": True, "error": None, "verified": False, "all_verified": None,
+    assert bd.read_response(b_r, "verify", body) == {"ok": True, "error": None, "verified": False, "fully_verified": None,
                                                      "attempts_left": 1, "hint": "partial_postcode"}
     items = [{"ref": "A-1", "kind": "overdraft", "due_amount": 250.5, "days_overdue": 30, "fields": {"overdraft_limit": 1e3}}]
     body = bd.build_response(b_r, "lookup", {"ok": True}, items)
