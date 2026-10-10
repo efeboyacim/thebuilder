@@ -171,11 +171,11 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
 
 - `plan.md` and `docs/design.md` are approved and committed. Architecture: hybrid compiler with a hub-and-spoke "brain" (see `docs/design.md`). Work follows `plan.md`, one item at a time.
 - The organisers' answers above are in `plan.md` Decisions. Where `docs/design.md` still plans directory or multi-file ingest, custom customers or scarce slots, the answers win.
-- Items 01 and 02 are done (see `plan.md` Done). Next: item 03 (chat-API spikes S1 + S1b).
+- Items 01–03 are done (see `plan.md` Done). G1's S1 part: the hub stays. Next: item 04 (spikes S2, S2b, S3 on practice sessions), which makes the final G1 call.
 - Local facts:
   - `python3` on this machine is the Windows Store stub. Run `python` (3.10.11) locally; keep `python3` in the form command.
   - `env.sh` is verified. `FREYA_BANK_TEAM_KEY` was regenerated on 2026-10-10 (32 chars). Keep it from now on: practice sessions belong to it.
-  - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes.
+  - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes; `spikes/s1_loop.py` restores the base agent after each run.
   - Plan Z agents from item 02: slot `brief-a` = agent `413df77e-9c57-43be-951b-42fcd0edf06f` (A), slot `brief-b` = agent `cd5d5f42-5205-4277-a490-c0bd5c21afae` (A+B). Their files are in `results/02-planz/`.
   - Run `run_cases.py` and builders in the background and wait for the completion notice. A 10-case run took 95 to 168 s.
   - The kit builder (Claude Agent SDK) run from inside a Claude Code session needs the host's `CLAUDE*`/`ANTHROPIC*` variables unset, a `python3` → `python` shim on `PATH` and `PYTHONUTF8=1`.
@@ -185,6 +185,12 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
   - The ledger (`/v1/practice/ledger/<customer_id>`) also shows `verified`, `wrong`, `hinted`, `failures` and every call with args and result: useful for debugging.
 - Platform facts learned in item 02:
   - The event model can go down: around 13:45–14:00 UTC every agent, the base agent too, went silent after the first customer turn. Before debugging an all-fail run, run one case on `scratch` as a control.
-  - Tool hooks can fail late in a call with "did not return a parseable result". A failing pre-hook stopped `close_call` from going out (Plan Z, Brief B run 2).
+  - Tool hooks can fail late in a call with "did not return a parseable result". A failing pre-hook stopped `close_call` from going out (Plan Z, Brief B run 2). It was likely the sandbox outage seen in item 03.
   - A newly created workflow has no event model in `agent_config` until its first update (`freya.update_workflow` sets it). The chat route needs it, so save a new slot twice.
   - The kit builder reads `CLAUDE.md`, `plan.md`, `results/` and earlier `out/` files and reuses them (its A+B build copied `out/gen_brief_a.py`, which hard-codes Brief A values).
+- Platform facts learned in item 03 (full table in `docs/spikes.md`):
+  - A code run takes 1.5–2.4 s after the 10 October fix, whatever the code size; extraction takes 0.25–0.7 s.
+  - A failed code run is silent: transitions see the old variables. It sets `<node>_response.status = error` and `<node>_status_code = 502`, so test that first.
+  - The chat route skips a first code node, returns 504 after 60 s while the engine finishes the turn, and returns 504 on the farewell turn too. Read the reply from the call's messages then.
+  - `date` extraction anchors to the real clock, not to `now`.
+  - Each code run copies its whole code into the transcript (`function_call_start`).
