@@ -1,0 +1,26 @@
+PASS PUB-01 easy   Happy path     | verify > verify > get_account > promise > close_call
+PASS PUB-02 medium Third party    | schedule_callback > close_call
+PASS PUB-03 medium Identity       | verify > verify > verify > close_call
+
+slowest agent turn per call: median 2 s, worst 2 s. Failed calls where the customer hung up: 0.
+-- run 1 of 3: 3 / 3 passed, 32 s
+
+PASS PUB-01 easy   Happy path     | verify > verify > get_account > promise > close_call
+PASS PUB-02 medium Third party    | schedule_callback > close_call
+PASS PUB-03 medium Identity       | verify > verify > verify > close_call
+
+slowest agent turn per call: median 9 s, worst 12 s. Failed calls where the customer hung up: 0.
+-- run 2 of 3: 3 / 3 passed, 63 s
+
+PASS PUB-01 easy   Happy path     | verify > verify > get_account > promise > close_call
+PASS PUB-02 medium Third party    | schedule_callback > close_call
+PASS PUB-03 medium Identity       | verify > verify > verify > close_call
+
+slowest agent turn per call: median 2 s, worst 3 s. Failed calls where the customer hung up: 0.
+-- run 3 of 3: 3 / 3 passed, 53 s
+
+PASS PUB-01 3/3
+PASS PUB-02 3/3
+PASS PUB-03 3/3
+
+3 / 3 passed (bank records and conversation checks), a customer counts with 3 of 3 runs. Last simulation 061db7d1-8c24-4992-a3f4-039b681825d0, status completed, 148 s.

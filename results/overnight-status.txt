@@ -1,0 +1,8 @@
+queue start 2026-10-10T20:16:43Z
+planz-a try 1 start 2026-10-10T20:16:43Z slot=brief-a agent=413df77e-9c57-43be-951b-42fcd0edf06f args=--brief A --reps 3
+planz-a try 1 end 2026-10-10T20:27:27Z exit=0: 7 / 10 passed (bank records and conversation checks), a customer counts with 3 of 3 runs. Last simulation 238b8165-165e-4efb-a41d-9012c41c3432, status completed, 613 s.
+planz-ab try 1 start 2026-10-10T20:27:27Z slot=brief-b agent=cd5d5f42-5205-4277-a490-c0bd5c21afae args=--brief B --reps 3
+planz-ab try 1 end 2026-10-10T20:30:05Z exit=0: 3 / 3 passed (bank records and conversation checks), a customer counts with 3 of 3 runs. Last simulation ea8ce12d-6f79-4e6f-aa31-9107b68eb99f, status completed, 148 s.
+hub-a try 1 start 2026-10-10T20:30:06Z slot=hub-a agent=1a7f5edd-489e-4d79-ac92-7ce7c60d509b args=--brief A --only PUB-01,PUB-02,PUB-03 --reps 3
+hub-a try 1 end 2026-10-10T20:32:44Z exit=0: 3 / 3 passed (bank records and conversation checks), a customer counts with 3 of 3 runs. Last simulation 061db7d1-8c24-4992-a3f4-039b681825d0, status completed, 148 s.
+queue end 2026-10-10T20:32:44Z
