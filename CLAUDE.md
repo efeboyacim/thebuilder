@@ -171,7 +171,7 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
 
 - `plan.md` and `docs/design.md` are approved and committed. Architecture: hybrid compiler with a hub-and-spoke "brain" (see `docs/design.md`). Work follows `plan.md`, one item at a time.
 - The organisers' answers above are in `plan.md` Decisions. Where `docs/design.md` still plans directory or multi-file ingest, custom customers or scarce slots, the answers win.
-- Items 01–09 are done (see `plan.md` Done). **G1 final: the hub stays as designed** (no L1–L3). **K1 green**: `hub-a` passed PUB-01..03 3/3 live. Next: item 10 (overnight queue).
+- Items 01–10 are done (see `plan.md` Done). **G1 final: the hub stays as designed** (no L1–L3). **K1 green**: `hub-a` passed PUB-01..03 3/3 live. Item 10 reference scores at `--reps 3`: Plan Z A 7/10 (PUB-06 offered the minimum more than once, PUB-09 closed before the transfer, PUB-10 a judge timeout), Plan Z A+B 3/3 on B, `hub-a` 3/3 on PUB-01..03. Next: item 11 (dates and persuasion ladder); start from the item 08 notes in `plan.md` Done (slice placeholders marked in `engine.py`) and the spec fixture `tests/fixtures/spec-a-v0.json`.
 - `builder/` (items 05–09): `build.py` CLI and stage loop (ingest, toolapi, spec), `ingest.py`, `trace.py`, `llm.py`, `toolapi.py`, `bindings.py` (engine roles ↔ API fields), `stubbank.py` (offline bank), `spec_schema.json` + `spec.py` (spec v0 and its validator), `specgen.py` (digest, spec, repair), `policy_lib.py` + `engine.py` (the brain), `brain.py` (brain code string), `exprs.py`, `contract.py` (extraction fields), `replay.py` (local Freya emulation), `compiler.py` (spec + API → workflow, lint, read-back diff). `build.py` runs every stage; `--spec FILE` skips the LLM. Unit tests: `python -m pytest tests/unit -q`; leak lint: `python tools/leak_lint.py`. Our default slot is `hub-<brief stems joined by +>`.
 - Local facts:
   - `python3` on this machine is the Windows Store stub. Run `python` (3.10.11) locally; keep `python3` in the form command.
@@ -179,6 +179,7 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
   - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes; `spikes/s1_loop.py` and `spikes/s2_api.py` restore the base agent after each run.
   - Plan Z agents from item 02: slot `brief-a` = agent `413df77e-9c57-43be-951b-42fcd0edf06f` (A), slot `brief-b` = agent `cd5d5f42-5205-4277-a490-c0bd5c21afae` (A+B). Their files are in `results/02-planz/`.
   - Run `run_cases.py` and builders in the background and wait for the completion notice. A 10-case run took 95 to 168 s.
+  - `bash tools/overnight.sh` scores `brief-a`, `brief-b` and the `hub-a` slice at 3 reps (results in `results/overnight-*`), retrying a job up to 6 times, 10 min apart, when the platform fails to start a simulation. Before trusting an all-fail run or after an outage, run one case on `scratch` as a control (PUB-01 fails there by design; check the turn times).
   - The kit builder (Claude Agent SDK) run from inside a Claude Code session needs the host's `CLAUDE*`/`ANTHROPIC*` variables unset, a `python3` → `python` shim on `PATH` and `PYTHONUTF8=1`.
 - Mock bank facts learned in item 01:
   - It rejects a close_call reason outside its outcome table (`ok:false`); the ledger outcome then stays empty.
