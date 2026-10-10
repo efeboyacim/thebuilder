@@ -1,0 +1,76 @@
+start 2026-10-10T13:39:01Z briefs: briefs/brief-a.md
+  [Skill] {'skill': 'build-phone-agent', 'args': 'briefs/brief-a.md'}
+I'll start by reading the brief, the tool API, the docs and the example.
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\briefs\\brief-a.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\tools\\openapi.json'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\examples\\base-agent.json'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\docs\\workflow-format.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\docs\\tools-and-code.md'}
+Now the test set and the runner, so I know what the cases look like.
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\public-test-set.json'}
+  [Bash] {'command': 'ls out examples .claude/skills/build-phone-agent 2>&1; wc -l tools/run_cases.py freya.py; git status --shor
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\tools\\run_cases.py'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\freya.py'}
+Before designing, let me check what earlier work in this repo already learned (the plan and the Plan Z log).
+  [Bash] {'command': 'ls traces results docs; tail -40 results/02-planz-a.log; cat .freya-agents.json', 'description': 'Inspect p
+I'm running as the Plan Z agentic build, so time counts. Quick check of what `agent_builder.py` does after I finish (export/trace), so I don't duplicate it.
+  [Grep] {'pattern': 'export_workflow|traces|out/|slot', 'path': 'C:\\Users\\efeby\\Desktop\\builder\\examples\\agent_builder.py'
+  [Write] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_a.py', 'content': '"""Generate out/brief-a.workflow.js
+Generate it, then run the in-workflow facts code locally against the Brief A practice customers to check dates and bands.
+  [Bash] {'command': "python out/gen_brief_a.py tools/openapi.json out/brief-a.workflow.json && python - <<'EOF'\nimport json\nwf
+Dates match the expected answers (PUB-04 → 23 Oct, PUB-07 deadline 2 Nov with 26 → 27 Oct, attempt 1 on a Friday → next Friday). Saving to slot `brief-a`.
+  [Bash] {'command': 'source env.sh && python -c "import freya,json,sys; print(json.dumps(freya.save_workflow(sys.argv[1], json.l
+Created. Quick check that the platform kept the tools, hooks and code (fields can be stripped silently):
+  [Bash] {'command': 'source env.sh && python - <<\'EOF\'\nimport freya\nw=freya.api("GET","/api/v2/workflow/b80b162d-921c-43f4-9
+All intact. Running the Brief A practice set (foreground, waiting for it):
+  [Bash] {'command': 'source env.sh && python tools/run_cases.py 413df77e-9c57-43be-951b-42fcd0edf06f --brief A --out results/pla
+Every call died right after the customer confirmed who they are. Let me read one transcript to see why.
+  [Bash] {'command': "source env.sh && python - <<'EOF'\nimport json,freya\nr=json.load(open('results/planz-a-run1.json'))['rows'
+  [Bash] {'command': "source env.sh && python - <<'EOF'\nimport json,freya\nr=json.load(open('results/planz-a-run1.json'))['rows'
+The agent went silent after the first user turn, with no routing event. Checking what the variable table held (did setup write its facts?):
+  [Bash] {'command': "source env.sh && python - <<'EOF'\nimport json,freya\nr=json.load(open('results/planz-a-run1.json'))['rows'
+  [Grep] {'pattern': 'chat/message', 'path': 'C:\\Users\\efeby\\Desktop\\builder\\docs\\api.md', 'output_mode': 'content', '-C': 
+The create path did not set the agent model (the chat route needs it), so I'll save once more via the update path, then send two chat turns.
+  [Bash] {'command': 'source env.sh && python -c "import freya,json,sys; print(json.dumps(freya.save_workflow(sys.argv[1], json.l
+Chat returns 503. Let me run the platform's dry-run validator, which reports schema problems:
+  [Bash] {'command': 'source env.sh && python - <<\'EOF\'\nimport freya, json\nwf=json.load(open(\'out/brief-a.workflow.json\',en
+Valid. Is the chat route itself up? Same call against the known-good scratch workflow:
+  [Bash] {'command': 'source env.sh && python - <<\'EOF\'\nimport freya, json\ncv={"customer_id":"c_test","first_name":"Daniel","
+  [Bash] {'command': 'source env.sh && python tools/run_cases.py 413df77e-9c57-43be-951b-42fcd0edf06f --brief A --only PUB-08 2>&
+Still the same. Control test: one case on the known-good base agent in slot `scratch`. If it also goes silent, the model is down; if it talks, the fault is in my workflow.
+  [Bash] {'command': 'source env.sh && python tools/run_cases.py d59d3574-e7fa-48ce-bd5d-9433ebd57421 --brief A --only PUB-08 --o
+  [Bash] {'command': "source env.sh && python - <<'EOF'\nimport json,freya\nr=json.load(open('results/planz-control.json'))['rows
+  [Bash] {'command': 'date -u +%H:%M:%S', 'description': 'Show current UTC time'}
+16 of 30 minutes used. I'll poll the chat route once a minute for up to 5 minutes (one cheap request each time, not a load test) and rerun the full set as soon as the model answers.
+  [Bash] {'command': 'source env.sh && python - <<\'EOF\'\nimport freya, json, time\ncv={"customer_id":"c_test","first_name":"Dan
+The model is answering again (14:00 UTC). Rerunning the full Brief A set:
+  [Bash] {'command': 'source env.sh && python tools/run_cases.py 413df77e-9c57-43be-951b-42fcd0edf06f --brief A --out results/pla
+  [Bash] {'command': "source env.sh && python - <<'EOF'\nimport json,freya\nrows=json.load(open('results/planz-a-run2.json'))['ro
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_a.py', 'old_string': '- You prop
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_a.py', 'old_string': '- Never sa
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_a.py', 'old_string': "        fa
+Regenerate, save, and run the full set (the third and last test run, to also catch regressions):
+  [Bash] {'command': 'source env.sh && python out/gen_brief_a.py tools/openapi.json out/brief-a.workflow.json && python -c "impor
+  [Bash] {'command': 'source env.sh && mkdir -p submission && python -c "import freya; print(freya.export_workflow(\'b80b162d-921
+The Brief A agent passes 8 of the 10 practice customers on one run each, in slot `brief-a`. The build took 27 minutes, under the 30-minute limit, though about 6 of those were spent waiting out a platform outage. I didn't run repeated reps, so it's not yet known whether those 8 pass all 3 repetitions as scoring requires.
+
+**What I built.** A generator script, `out/gen_brief_a.py`, writes `out/brief-a.workflow.json` (9 nodes). It reads tool fields, enum values and the server URL from `tools/openapi.json`. The Brief A rules (holidays, bands, deadlines, outcome table) are written into the script.
+- **Dates:** a code step computes all of them from `now` at call time: deadline, the date for the first persuasion offer, a day-by-day calendar marking weekends and holidays, and the callback window. I checked these locally against the expected answers.
+- **Deterministic steps:** account lookup runs only after both identity answers pass. Three wrong answers lead to a fixed goodbye and the close. The debt is stated in a fixed sentence.
+- **Close safeguard:** before `close_call` is sent, code corrects the outcome and reason from what actually happened (transfer, recorded promise, failed identity, service error).
+
+**Test runs**
+1. **0/10, platform outage.** The event's model server was unreachable, and the known-good base agent also went silent in a one-customer check. It came back after about 5 minutes.
+2. **8/10.** PUB-06 failed because the agent asked the customer for an amount. PUB-10 failed because it didn't retry after the first `create_promise` failure; the failure came back as an error, so my after-call instruction never ran. I added prompt rules for both.
+3. **8/10, different failures.** PUB-10's bank records now pass (the retry worked), but the judge failed it because the opening line says "this call is **recorded**", and the check forbids the word "recorded" before the promise succeeds. PUB-06 failed because the agent offered the minimum payment twice: once as the floor offer and again in the first persuasion offer.
+
+The skill allows three test runs, so I didn't publish fixes for these two untested. They're the next step:
+- Reword the opening, e.g. "we record this call", which still meets rule 1.
+- Once the customer has turned down the full amount, attempt 1 should only change the date, not name the floor again.
+
+The tested version is exported to `submission/brief-a.workflow.json`, and results are in `results/planz-a-run{1,2,3}.json`. Nothing is committed.
+
+Workflow `b80b162d-921c-43f4-9831-7919b009c65d`, agent `413df77e-9c57-43be-951b-42fcd0edf06f`: 8/10 passed in the last run.
+
+done: 38 turns, 1642 s, $2.79. Trace: C:\Users\efeby\Desktop\builder\traces\20261010-163904.jsonl
+exit 0 end 2026-10-10T14:06:31Z

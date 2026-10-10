@@ -1,0 +1,56 @@
+{
+ "agent_id": "d59d3574-e7fa-48ce-bd5d-9433ebd57421",
+ "simulation_id": "8cad45b9-1c22-4c53-9555-c7ae152228c1",
+ "iteration_id": "92117632-788b-4dd2-9921-ef52c71b4c33",
+ "seconds": 311,
+ "passed": 0,
+ "total": 1,
+ "runs": 1,
+ "final": [
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  }
+ ],
+ "rows": [
+  {
+   "id": "PUB-08",
+   "level": "medium",
+   "family": "Already paid",
+   "pass": false,
+   "failed": [
+    "outcome (None, None), expected ('paid', None)",
+    "the call was not closed with close_call",
+    "conversation: - The agent did not state that payments can take one business day to appear, as the call ended immediately after the identity verification. - No promise was recorded, which satisfies one criterion, but the failure to provide the required information results in an overall failure."
+   ],
+   "call_id": "ab7a0e33-7b6f-41f0-ab82-c16783e89c3b",
+   "tools": [],
+   "customer_id": "c_bfbfd323-680",
+   "slowest_turn_s": 300.5,
+   "ended": "customer-ended-call"
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "PUB-08",
+    "level": "medium",
+    "family": "Already paid",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('paid', None)",
+     "the call was not closed with close_call",
+     "conversation: - The agent did not state that payments can take one business day to appear, as the call ended immediately after the identity verification. - No promise was recorded, which satisfies one criterion, but the failure to provide the required information results in an overall failure."
+    ],
+    "call_id": "ab7a0e33-7b6f-41f0-ab82-c16783e89c3b",
+    "tools": [],
+    "customer_id": "c_bfbfd323-680",
+    "slowest_turn_s": 300.5,
+    "ended": "customer-ended-call"
+   }
+  ]
+ ]
+}

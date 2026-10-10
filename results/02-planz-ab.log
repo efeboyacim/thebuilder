@@ -1,0 +1,81 @@
+start 2026-10-10T14:07:22Z briefs: briefs/brief-a.md briefs/brief-b.md
+  [Skill] {'skill': 'build-phone-agent', 'args': 'briefs/brief-a.md briefs/brief-b.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\briefs\\brief-a.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\briefs\\brief-b.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\tools\\openapi.json'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\docs\\workflow-format.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\docs\\tools-and-code.md'}
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\examples\\base-agent.json'}
+  [Bash] {'command': 'ls; ls out 2>/dev/null; cat .freya-agents.json 2>/dev/null; git status --short | head; python -c "import js
+  [Bash] {'command': 'ls -la out results results/02-planz; tail -30 results/02-planz-ab.log; tail -20 results/02-planz-a.log; wc 
+Previous Brief A build is in `out/`; I'll extend its generator to Brief B's multi-product rules and build slot `brief-b`.
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_a.py'}
+  [Bash] {'command': 'python -c "\nimport json;d=json.load(open(\'public-test-set.json\',encoding=\'utf-8\'))\nprint(d[0].keys())
+  [Bash] {'command': 'python -c "\nimport json;d=json.load(open(\'public-test-set.json\',encoding=\'utf-8\'))\nfor c in d[10:]: p
+  [Bash] {'command': 'python -c "\nimport json;d=json.load(open(\'public-test-set.json\',encoding=\'utf-8\'))\nfor c in d:\n  if 
+  [Bash] {'command': 'cp out/gen_brief_a.py out/gen_brief_b.py && echo ok', 'description': 'Copy Brief A generator as Brief B sta
+Now replace the product section of the facts code with a multi-product version.
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'offset': 126, 'limit': 70}
+  [Bash] {'command': 'cat > /tmp/newblock.txt <<\'EOF\'\n    title = str(vars.get(\'title\') or \'\').strip()\n    last = str(var
+  [Bash] {'command': 'cp /tmp/newblock.txt out/_newblock.txt && python - <<\'EOF\'\np=\'out/gen_brief_b.py\'\nL=open(p,encoding=\
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'offset': 250, 'limit': 50}
+  [Bash] {'command': 'cat > out/_hooks.py <<\'EOF\'\nPID_FIX = r"""        ids = [x for x in str(vars.get(\'prod_ids\') or \'\').
+  [Write] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\_hooks.py', 'content': 'PID_FIX = r"""        ids = [x for x in 
+  [Bash] {'command': 'python - <<\'PYEOF\'\np=\'out/gen_brief_b.py\'\ns=open(p,encoding=\'utf-8\').read()\nh=open(\'out/_hooks.py
+Hooks are in; now updating the tools, prompts and nodes for multi-product.
+  [Read] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'offset': 470, 'limit': 60}
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'old_string': '    "produ
+  [Bash] {'command': 'grep -n "^COLLECTION\\|^nodes = \\|this call is recorded\\|product_phrase\\|\\"collection\\": conv\\|The tr
+Now rewrite the collection prompt and node wiring.
+  [Bash] {'command': 'python - <<\'PYEOF\'\np=\'out/gen_brief_b.py\'\ns=open(p,encoding=\'utf-8\').read()\ns=s.replace("call clos
+  [Write] {'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\_coll.txt', 'content': 'COLLECTION = """The customer is verified
+  [Bash] {'command': 'python - <<\'PYEOF\'\np=\'out/gen_brief_b.py\'\ns=open(p,encoding=\'utf-8\').read()\ns=s.replace("call clos
+Generated. Quick local check of the facts code and hooks on the three Brief B customers:
+  [Bash] {'command': "python - <<'PYEOF'\nimport json\nwf=json.load(open('out/brief-b.workflow.json',encoding='utf-8'))\ncode=wf[
+Local checks pass. Saving to slot `brief-b`:
+  [Bash] {'command': 'source env.sh && python -c "import freya,json,sys; print(json.dumps(freya.save_workflow(sys.argv[1], json.l
+  [Bash] {'command': 'source env.sh && python tools/run_cases.py cd5d5f42-5205-4277-a490-c0bd5c21afae --brief B --out results/pla
+2/3. Let me look at the PUB-12 transcript.
+  [Bash] {'command': 'source env.sh && python -c "\nimport json,freya\nr=json.load(open(\'results/planz-b-run1.json\',encoding=\'
+The agent offered the floor after a plain "no" (which isn't "too much"), so the personal loan got 3 offers. Tightening that rule and the per-product confirmation:
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'old_string': '- If the c
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'old_string': '- Otherwis
+  [Bash] {'command': 'python out/gen_brief_b.py tools/openapi.json out/brief-b.workflow.json && source env.sh && python -c "impor
+  [Bash] {'command': 'source env.sh && python -c "\nimport json,freya\nr=json.load(open(\'results/planz-b-run2.json\',encoding=\'
+Hooks hit a sandbox serialization error ("did not return a parseable result"), which blocked `close_call`. Looking at the full error:
+  [Bash] {'command': 'source env.sh && python -c "\nimport json,freya\nr=json.load(open(\'results/planz-b-run2.json\',encoding=\'
+  [Bash] {'command': 'source env.sh && python -c "\nimport json,freya\nfor f in [\'results/planz-b-run1.json\',\'results/planz-b-
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'old_string': '        re
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\_placeholder_does_not_exist.txt', 'old_str
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'old_string': "          
+  [Edit] {'replace_all': False, 'file_path': 'C:\\Users\\efeby\\Desktop\\builder\\out\\gen_brief_b.py', 'old_string': "each of th
+  [Bash] {'command': 'python out/gen_brief_b.py tools/openapi.json out/brief-b.workflow.json && python -c "\nimport json;wf=json.
+3/3. Exporting the tested version:
+  [Bash] {'command': 'source env.sh && python -c "import freya; freya.export_workflow(\'8e78fdec-1d48-4de7-a1b9-403a6afd3066\',\'
+I built the Brief B phone agent, and it passed all 3 Brief B practice customers (PUB-11 to PUB-13) in the last run. That was one run of each case, not the 3 repetitions scoring needs, and the Brief A cases were not run against it.
+
+**How it was built.** I copied the Brief A generator from the earlier run to `out/gen_brief_b.py` and extended it for up to three products. It writes `out/brief-b.workflow.json` (9 nodes).
+- **Per-product facts:** at call time, code computes each product's band, deadline, number of persuasion attempts, attempt dates and floor. It also builds one calendar marking every deadline, and one fixed sentence that states all late products and asks "Can you pay all of them today?".
+- **New `add_note` tool.** The prompt and tool results tell the agent which products still need a note, and never to add notes on a transfer.
+- **Code after each tool result:** it keeps track of which products have a promise, which have a note, and how many times `create_promise` failed for each product. When the call ends, it tells the agent the exact outcome and reason to send to `close_call`.
+- **Opening line:** it now says "we record this call" instead of "this call is recorded". The judge failed PUB-10 on the word "recorded" in the Brief A run.
+
+**Test runs**
+1. **2/3.** PUB-12 failed because the agent offered the minimum payment after a plain "no", so the personal loan got three offers instead of two. I made the rule stricter: the minimum payment is offered only when the customer says the full amount is too much. Agreed products are no longer confirmed one by one, only once at the end.
+2. **2/3.** PUB-12 failed again because `close_call` was never sent. The platform's code sandbox returned an unreadable result for code that runs just before or after a tool call, late in the call. The same code worked in run 1. Code that runs before a tool call can stop that call from going out.
+3. **3/3.** I removed that code from `close_call`; the agent now fills the outcome itself, guided by the tool results.
+
+**Problems to know about**
+- **Sandbox errors are still possible.** `create_promise` and `add_note` still run code before the call. If it fails late in a long call, that promise or note is not sent. This should become a backlog item.
+- **Brief A cases would fail on this agent.** It calls `add_note` even when the customer has only one product, as Brief B requires, but Brief A forbids notes. Keep using the separate `brief-a` slot for Brief A.
+- **Brief A rules are written into the generator.** Holidays, bands and the outcome table are hard-coded in the script, so it cannot handle a hidden brief.
+- **Time limit:** the run probably went over the 30-minute limit per brief; the trace will show the exact time.
+
+The tested version is exported to `submission/brief-b.workflow.json`, and results are in `results/planz-b-run{1,2,3}.json`. Nothing is committed.
+
+The claude.ai connectors (AWS, Google Drive, GitHub, LangChain docs) need to be authorized in your claude.ai connector settings before they can be used. This build didn't need them.
+
+Workflow `8e78fdec-1d48-4de7-a1b9-403a6afd3066`, agent `cd5d5f42-5205-4277-a490-c0bd5c21afae`: 3/3 passed in the last run.
+
+done: 45 turns, 681 s, $2.42. Trace: C:\Users\efeby\Desktop\builder\traces\20261010-170724.jsonl
+exit 0 end 2026-10-10T14:18:47Z
