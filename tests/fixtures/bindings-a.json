@@ -1,0 +1,39 @@
+{
+ "call_vars": {"customer_key": "customer_id", "clock": "now", "given_name": "first_name", "family_name": "last_name",
+               "honorific": "title"},
+ "tools": {"verify": "verify_identity", "lookup": "get_account", "record_promise": "create_promise",
+           "record_note": "add_note", "book_callback": "schedule_callback", "transfer": "transfer_to_agent",
+           "close": "close_call"},
+ "request": {
+  "verify": {"customer_id": {"source": "call_var", "value": "customer_key"},
+             "field": {"source": "engine", "value": "question"},
+             "answer": {"source": "engine", "value": "answer"}},
+  "lookup": {"customer_id": {"source": "call_var", "value": "customer_key"}},
+  "record_promise": {"customer_id": {"source": "call_var", "value": "customer_key"},
+                     "product_id": {"source": "engine", "value": "product_ref"},
+                     "amount": {"source": "engine", "value": "amount", "convert": "number_2dp"},
+                     "date": {"source": "engine", "value": "date", "convert": "date_iso"}},
+  "record_note": {"customer_id": {"source": "call_var", "value": "customer_key"},
+                  "product_id": {"source": "engine", "value": "product_ref"},
+                  "reason": {"source": "engine", "value": "note_reason"}},
+  "book_callback": {"customer_id": {"source": "call_var", "value": "customer_key"},
+                    "date": {"source": "engine", "value": "date", "convert": "date_iso"},
+                    "time": {"source": "engine", "value": "time", "convert": "time_hhmm"}},
+  "transfer": {"customer_id": {"source": "call_var", "value": "customer_key"},
+               "queue": {"source": "engine", "value": "queue"}},
+  "close": {"customer_id": {"source": "call_var", "value": "customer_key"},
+            "outcome": {"source": "engine", "value": "outcome"},
+            "reason": {"source": "engine", "value": "reason"}}
+ },
+ "response": {
+  "verify": {"ok": "ok", "error": "error", "verified": "verified", "all_verified": "all_verified",
+             "attempts_left": "wrong_answers_left", "hint": "hint"},
+  "lookup": {"ok": "ok", "error": "error", "products": "products",
+             "item": {"ref": "product_id", "kind": "type", "due_amount": "past_due", "days_overdue": "days_late"}},
+  "record_promise": {"ok": "ok", "error": "error", "promise_ref": "promise_id"},
+  "record_note": {"ok": "ok", "error": "error"},
+  "book_callback": {"ok": "ok", "error": "error"},
+  "transfer": {"ok": "ok", "error": "error"},
+  "close": {"ok": "ok", "error": "error"}
+ }
+}

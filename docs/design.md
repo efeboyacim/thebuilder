@@ -127,9 +127,9 @@ which was chosen without looking at Brief A.
 
 | Section | Contents |
 |---|---|
-| `bindings.call_vars` | Role → call variable: customer id, now (and its format), first and last name, title (optional), company name (optional) |
-| `bindings.tool_request` | Per tool, per body field: source (literal, call var, engine role, situation field, template) and converter (`number_2dp`, `cents_int`, `string_2dp`, `date_iso`, `time_hhmm`, `datetime_join`) |
-| `bindings.tool_response` | Role → JSON path: `ok`, `verified`, `all_verified`, `wrong_left`, `hint`, `products`, and per product: id, type, label fields, `past_due`, `days_late`, floor fields |
+| `bindings.call_vars` | Call-variable role → variable name. Roles (`builder/bindings.py`): `customer_key`, `clock`, `given_name`, `family_name`, `honorific`, `company`; the last three optional |
+| `bindings.tools`, `bindings.request` | Tool role (`verify`, `lookup`, `record_promise`, `record_note`, `book_callback`, `transfer`, `close`) → tool name. Per tool role, per body field path: source (`call_var`, `engine`, `literal`, `template`) and converter (`number_2dp`, `cents_int`, `string_2dp`, `date_iso`, `time_hhmm`, `datetime_join`). Engine roles per tool role are fixed in `TOOL_ROLES` (e.g. question, answer; product_ref, amount, date; queue; outcome, reason) |
+| `bindings.response` | Per tool role, response role → body path: `ok`, `error`, `verified`, `all_verified`, `attempts_left`, `hint`, `products`, `promise_ref`; and `item`: item role → path inside one product (`ref`, `kind`, `due_amount`, `days_overdue`). Label and floor fields are read by their API name from the raw row |
 | `opening` | tts template; required content; words forbidden before verification; confirmation semantics (what counts, max asks, whether an answered question uses an ask); `unclear` situation |
 | `third_party` | Callback model: `day_set` expression, `windows[]`, inclusive, granularity, `min_lead`, after-now, `re_asks`. Situations (wrong number, deceased, others) with required sentences. Disclosure ban |
 | `identity` | Ordered `questions[]`, each with: openapi field value, ask text, normalizer pipeline (digit words, strip, upper, date parse with `day_first`), `complete_pattern`, accumulation across turns, `ask_when`. Limits: `total`, `per_question`, `on_wrong` ∈ {repeat, next}. Hints: value, action text, `counts_as_wrong`. Decline: explain-once text, max refusals, whether a purpose question counts as a refusal, counter scope. `authorised_parties` |

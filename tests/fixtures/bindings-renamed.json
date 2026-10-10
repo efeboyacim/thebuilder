@@ -1,0 +1,40 @@
+{
+ "call_vars": {"customer_key": "customer_ref", "clock": "now", "given_name": "first_name", "family_name": "last_name"},
+ "tools": {"verify": "verify_identity", "lookup": "get_account", "record_promise": "create_promise",
+           "record_note": "add_note", "book_callback": "schedule_callback", "transfer": "transfer_to_agent",
+           "close": "close_call"},
+ "request": {
+  "verify": {"customer_ref": {"source": "call_var", "value": "customer_key"},
+             "question": {"source": "engine", "value": "question"},
+             "value": {"source": "engine", "value": "answer"}},
+  "lookup": {"customer_ref": {"source": "call_var", "value": "customer_key"}},
+  "record_promise": {"customer_ref": {"source": "call_var", "value": "customer_key"},
+                     "account_ref": {"source": "engine", "value": "product_ref"},
+                     "amount_cents": {"source": "engine", "value": "amount", "convert": "cents_int"},
+                     "pay_on": {"source": "engine", "value": "date", "convert": "date_iso"}},
+  "record_note": {"customer_ref": {"source": "call_var", "value": "customer_key"},
+                  "account_ref": {"source": "engine", "value": "product_ref"},
+                  "code": {"source": "engine", "value": "note_reason"},
+                  "text": {"source": "template", "value": "Call with {{given_name}} {{family_name}}: {{note_reason}}"}},
+  "book_callback": {"customer_ref": {"source": "call_var", "value": "customer_key"},
+                    "callback_at": {"source": "engine", "value": ["date", "time"], "convert": "datetime_join"}},
+  "transfer": {"customer_ref": {"source": "call_var", "value": "customer_key"},
+               "queue": {"source": "engine", "value": "queue"},
+               "channel": {"source": "literal", "value": "voice"}},
+  "close": {"customer_ref": {"source": "call_var", "value": "customer_key"},
+            "outcome": {"source": "engine", "value": "outcome"},
+            "reason": {"source": "engine", "value": "reason"}}
+ },
+ "response": {
+  "verify": {"ok": "status.ok", "error": "status.message", "verified": "passed", "all_verified": "all_passed",
+             "attempts_left": "attempts_remaining", "hint": "hint"},
+  "lookup": {"ok": "status.ok", "products": "accounts",
+             "item": {"ref": "account_ref", "kind": "category", "due_amount": "overdue_amount",
+                      "days_overdue": "overdue_days"}},
+  "record_promise": {"ok": "status.ok", "promise_ref": "promise_number"},
+  "record_note": {"ok": "status.ok"},
+  "book_callback": {"ok": "status.ok"},
+  "transfer": {"ok": "status.ok"},
+  "close": {"ok": "status.ok", "error": "status.message"}
+ }
+}

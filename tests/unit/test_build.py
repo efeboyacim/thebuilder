@@ -76,3 +76,22 @@ def test_script_entry_point(tmp_path):
     (path,) = glob.glob(str(tmp_path / "hub-brief-a-*.jsonl"))
     events = [json.loads(l) for l in open(path, encoding="utf-8")]
     assert events[0]["argv"][1:] == [API, A, "--until", "ingest"] and events[-1]["status"] == "stopped"
+
+
+def test_until_toolapi(tmp_path, monkeypatch):
+    monkeypatch.chdir(ROOT)
+    code, ev, _ = run(tmp_path, A, API, "--until", "toolapi")
+    (stage,) = [e for e in ev if e["ev"] == "stage" and e["name"] == "toolapi"]
+    assert code == 0 and stage["ok"] and len(stage["summary"]["tools"]) == 7
+    assert ev[-1]["stopped_after"] == "toolapi"
+
+
+def test_unusable_tool_api_fails_the_toolapi_stage(tmp_path, monkeypatch):
+    monkeypatch.chdir(ROOT)
+    bad = tmp_path / "api.json"
+    bad.write_text('{"openapi": "3.0.3", "paths": {}}', encoding="utf-8")
+    (tmp_path / "t").mkdir()
+    code, ev, _ = run(tmp_path / "t", A, str(bad), "--until", "toolapi")
+    (stage,) = [e for e in ev if e["ev"] == "stage" and e["name"] == "toolapi"]
+    assert code == 1 and stage["ok"] is False and "no operations" in stage["error"]
+    assert ev[-1]["status"] == "error" and ev[-1]["error"].startswith("ToolAPIError")

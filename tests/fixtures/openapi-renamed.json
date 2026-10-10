@@ -1,0 +1,157 @@
+{
+ "openapi": "3.1.0",
+ "info": {"title": "Renamed-field bank tools (test fixture)", "version": "1"},
+ "servers": [{"url": "https://{host}/api/v2", "variables": {"host": {"default": "bank.example.test"}}}],
+ "components": {
+  "schemas": {
+   "Status": {
+    "type": "object",
+    "properties": {"ok": {"type": "boolean"}, "message": {"type": ["string", "null"]}},
+    "required": ["ok"]
+   },
+   "CustomerRef": {
+    "type": "object",
+    "properties": {"customer_ref": {"type": "string"}},
+    "required": ["customer_ref"]
+   },
+   "Plain": {
+    "type": "object",
+    "properties": {"status": {"$ref": "#/components/schemas/Status"}},
+    "required": ["status"]
+   }
+  },
+  "responses": {
+   "Failed": {"description": "The service failed. Nothing was recorded."}
+  }
+ },
+ "paths": {
+  "/verify_identity": {
+   "post": {
+    "summary": "Check one security answer.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {
+     "allOf": [
+      {"$ref": "#/components/schemas/CustomerRef"},
+      {"type": "object",
+       "properties": {
+        "question": {"type": "string", "enum": ["postcode", "birth_year"]},
+        "value": {"type": "string", "description": "postcode without spaces; birth year as four digits"}
+       },
+       "required": ["question", "value"]}
+     ]}}}},
+    "responses": {
+     "200": {"description": "ok", "content": {"application/json": {"schema": {
+      "type": "object",
+      "properties": {
+       "status": {"$ref": "#/components/schemas/Status"},
+       "passed": {"type": "boolean"},
+       "attempts_remaining": {"type": "integer"},
+       "all_passed": {"type": "boolean"},
+       "hint": {"type": "string", "enum": ["partial_postcode"]}
+      },
+      "required": ["status"]}}}},
+     "503": {"$ref": "#/components/responses/Failed"}
+    }
+   }
+  },
+  "/get_account": {
+   "post": {
+    "summary": "The overdue accounts.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CustomerRef"}}}},
+    "responses": {
+     "200": {"description": "ok", "content": {"application/json": {"schema": {
+      "type": "object",
+      "properties": {
+       "status": {"$ref": "#/components/schemas/Status"},
+       "accounts": {"type": "array", "items": {
+        "type": "object",
+        "properties": {
+         "account_ref": {"type": "string"},
+         "category": {"type": "string", "enum": ["overdraft", "mortgage"]},
+         "overdue_amount": {"type": "number"},
+         "overdue_days": {"type": "integer"},
+         "overdraft_limit": {"type": "number"}
+        },
+        "required": ["account_ref", "category"]}}
+      },
+      "required": ["status"]}}}},
+     "503": {"$ref": "#/components/responses/Failed"}
+    }
+   }
+  },
+  "/create_promise": {
+   "post": {
+    "summary": "Record a payment promise.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {
+     "type": "object",
+     "properties": {
+      "customer_ref": {"type": "string"},
+      "account_ref": {"type": "string"},
+      "amount_cents": {"type": "integer", "minimum": 1},
+      "pay_on": {"type": "string", "format": "date"}
+     },
+     "required": ["customer_ref", "account_ref", "amount_cents", "pay_on"],
+     "additionalProperties": false}}}},
+    "responses": {
+     "200": {"description": "ok", "content": {"application/json": {"schema": {
+      "type": "object",
+      "properties": {"status": {"$ref": "#/components/schemas/Status"}, "promise_number": {"type": "integer"}},
+      "required": ["status"]}}}},
+     "503": {"$ref": "#/components/responses/Failed"}
+    }
+   }
+  },
+  "/add_note": {
+   "post": {
+    "summary": "Record why an account ended without a promise.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {
+     "type": "object",
+     "properties": {
+      "customer_ref": {"type": "string"},
+      "account_ref": {"type": "string"},
+      "code": {"type": "string", "enum": ["R1", "R2", "R9"]},
+      "text": {"type": "string", "minLength": 1}
+     },
+     "required": ["customer_ref", "account_ref", "code", "text"]}}}},
+    "responses": {"200": {"description": "ok", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Plain"}}}}}
+   }
+  },
+  "/schedule_callback": {
+   "post": {
+    "summary": "Book a callback.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {
+     "type": "object",
+     "properties": {"customer_ref": {"type": "string"}, "callback_at": {"type": "string", "format": "date-time"}},
+     "required": ["customer_ref", "callback_at"]}}}},
+    "responses": {"200": {"description": "ok", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Plain"}}}}}
+   }
+  },
+  "/transfer_to_agent": {
+   "post": {
+    "summary": "Hand the call to a person.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {
+     "type": "object",
+     "properties": {
+      "customer_ref": {"type": "string"},
+      "queue": {"type": "string", "enum": ["arrears_team", "complaints"]},
+      "channel": {"type": "string", "enum": ["voice"]}
+     },
+     "required": ["customer_ref", "queue", "channel"]}}}},
+    "responses": {"200": {"description": "ok", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Plain"}}}}}
+   }
+  },
+  "/close_call": {
+   "post": {
+    "summary": "End the call.",
+    "requestBody": {"required": true, "content": {"application/json": {"schema": {
+     "type": "object",
+     "properties": {
+      "customer_ref": {"type": "string"},
+      "outcome": {"type": "string", "enum": ["PTP", "NOPTP", "NV", "NR", "XFER"]},
+      "reason": {"type": "string"}
+     },
+     "required": ["customer_ref", "outcome"]}}}},
+    "responses": {"200": {"description": "ok", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Plain"}}}}}
+   }
+  }
+ }
+}

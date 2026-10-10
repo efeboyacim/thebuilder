@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if sys.path and Path(sys.path[0] or ".").resolve() == ROOT / "builder":
     sys.path[0] = str(ROOT)  # import as the `builder` package; builder/trace.py must not shadow stdlib `trace`
 
-from builder import ingest  # noqa: E402
+from builder import ingest, toolapi  # noqa: E402
 from builder.trace import Trace  # noqa: E402
 
 STAGES = ("ingest", "toolapi", "spec", "compile", "freya")
@@ -80,14 +80,35 @@ def ingest_summary(inputs):
     }
 
 
-def run_stages(args, inputs, trace):
-    """Run the stages after ingest. Returns the last finished stage."""
-    done = "ingest"
+def stage_toolapi(ctx):
+    api = toolapi.parse(ctx["inputs"].tool_api.data)
+    ctx["api"] = api
+    return {"server": api.server, "tools": {
+        n: {"method": t.method, "path": t.path, "required": [p for p, f in t.request.items() if f.required],
+            "request_fields": len(t.request), "response_fields": len(t.response), "error_statuses": sorted(t.error_statuses)}
+        for n, t in api.tools.items()}}
+
+
+STAGE_FUNCS = {"toolapi": stage_toolapi}
+
+
+def run_stages(ctx):
+    """Run the stages after ingest, each traced. ctx["done"] is the last finished stage."""
+    args, trace = ctx["args"], ctx["trace"]
     for name in STAGES[1:]:
         if args.until and STAGES.index(args.until) < STAGES.index(name):
             break
-        raise StageNotReady(f"stage {name} is not implemented yet")
-    return done
+        fn = STAGE_FUNCS.get(name)
+        if fn is None:
+            raise StageNotReady(f"stage {name} is not implemented yet")
+        t0 = time.time()
+        try:
+            summary = fn(ctx)
+        except Exception as e:
+            trace.event("stage", name=name, ok=False, seconds=round(time.time() - t0, 1), error=f"{type(e).__name__}: {e}")
+            raise
+        trace.event("stage", name=name, ok=True, seconds=round(time.time() - t0, 1), summary=summary)
+        ctx["done"] = name
 
 
 def print_summary(trace, slot, inputs, status, done, error):
@@ -141,14 +162,15 @@ def main(argv=None, trace_dir=None, environ=None):
         for w in inputs.warnings:
             trace.warning(w)
         trace.event("stage", name="ingest", ok=True, seconds=round(time.time() - t0, 1), summary=ingest_summary(inputs))
-        done = "ingest"
+        ctx = {"args": args, "inputs": inputs, "trace": trace, "slot": slot, "done": "ingest"}
         try:
-            done = run_stages(args, inputs, trace)
+            run_stages(ctx)
             status = "stopped" if args.until else "ok"
         except Exception as e:  # noqa: BLE001 - every failure ends in a run_end event
             error, status = f"{type(e).__name__}: {e}", "error"
-            if not isinstance(e, StageNotReady):
+            if not isinstance(e, (StageNotReady, toolapi.ToolAPIError)):
                 trace.event("error", text=error, traceback=traceback.format_exc()[-2000:])
+        done = ctx["done"]
     trace.close(status, stopped_after=done if status == "stopped" else None, error=error,
                 outputs={"trace": trace.path})
     print_summary(trace, slot, inputs, status, done, error)
