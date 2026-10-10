@@ -49,7 +49,7 @@ All times UTC (Istanbul = UTC+3). About 20 working hours, with a sleep block. Ba
 
 ## Backlog
 
-- [ ] 08 policy_lib core + slice engine. Calendar basics, normalizers with completeness checks, opening, third party, identity, disclosure, pay today in full, read-back, record, close. Acceptance: `python3 -m pytest tests/unit/test_engine_slice.py -q` → PUB-01, PUB-02 and PUB-03 act-scripts reach their expected ledgers through the stub bank.
+- [ ] 08 policy_lib core + slice engine. Calendar basics, normalizers with completeness checks, opening, third party, identity, disclosure, pay today in full, read-back, record, close. The helpers named in `spec.HELPERS`, and spec validation that evaluates every expression (`spec.EXPRESSIONS`) on synthetic inputs (Fridays, weekends, holiday eves, after-hours `now`), so an expression that raises or returns the wrong type is a validation error. Acceptance: `python3 -m pytest tests/unit/test_engine_slice.py -q` → PUB-01, PUB-02 and PUB-03 act-scripts reach their expected ledgers through the stub bank; `python3 -m pytest tests/unit/test_spec_validate.py -q` → green, including a seeded expression that raises on a synthetic input.
 - [ ] 09 Compiler slice, save, export, trace. If 07 is late, compile a hand-written fixture with `--spec tests/fixtures/spec-a-slice.json` (test data only); K1 judges the hub runtime on Freya, not the extractor. Acceptance: `python3 builder/build.py briefs/brief-a.md tools/openapi.json --slot hub-a` then `python3 tools/run_cases.py <agent_id> --only PUB-01,PUB-02,PUB-03` → 3/3 by Sat 20:30 (K1 at 21:00).
 - [ ] 10 Overnight queue. `tools/overnight.sh` runs these in sequence, unattended, each with `--out results/overnight-*.json`: Plan Z A agent `--brief A --reps 3`; Plan Z A+B agent `--brief B --reps 3`; hub slice `--only PUB-01,PUB-02,PUB-03 --reps 3`. Acceptance: `bash tools/overnight.sh` started before Sat 21:00 → at Sun 03:15 all three result files exist and the scores are recorded in Done.
 - [ ] 11 Dates and persuasion ladder. Bands, deadline expressions, date parts resolved against `now`, holiday shift, vague dates, after-deadline offer, ladder with per-product offer record, promise retry; extend the spec schema, digest/spec prompts and validator for `calendar`, `products.bands`, `negotiation.ladder` and `failure_policy`. Acceptance: `python3 -m pytest tests/unit/test_dates.py -q` → green, including Christmas and New Year weeks, Fridays, weekends and after-hours `now`; and `python3 tools/run_cases.py <agent_id> --only PUB-07,PUB-10` → 2/2.
@@ -83,7 +83,6 @@ Never cut: M1 (16), M2's spec diff (20), M3 (24), the styles run (22).
 
 - 2026-10-10: Rule A15 with the asks_back style: literal or lenient counting of purpose questions? Decide by test in 22.
 - 2026-10-10: Outcome when the customer hangs up mid-call: the briefs are silent; use the spec's per-stage hang-up situation (neutral, logged).
-- 2026-10-10 (07): Evaluating spec expressions on synthetic inputs (design §2.4) needs `policy_lib`'s calendar helpers, so 07 checks only the AST whitelist and names. Proposed: add the evaluation to 08's validator work. Awaiting approval.
 - 2026-10-10 (07): The spec stage took 288 s and 341 s on Brief A (digest 114–134 s, spec 172–196 s, Agent SDK, Opus 5.5 at effort high). A+B and a raw-material brief will be longer. Measure in 14 and 20; options: digest at effort medium, or the spec call split into parallel calls.
 
 ## Decisions
@@ -122,6 +121,7 @@ Never cut: M1 (16), M2's spec diff (20), M3 (24), the styles run (22).
   - The close fires 0.3 s after the end node and about 11 s after a hang-up (`chat/end`, `endedReason` `customer-ended-call`); `chat/end` after an end node does not close twice.
   - Pre- and post-hooks run on pre_actions api nodes (L3 stays viable). The event log names every pre_actions call `api_call`; the chat self-test identifies the tool by `args.url`.
 - 2026-10-10 (05): The default slot is `hub-` + the brief stems joined by `+` (`hub-brief-a`, `hub-brief-a+brief-b`), not the bare stem as docs/design.md first said: the bare stem is the kit builder's slot name, and `.freya-agents.json` already holds Plan Z's `brief-a`/`brief-b` agents.
+- 2026-10-10 (07, user): Evaluating spec expressions on synthetic inputs (design §2.4) moves to 08, together with the `policy_lib` helpers it needs; 07 checks only the AST whitelist and names.
 
 ## Done
 
