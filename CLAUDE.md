@@ -157,9 +157,14 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
 
 ## Status
 
-- Kit v3 added. `env.sh` is set up but not verified yet. No builder code yet.
-- Next: write `plan.md`.
-- Next decision is the architecture. Candidates:
-  - **Agentic**, like the example: an LLM writes the workflow JSON, tests and repairs it. Flexible, but the output varies per run.
-  - **Compiler**: an LLM extracts a structured spec, and a deterministic template emits the workflow with code nodes. Reliable, but the schema can miss a rule nobody expected.
-  - **Hybrid** of the two.
+- `plan.md` and `docs/design.md` are approved and committed. Architecture: hybrid compiler with a hub-and-spoke "brain" (see `docs/design.md`). Work follows `plan.md`, one item at a time.
+- Item 01 is done (see `plan.md` Done). Next: item 02 (Plan Z builds), which can run in parallel with 03–04 (chat-API spikes).
+- Local facts:
+  - `python3` on this machine is the Windows Store stub. Run `python` (3.10.11) locally; keep `python3` in the form command.
+  - `env.sh` is verified. `FREYA_BANK_TEAM_KEY` was regenerated on 2026-10-10 (32 chars). Keep it from now on: practice sessions belong to it.
+  - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes.
+  - Run `run_cases.py` and builders in the background and wait for the completion notice. A 10-case run took 126 s.
+- Mock bank facts learned in item 01:
+  - It rejects a close_call reason outside its outcome table (`ok:false`); the ledger outcome then stays empty.
+  - A failed create_promise returns `ok:false` "service unavailable, nothing was recorded", not an HTTP 500.
+  - The ledger (`/v1/practice/ledger/<customer_id>`) also shows `verified`, `wrong`, `hinted`, `failures` and every call with args and result: useful for debugging.

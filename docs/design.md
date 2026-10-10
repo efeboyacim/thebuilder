@@ -395,9 +395,9 @@ Live evidence comes from the rehearsals below.
 
 | Mock | Form | What changes | How tested |
 |---|---|---|---|
-| M1 | clean spec + own openapi copy | Holidays, a calendar-day deadline, bands, attempts, callback window, outcome codes, several `now` days, and **one flow rule outside the schema** (e.g. a weekly payday sets the attempt-1 date) | Live, `rehearse.py --reps 3`. It is also the D-Z comparison |
+| M1 | clean spec + own openapi copy | Holidays, a calendar-day deadline, bands, attempts, callback window, several `now` days (outcome/reason codes stay the mock's: it rejects others), and **one flow rule outside the schema** (e.g. a weekly payday sets the attempt-1 date) | Live, `rehearse.py --reps 3`. It is also the D-Z comparison |
 | M2 | M1 as mail + policy extract + amending memo + code list, in one directory with its openapi | The memo changes some values. Codes come only from the list | `--until spec` diff against M1: empty on facts the memo does not touch (never cut). The live rehearsal may be cut only if that diff is clean; it is mandatory if the diff is not clean |
-| M3 | API-shape mutation | Renamed request and response fields, `postcode`/`birth_year` questions, cents amounts, no `title` | Offline: build, stub conformance, local replay, chat smoke. Live too, as a bonus, if the organisers confirm custom customers |
+| M3 | API-shape mutation | Renamed request and response fields, `postcode`/`birth_year` questions, cents amounts, no `title`, renamed outcome/reason codes | Offline: build, stub conformance, local replay, chat smoke. Live too, as a bonus, if the organisers confirm custom customers |
 
 ---
 
