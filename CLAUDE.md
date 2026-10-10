@@ -171,8 +171,8 @@ Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made moc
 
 - `plan.md` and `docs/design.md` are approved and committed. Architecture: hybrid compiler with a hub-and-spoke "brain" (see `docs/design.md`). Work follows `plan.md`, one item at a time.
 - The organisers' answers above are in `plan.md` Decisions. Where `docs/design.md` still plans directory or multi-file ingest, custom customers or scarce slots, the answers win.
-- Items 01–07 are done (see `plan.md` Done). **G1 final: the hub stays as designed** (no L1–L3). Next: item 08 (policy_lib core + slice engine).
-- `builder/` (items 05–07): `build.py` CLI and stage loop (ingest, toolapi, spec), `ingest.py`, `trace.py`, `llm.py`, `toolapi.py`, `bindings.py` (engine roles ↔ API fields), `stubbank.py` (offline bank), `spec_schema.json` + `spec.py` (spec v0 and its validator), `specgen.py` (digest, spec, repair). Unit tests: `python -m pytest tests/unit -q`; leak lint: `python tools/leak_lint.py`. Our default slot is `hub-<brief stems joined by +>`.
+- Items 01–08 are done (see `plan.md` Done). **G1 final: the hub stays as designed** (no L1–L3). Next: item 09 (compiler slice, save, export, trace).
+- `builder/` (items 05–08): `build.py` CLI and stage loop (ingest, toolapi, spec), `ingest.py`, `trace.py`, `llm.py`, `toolapi.py`, `bindings.py` (engine roles ↔ API fields), `stubbank.py` (offline bank), `spec_schema.json` + `spec.py` (spec v0 and its validator), `specgen.py` (digest, spec, repair), `policy_lib.py` + `engine.py` (the brain), `brain.py` (brain code string), `exprs.py`, `contract.py` (extraction fields), `replay.py` (local Freya emulation). Unit tests: `python -m pytest tests/unit -q`; leak lint: `python tools/leak_lint.py`. Our default slot is `hub-<brief stems joined by +>`.
 - Local facts:
   - `python3` on this machine is the Windows Store stub. Run `python` (3.10.11) locally; keep `python3` in the form command.
   - `env.sh` is verified. `FREYA_BANK_TEAM_KEY` was regenerated on 2026-10-10 (32 chars). Keep it from now on: practice sessions belong to it.
