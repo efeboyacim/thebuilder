@@ -1,0 +1,7 @@
+PASS PUB-01 easy   Happy path     | verify > verify > get_account > promise > close_call
+PASS PUB-02 medium Third party    | schedule_callback > close_call
+PASS PUB-03 medium Identity       | verify > verify > verify > close_call
+
+slowest agent turn per call: median 7 s, worst 7 s. Failed calls where the customer hung up: 0.
+
+3 / 3 passed (bank records and conversation checks). Last simulation a45e7de3-ecc5-4c2d-b0b6-2fbacbcfd35b, status completed, 198 s.

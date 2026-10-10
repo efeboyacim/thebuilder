@@ -47,10 +47,21 @@ def test_slot_option_and_env(tmp_path, monkeypatch):
 SPEC = "tests/fixtures/spec-a-v0.json"
 
 
-def test_unfinished_stage_is_an_error_with_a_trace(tmp_path, monkeypatch):
+def test_until_compile_writes_the_workflow(tmp_path, monkeypatch):
     monkeypatch.chdir(ROOT)
+    code, ev, _ = run(tmp_path, A, API, "--until", "compile", "--spec", SPEC,
+                      environ={"BUILDER_OUT_DIR": str(tmp_path / "out")})
+    assert code == 0 and ev[-1]["stopped_after"] == "compile"
+    wf = json.loads(next((tmp_path / "out").glob("*/workflow.json")).read_text(encoding="utf-8"))
+    assert wf["initial_node"] == "init" and "brain" in wf["nodes"]
+    assert {e["name"]: e["result"] for e in ev if e["ev"] == "self_test"} == {"graph_lint": "pass", "brain_code": "pass"}
+
+
+def test_freya_stage_without_a_key_is_an_error_with_a_trace(tmp_path, monkeypatch):
+    monkeypatch.chdir(ROOT)
+    monkeypatch.delenv("FREYA_API_KEY", raising=False)
     code, ev, _ = run(tmp_path, A, API, "--spec", SPEC, environ={"BUILDER_OUT_DIR": str(tmp_path / "out")})
-    assert code == 1 and ev[-1]["status"] == "error" and "stage compile is not implemented" in ev[-1]["error"]
+    assert code == 1 and ev[-1]["status"] == "error" and "FREYA_API_KEY is not set" in ev[-1]["error"]
 
 
 def test_given_spec_until_spec(tmp_path, monkeypatch):

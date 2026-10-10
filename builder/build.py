@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if sys.path and Path(sys.path[0] or ".").resolve() == ROOT / "builder":
     sys.path[0] = str(ROOT)  # import as the `builder` package; builder/trace.py must not shadow stdlib `trace`
 
-from builder import ingest, specgen, toolapi  # noqa: E402
+from builder import compiler, ingest, specgen, toolapi  # noqa: E402
 from builder import spec as sp  # noqa: E402
 from builder.trace import Trace  # noqa: E402
 
@@ -116,7 +116,59 @@ def stage_spec(ctx):
             "residuals": report.info.get("residuals")}
 
 
-STAGE_FUNCS = {"toolapi": stage_toolapi, "spec": stage_spec}
+def stage_compile(ctx):
+    trace, spec, api = ctx["trace"], ctx["spec"], ctx["api"]
+    wf = compiler.compile_workflow(spec, api)  # raises on a lint error
+    out_dir = Path(ctx["out_root"]) / ctx["slot"]
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / "workflow.json"
+    path.write_text(json.dumps(wf, indent=1, ensure_ascii=False), encoding="utf-8", newline="\n")
+    s = compiler.summary(wf)
+    trace.event("self_test", name="graph_lint", result="pass", details="no unknown target, unreachable node, merged "
+                "transition, open passthrough, null, const or doubled brace in code")
+    trace.event("self_test", name="brain_code", result="pass", details=f"{s['brain_bytes']} bytes, compiles, one "
+                "function, no doubled braces")
+    ctx["workflow"] = wf
+    return {"workflow": display_path(str(path)), **s}
+
+
+def stage_freya(ctx):
+    """Dry run, save and publish into the slot, read back and diff, export to submission/<slot>.workflow.json."""
+    trace, wf, slot = ctx["trace"], ctx["workflow"], ctx["slot"]
+    if not os.environ.get("FREYA_API_KEY"):
+        raise RuntimeError("FREYA_API_KEY is not set (source env.sh)")
+    import freya
+    s = compiler.summary(wf)
+    t0 = time.time()
+    v = freya.validate_workflow(f"{slot} dry run", wf)
+    trace.event("freya", action="validate", ok=True, seconds=round(time.time() - t0, 1),
+                result=sorted(v) if isinstance(v, dict) else str(v)[:200], nodes=s["nodes"], tools=s["tools"])
+    state_file = ROOT / ".freya-agents.json"
+    known = json.loads(state_file.read_text(encoding="utf-8")) if state_file.exists() else {}
+    saves = 1 if slot in known else 2  # a new workflow gets its event model only with its first update
+    for n in range(saves):
+        t0 = time.time()
+        st = freya.save_workflow(slot, wf, state_file=str(state_file))
+        trace.event("freya", action="update" if (slot in known or n) else "create", workflow_id=st["workflow_id"],
+                    agent_id=st["agent_id"], version=st.get("version"), published=bool(st.get("version")),
+                    seconds=round(time.time() - t0, 1), nodes=s["nodes"], tools=s["tools"])
+    got = freya.api("GET", f"/api/v2/workflow/{st['workflow_id']}", workspaceId=freya.workspace_id())["workflow"]
+    diffs = compiler.readback_diff(wf, got.get("workflow") or {})
+    trace.event("freya", action="readback", workflow_id=st["workflow_id"], agent_id=st["agent_id"],
+                nodes=len((got.get("workflow") or {}).get("nodes") or {}), diffs=diffs)
+    trace.event("self_test", name="readback_diff", result="pass" if not diffs else "fail", details=diffs[:20])
+    sub = ROOT / "submission"
+    sub.mkdir(exist_ok=True)
+    path = freya.export_workflow(st["workflow_id"], str(sub / f"{slot}.workflow.json"))
+    trace.event("freya", action="export", workflow_id=st["workflow_id"], agent_id=st["agent_id"],
+                path=display_path(path))
+    ctx["outputs"].update(workflow_id=st["workflow_id"], agent_id=st["agent_id"], version=st.get("version"),
+                          export=display_path(path))
+    return {"workflow_id": st["workflow_id"], "agent_id": st["agent_id"], "version": st.get("version"),
+            "export": display_path(path), "readback_diffs": len(diffs)}
+
+
+STAGE_FUNCS = {"toolapi": stage_toolapi, "spec": stage_spec, "compile": stage_compile, "freya": stage_freya}
 
 
 def run_stages(ctx):
@@ -138,7 +190,7 @@ def run_stages(ctx):
         ctx["done"] = name
 
 
-def print_summary(trace, slot, inputs, status, done, error):
+def print_summary(trace, slot, inputs, status, done, error, outputs=None):
     out = ["", "== build summary =="]
     secs = round(time.time() - trace.start, 1)
     state = {"ok": "ok", "stopped": f"stopped after {done}", "error": f"error after {done or 'start'}"}[status]
@@ -155,6 +207,9 @@ def print_summary(trace, slot, inputs, status, done, error):
         out.append(f"cases        {inputs.cases.path if inputs.cases else 'none'}")
     tests = [e for e in trace.events if e["ev"] == "self_test"]
     passed = sum(1 for e in tests if e.get("result") == "pass")
+    for k in ("workflow_id", "agent_id", "version", "export"):
+        if (outputs or {}).get(k) is not None:
+            out.append(f"{k:<12} {outputs[k]}")
     out.append(f"model calls  {trace.count('model_call')}")
     out.append(f"self-tests   {len(tests)} ({passed} pass)")
     out.append(f"warnings     {trace.count('warning')}")
@@ -189,19 +244,20 @@ def main(argv=None, trace_dir=None, environ=None):
         for w in inputs.warnings:
             trace.warning(w)
         trace.event("stage", name="ingest", ok=True, seconds=round(time.time() - t0, 1), summary=ingest_summary(inputs))
-        ctx = {"args": args, "inputs": inputs, "trace": trace, "slot": slot, "done": "ingest",
+        ctx = {"args": args, "inputs": inputs, "trace": trace, "slot": slot, "done": "ingest", "outputs": {},
                "out_root": environ.get("BUILDER_OUT_DIR") or str(ROOT / "out")}
         try:
             run_stages(ctx)
             status = "stopped" if args.until else "ok"
         except Exception as e:  # noqa: BLE001 - every failure ends in a run_end event
             error, status = f"{type(e).__name__}: {e}", "error"
-            if not isinstance(e, (StageNotReady, toolapi.ToolAPIError, sp.SpecError, specgen.SpecGenError)):
+            if not isinstance(e, (StageNotReady, toolapi.ToolAPIError, sp.SpecError, specgen.SpecGenError,
+                                  compiler.CompileError)):
                 trace.event("error", text=error, traceback=traceback.format_exc()[-2000:])
         done = ctx["done"]
-    trace.close(status, stopped_after=done if status == "stopped" else None, error=error,
-                outputs={"trace": trace.path})
-    print_summary(trace, slot, inputs, status, done, error)
+    outputs = {"trace": trace.path, **(ctx["outputs"] if inputs else {})}
+    trace.close(status, stopped_after=done if status == "stopped" else None, error=error, outputs=outputs)
+    print_summary(trace, slot, inputs, status, done, error, outputs)
     return 1 if status == "error" else 0
 
 

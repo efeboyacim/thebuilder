@@ -107,7 +107,8 @@ def flush(c):
     out["brain_stage"] = st.get("stage") or ""
     out["brain_error"] = ""
     out[STATE] = json.dumps(st, separators=(",", ":"))
-    c["v"].update(out)
+    for k in out:  # item by item: the platform may only see assignments
+        c["v"][k] = out[k]
 
 
 # ---------- speaking, closing, calling ----------
