@@ -159,6 +159,18 @@ are `{{name}}`; codes are checked against the tool API's enums, or must occur ve
 (`builder/spec.py`) checks expressions against the AST whitelist and their names; evaluating them on synthetic
 inputs needs `policy_lib` and comes with item 08.
 
+**Item 11 sections.** `calendar` adds `weekday_semantics` (calendar_week, nearest) and `named_periods[]` (phrase →
+date expression). `products` holds `bands[]` (id, selector, deadline expression, attempts, action negotiate/close with
+a situation), the `floor` expression and the `unmatched` situation. `negotiation` adds `non_business_day` (next, prev,
+ask + template), `after_deadline` (offer_deadline, ask + template), `vague` (re-asks, template, then
+propose_deadline/no_answer + template), `ask_date_template`, `ladder[]` (step, bands, amount and date expressions,
+template), `non_answer_is_refusal`, `dedupe_refused_offers` and `on_exhausted`. `failure_policy` gives retries and an
+exhausted situation for lookup, record_promise, book_callback and transfer. Offer templates take `amount`, `date`,
+`deadline`, `named_date` and the product placeholders; ladder expressions take `floor`, `deadline` and
+`said_too_much`. The engine checks every date it would agree or offer (today or later, a business day, not after the
+deadline) and clamps ladder dates into that range; a refusal of any offer on the table is a flat refusal and uses
+the next ladder step of the product's band. Fixture: `tests/fixtures/spec-a-v1.json`.
+
 ### 2.3 Expressions
 
 Some values are computed per call: deadlines, floors, ladder steps, band selectors, callback days, `earliest_date`.
@@ -207,6 +219,13 @@ Every one that is used produces a trace `warning`.
 | Purpose question during identity (item 08) | Not a refusal; the question is asked again |
 | Callback window ends, `after_now` (item 08) | Inclusive; the callback must be later than `now` |
 | A situation reference that is `not_specified` (item 08) | The stage's hang-up situation |
+| Date after the deadline (item 11) | Ask for another day |
+| Band attempts (item 11) | 1 |
+| Band deadline (item 11) | No upper limit; a vague answer is then a non-answer |
+| Floor (item 11) | The full amount due |
+| Non-answer to an offer (item 11) | A flat refusal (uses an attempt) |
+| Repeating a refused offer (item 11) | Not repeated: the step is skipped |
+| Tool retries (item 11) | 1 retry with the same values, then the stage's hang-up situation |
 
 ---
 

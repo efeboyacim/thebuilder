@@ -133,7 +133,7 @@ def test_time_candidates():
 @pytest.mark.parametrize("text,today,want", [
     ("tomorrow", D(2026, 10, 14), D(2026, 10, 15)), ("today", D(2026, 10, 14), D(2026, 10, 14)),
     ("the day after tomorrow", D(2026, 10, 14), D(2026, 10, 16)), ("Friday", D(2026, 10, 14), D(2026, 10, 16)),
-    ("next Monday", D(2026, 10, 14), D(2026, 10, 26)), ("Monday", D(2026, 10, 16), D(2026, 10, 19)),
+    ("next Monday", D(2026, 10, 14), D(2026, 10, 19)), ("Monday", D(2026, 10, 16), D(2026, 10, 19)),
     ("6 November", D(2026, 10, 14), D(2026, 11, 6)), ("the 2nd", D(2026, 10, 14), D(2026, 11, 2)),
     ("15 January", D(2026, 12, 20), D(2027, 1, 15)), ("whenever", D(2026, 10, 14), None)])
 def test_days(text, today, want):

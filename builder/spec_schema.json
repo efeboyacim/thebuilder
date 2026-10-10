@@ -5,8 +5,8 @@
  "type": "object",
  "additionalProperties": false,
  "required": ["spec_version", "call_variables", "bindings", "calendar", "opening", "third_party", "identity",
-              "disclosure", "negotiation", "confirm", "situations", "closing", "phrases", "residual_rules",
-              "rule_index", "forbidden_codes"],
+              "disclosure", "products", "negotiation", "confirm", "failure_policy", "situations", "closing", "phrases",
+              "residual_rules", "rule_index", "forbidden_codes"],
  "$defs": {
   "ns": {"const": "not_specified"},
   "refs": {"type": "array", "items": {"type": "string", "pattern": "^R[0-9]+$"},
@@ -25,6 +25,10 @@
   "stage": {"enum": ["open", "third", "identity", "negotiate", "confirm", "close", "any"]},
   "hangup": {"type": "object", "additionalProperties": false, "required": ["situation", "stated_in_brief"],
              "properties": {"situation": {"$ref": "#/$defs/id"}, "stated_in_brief": {"type": "boolean"}}},
+  "failure": {"type": "object", "additionalProperties": false, "required": ["retries", "on_exhausted", "refs"],
+              "properties": {"retries": {"$ref": "#/$defs/count", "description": "Further calls with the same values after a failure, before giving up."},
+                             "on_exhausted": {"$ref": "#/$defs/situation_ref", "description": "Situation when every call failed; its say text tells the customer honestly."},
+                             "refs": {"$ref": "#/$defs/refs"}}},
   "field_binding": {
    "type": "object", "additionalProperties": false, "required": ["source", "value"],
    "properties": {
@@ -64,12 +68,21 @@
   },
 
   "calendar": {
-   "type": "object", "additionalProperties": false, "required": ["business_weekdays", "holidays", "refs"],
+   "type": "object", "additionalProperties": false,
+   "required": ["business_weekdays", "holidays", "weekday_semantics", "named_periods", "refs"],
    "properties": {
     "business_weekdays": {"anyOf": [{"type": "array", "minItems": 1, "items": {"enum": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]}},
                                     {"$ref": "#/$defs/ns"}]},
     "holidays": {"type": "array", "items": {"$ref": "#/$defs/date"},
                  "description": "Every non-business date as an explicit date. A holiday given by name becomes its dates for this year and the next two. Empty when the brief names none."},
+    "weekday_semantics": {"enum": ["calendar_week", "nearest", "not_specified"],
+                          "description": "What a weekday after this or next means. calendar_week: 'this' is that weekday in the current Monday-to-Sunday week and 'next' the one in the following week. nearest: both mean the first such weekday after today. A weekday said alone is always the first one from today on."},
+    "named_periods": {"type": "array",
+                      "description": "Period words the material gives an exact date to (for example a rule that a named payday or part of a month means a certain business day). Empty when it gives none. A period the material calls vague is not listed here.",
+                      "items": {"type": "object", "additionalProperties": false, "required": ["phrase", "date", "refs"],
+                                "properties": {"phrase": {"$ref": "#/$defs/text", "description": "The words, lower case, as a customer would say them."},
+                                               "date": {"$ref": "#/$defs/expr", "description": "Expression for the date the words mean."},
+                                               "refs": {"$ref": "#/$defs/refs"}}}},
     "refs": {"$ref": "#/$defs/refs"}
    }
   },
@@ -245,7 +258,9 @@
   },
 
   "negotiation": {
-   "type": "object", "additionalProperties": false, "required": ["first_ask", "refs"],
+   "type": "object", "additionalProperties": false,
+   "required": ["first_ask", "non_business_day", "after_deadline", "vague", "ask_date_template", "ladder",
+                "non_answer_is_refusal", "dedupe_refused_offers", "on_exhausted", "refs"],
    "properties": {
     "first_ask": {
      "type": "object", "additionalProperties": false,
@@ -260,6 +275,96 @@
       "refs": {"$ref": "#/$defs/refs"}
      }
     },
+    "non_business_day": {
+     "description": "The customer names a day that is not a business day and not after the deadline.",
+     "type": "object", "additionalProperties": false, "required": ["policy", "template", "refs"],
+     "properties": {
+      "policy": {"enum": ["next", "prev", "ask", "not_specified"],
+                 "description": "Offer the next or the previous business day instead, or ask for another day."},
+      "template": {"$ref": "#/$defs/optional_text", "description": "Offers the shifted day (next or prev): date is the business day offered, named_date the day the customer named."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "after_deadline": {
+     "description": "The customer names a day after the product's deadline.",
+     "type": "object", "additionalProperties": false, "required": ["policy", "template", "refs"],
+     "properties": {
+      "policy": {"enum": ["offer_deadline", "ask", "not_specified"],
+                 "description": "Offer the deadline itself, or ask for another day."},
+      "template": {"$ref": "#/$defs/optional_text", "description": "Offers the deadline (offer_deadline): date is the deadline, named_date the day the customer named."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "vague": {
+     "description": "The customer gives a period or an event instead of a day (a week, a month, a payday).",
+     "type": "object", "additionalProperties": false, "required": ["re_asks", "template", "then", "propose_template", "refs"],
+     "properties": {
+      "re_asks": {"$ref": "#/$defs/count", "description": "How many times the agent asks for the exact day."},
+      "template": {"$ref": "#/$defs/text", "description": "Asks for the exact day."},
+      "then": {"enum": ["propose_deadline", "no_answer", "not_specified"],
+               "description": "Still no exact day after the re-asks: propose the deadline, or treat it as a non-answer."},
+      "propose_template": {"$ref": "#/$defs/optional_text", "description": "Proposes the deadline (propose_deadline): date is the deadline."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
+    "ask_date_template": {"$ref": "#/$defs/text",
+                          "description": "Asks for another day when the day named cannot be used (it has passed, or the policy is ask). Agent-proposed amounts only: never ask how much the customer can pay."},
+    "ladder": {
+     "description": "The persuasion attempts in order. A flat refusal of the offer on the table uses one attempt: the next step that applies to the product's band is offered, until the band's attempts are used up. The engine keeps every offered date a business day from today up to the deadline.",
+     "type": "array",
+     "items": {"type": "object", "additionalProperties": false, "required": ["step", "bands", "amount", "date", "template", "refs"],
+               "properties": {"step": {"type": "integer", "minimum": 1},
+                              "bands": {"type": "array", "items": {"$ref": "#/$defs/id"},
+                                        "description": "Ids of the bands this step applies to; empty = every band."},
+                              "amount": {"$ref": "#/$defs/expr", "description": "Expression for the amount offered."},
+                              "date": {"$ref": "#/$defs/expr", "description": "Expression for the date offered."},
+                              "template": {"$ref": "#/$defs/text", "description": "The offer, ending with a question."},
+                              "refs": {"$ref": "#/$defs/refs"}}}
+    },
+    "non_answer_is_refusal": {"$ref": "#/$defs/switch",
+                              "description": "true when the material counts a non-answer to an offer like a flat refusal."},
+    "dedupe_refused_offers": {"$ref": "#/$defs/switch",
+                              "description": "true when an offer the customer already refused must not be made again (a step that would repeat one is skipped)."},
+    "on_exhausted": {"$ref": "#/$defs/situation_ref", "description": "Situation when the attempts are used up."},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "products": {
+   "description": "How each late product from the lookup tool is classified.",
+   "type": "object", "additionalProperties": false, "required": ["bands", "floor", "unmatched", "refs"],
+   "properties": {
+    "bands": {
+     "description": "The bands the material sorts products into (for example by days overdue), in its order; the first band whose selector is true applies. When the material has no bands: one band with selector True.",
+     "type": "array", "minItems": 1,
+     "items": {"type": "object", "additionalProperties": false,
+               "required": ["id", "selector", "deadline", "attempts", "action", "situation", "refs"],
+               "properties": {"id": {"$ref": "#/$defs/id"},
+                              "selector": {"$ref": "#/$defs/expr", "description": "true for a product in this band."},
+                              "deadline": {"anyOf": [{"$ref": "#/$defs/expr"}, {"$ref": "#/$defs/ns"}],
+                                           "description": "Expression for the latest promise date of a product in this band."},
+                              "attempts": {"$ref": "#/$defs/count", "description": "Persuasion attempts for a product in this band."},
+                              "action": {"enum": ["negotiate", "close"],
+                                         "description": "negotiate a promise, or end the call with the situation (a transfer when it has a queue)."},
+                              "situation": {"$ref": "#/$defs/situation_ref", "description": "For action close; not_specified otherwise."},
+                              "refs": {"$ref": "#/$defs/refs"}}}
+    },
+    "floor": {"anyOf": [{"$ref": "#/$defs/expr"}, {"$ref": "#/$defs/ns"}],
+              "description": "Expression for the lowest amount that can be recorded for a product."},
+    "unmatched": {"$ref": "#/$defs/situation_ref", "description": "Situation when no band applies to a product."},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "failure_policy": {
+   "description": "What the agent does when a bank tool fails (an error status, a timeout, or ok not true).",
+   "type": "object", "additionalProperties": false,
+   "required": ["lookup", "record_promise", "book_callback", "transfer", "refs"],
+   "properties": {
+    "lookup": {"$ref": "#/$defs/failure"},
+    "record_promise": {"$ref": "#/$defs/failure"},
+    "book_callback": {"$ref": "#/$defs/failure"},
+    "transfer": {"$ref": "#/$defs/failure"},
     "refs": {"$ref": "#/$defs/refs"}
    }
   },

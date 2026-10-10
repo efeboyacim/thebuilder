@@ -401,27 +401,56 @@ def iso_date(parts):
     return ""
 
 
+def _weeks_ahead(s):
+    """0 for 'this', 1 for 'next'/'following', 2 for 'the week after next'; None when none is said."""
+    if re.search(r"\bweek after next\b|\bafter next\b", s):
+        return 2
+    if re.search(r"\bnext\b|\bfollowing\b", s):
+        return 1
+    if re.search(r"\bthis\b|\bthe current\b", s):
+        return 0
+    return None
+
+
 def resolve_day(text, today, weekday_mode="nearest", order="day_month_year"):
     """The date a customer means by a day phrase, resolved against today: today, tomorrow, the day after tomorrow,
-    a weekday (with this/next), an explicit date, or a day of the month. None when the phrase names no day.
-    weekday_mode 'nearest': the first such weekday from today on, one week later when the phrase says next;
-    'calendar_week': that weekday in the current Monday-to-Sunday week, or in the following week for next."""
-    s = " " + str(text or "").lower() + " "
+    'in three days', a weekday (with this/next), an explicit date, or a day of the month (a weekday said with a day
+    number is read by the number). None when the phrase names no day: a week, a month or an event is vague.
+    A weekday said alone is the first such day from today on. weekday_mode 'calendar_week': a weekday after 'this' is
+    that day in the current Monday-to-Sunday week (it may have passed), after 'next' the one in the following week,
+    'the week after next' the week after that; 'nearest': 'this' and 'next' both mean the first such day after
+    today, 'the week after next' one week later."""
+    s = " " + re.sub(r"[,.!?;]", " ", str(text or "").lower()) + " "
     if re.search(r"\bday after tomorrow\b", s):
         return today + 2 * DAY
     if re.search(r"\btomorrow\b", s):
         return today + DAY
-    if re.search(r"\b(today|tonight|this (morning|afternoon|evening)|later)\b", s):
+    if re.search(r"\b(today|tonight|this (morning|afternoon|evening))\b", s):
         return today
-    for i, w in enumerate(WEEKDAY_WORDS):
-        if re.search(r"\b" + w[:3] + r"(" + w[3:] + r")?\b", s):
-            nxt = re.search(r"\bnext\b|\bfollowing\b", s) is not None
-            if weekday_mode == "calendar_week":
-                monday = today - today.weekday() * DAY
-                return monday + (i + (7 if nxt else 0)) * DAY
-            d = today + ((i - today.weekday()) % 7) * DAY
-            return d + 7 * DAY if nxt else d
-    p = date_parts(text, order, today)
+    if re.search(r"\b(few|couple|several|some)\b", s):
+        return None
+    m = re.search(r"\b(?:in|within|after)\s+(.+?)\s+days?\b|\b(\w+(?:\s\w+)?)\s+days?\s+(?:from (?:now|today)|time)\b", s)
+    if m:
+        nums = spoken_numbers(m.group(1) or m.group(2))
+        if not nums and re.search(r"\ba\b|\bone\b", m.group(1) or m.group(2)):
+            nums = [[1]]
+        return today + nums[-1][0] * DAY if nums and nums[-1][0] <= 366 else None
+    if _MONTH_RE.search(s) is None and re.search(r"\bweeks?\b|\bmonths?\b|\byears?\b|\bweekend\b", s) and \
+            not any(re.search(r"\b" + w[:3] + r"(" + w[3:] + r")?\b", s) for w in WEEKDAY_WORDS):
+        return None  # a period, not a day
+    p = date_parts(text, order, today) if re.search(r"\d|" + "|".join(_ORD_SMALL[1:] + _ORD_TENS[2:]) + "|" +
+                                                     _MONTH_RE.pattern[2:-2], s) else dict()
+    if "day" not in p:
+        for i, w in enumerate(WEEKDAY_WORDS):
+            if re.search(r"\b" + w[:3] + r"(" + w[3:] + r")?\b", s):
+                ahead = _weeks_ahead(s)
+                if ahead is None:
+                    return today + ((i - today.weekday()) % 7) * DAY
+                if weekday_mode == "calendar_week":
+                    return today - today.weekday() * DAY + (i + 7 * ahead) * DAY
+                d = today + ((i - today.weekday() - 1) % 7 + 1) * DAY
+                return d + 7 * DAY if ahead == 2 else d
+        return None
     if "day" in p:
         y, m = p.get("year", today.year), p.get("month")
         if m is None:

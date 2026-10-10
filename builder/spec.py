@@ -19,6 +19,7 @@ VERSION = "0"
 # Spoken placeholders the engine fills, per template; call-variable names are allowed everywhere.
 ITEM_FIELDS = "<item fields>"
 PRODUCT_VARS = ("product_name", "due_amount", "days_overdue")
+OFFER_VARS = PRODUCT_VARS + ("amount", "date", "deadline", ITEM_FIELDS)
 TEMPLATES = {
     "opening.template": (),
     "opening.confirmation.reask_template": (),
@@ -35,6 +36,12 @@ TEMPLATES = {
     "disclosure.product_names[].name_template": (ITEM_FIELDS,),
     "negotiation.first_ask.template": PRODUCT_VARS + ("amount", "date"),
     "negotiation.first_ask.template_multi": ("product_count", "total_amount", "date"),
+    "negotiation.non_business_day.template": OFFER_VARS + ("named_date",),
+    "negotiation.after_deadline.template": OFFER_VARS + ("named_date",),
+    "negotiation.vague.template": PRODUCT_VARS + ("deadline", ITEM_FIELDS),
+    "negotiation.vague.propose_template": OFFER_VARS,
+    "negotiation.ask_date_template": PRODUCT_VARS + ("deadline", ITEM_FIELDS),
+    "negotiation.ladder[].template": OFFER_VARS,
     "confirm.readback_template": ("items", "question"),
     "confirm.item_template": ("product_name", "amount", "date"),
     "confirm.recording_template": (),
@@ -51,16 +58,30 @@ PRE_VERIFICATION = [p for p in TEMPLATES if p.split(".")[0] in ("opening", "thir
 HELPERS = ("is_business_day", "add_business_days", "add_calendar_days", "weekday", "roll", "last_bd_of_week",
            "last_bd_of_month", "min", "max", "abs", "ceil_to", "round_half_up")
 ITEM_ROLES = ("ref", "kind", "due_amount", "days_overdue")
+PRODUCT_NAMES = ITEM_ROLES + (ITEM_FIELDS,)
+OFFER_NAMES = ("today", "now", "floor", "deadline", "said_too_much") + PRODUCT_NAMES
 EXPRESSIONS = {
+    "calendar.named_periods[].date": ("today", "now"),
     "third_party.callback.day_rule": ("d", "today", "now"),
-    "negotiation.first_ask.amount": ("today",) + ITEM_ROLES + (ITEM_FIELDS,),
-    "negotiation.first_ask.date": ("today", "now") + ITEM_ROLES + (ITEM_FIELDS,),
+    "products.bands[].selector": ("today",) + PRODUCT_NAMES,
+    "products.bands[].deadline": ("today", "now") + PRODUCT_NAMES,
+    "products.floor": PRODUCT_NAMES,
+    "negotiation.first_ask.amount": ("today",) + PRODUCT_NAMES,
+    "negotiation.first_ask.date": ("today", "now") + PRODUCT_NAMES,
+    "negotiation.ladder[].amount": OFFER_NAMES,
+    "negotiation.ladder[].date": OFFER_NAMES,
 }
 # What each expression must return on every synthetic input (builder/exprs.py).
 EXPR_TYPES = {
+    "calendar.named_periods[].date": "date",
     "third_party.callback.day_rule": "bool",
+    "products.bands[].selector": "bool",
+    "products.bands[].deadline": "date",
+    "products.floor": "amount",
     "negotiation.first_ask.amount": "amount",
     "negotiation.first_ask.date": "date",
+    "negotiation.ladder[].amount": "amount",
+    "negotiation.ladder[].date": "date",
 }
 _AST_OK = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.UnaryOp, ast.Not, ast.USub, ast.UAdd, ast.BinOp, ast.Add,
            ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Compare, ast.Eq, ast.NotEq, ast.Lt, ast.LtE, ast.Gt,
@@ -81,6 +102,13 @@ SITUATION_REFS = {
     "closing.hangup.negotiate.situation": False,
     "closing.hangup.confirm.situation": False,
     "confirm.on_recorded": False,
+    "products.bands[].situation": False,
+    "products.unmatched": False,
+    "negotiation.on_exhausted": False,
+    "failure_policy.lookup.on_exhausted": False,
+    "failure_policy.record_promise.on_exhausted": False,
+    "failure_policy.book_callback.on_exhausted": True,
+    "failure_policy.transfer.on_exhausted": False,
 }
 
 _PLACEHOLDER = re.compile(r"\{\{\s*([^{}]*?)\s*\}\}")
@@ -408,7 +436,8 @@ def validate(spec, api, brief_text="", rule_ids=None, known_ids=None):
         return Report(errors, warnings, info)
     ctx = _Ctx(spec, api)
     for check in (_check_bindings, _check_codes, _check_situations, _check_templates, _check_expressions,
-                  _check_identity, _check_calendar, _check_callback, _check_pre_verification, _check_phrases):
+                  _check_identity, _check_calendar, _check_callback, _check_negotiation, _check_pre_verification,
+                  _check_phrases):
         try:
             errors += check(ctx, brief_text)
         except Exception as e:  # noqa: BLE001 - a malformed part is already a schema error; keep validating
@@ -437,6 +466,8 @@ def facts(spec):
                                for r in res if r.get("class") == "flow"],
             "hangup_chosen_by_model": neutral,
             "situations": len(spec.get("situations") or []),
+            "bands": [b.get("id") for b in (spec.get("products") or {}).get("bands") or [] if isinstance(b, dict)],
+            "ladder_steps": len((spec.get("negotiation") or {}).get("ladder") or []),
             "identity_questions": [q.get("field") for q in (spec.get("identity") or {}).get("questions") or []
                                    if isinstance(q, dict)]}
 
@@ -614,6 +645,37 @@ def _check_calendar(ctx, _):
             datetime.date.fromisoformat(d)
         except (TypeError, ValueError):
             errs.append(f"calendar.holidays[{i}]: {d!r} is not a date")
+    return errs
+
+
+def _check_negotiation(ctx, _):
+    s, errs = ctx.spec, []
+    bands = [b for b in (s.get("products") or {}).get("bands") or [] if isinstance(b, dict)]
+    ids = [b.get("id") for b in bands]
+    for d in sorted({i for i in ids if ids.count(i) > 1 and isinstance(i, str)}):
+        errs.append(f"products.bands: id {d!r} is used twice")
+    for i, b in enumerate(bands):
+        if b.get("action") == "close" and b.get("situation") == NS:
+            errs.append(f"products.bands[{i}].situation: a band with action close needs a situation")
+    neg = s.get("negotiation") or {}
+    steps = [x for x in neg.get("ladder") or [] if isinstance(x, dict)]
+    nums = [x.get("step") for x in steps]
+    if nums != sorted(nums) or len(set(nums)) != len(nums):
+        errs.append("negotiation.ladder: steps must be numbered in ascending order, each once")
+    for i, x in enumerate(steps):
+        for j, b in enumerate(x.get("bands") or []):
+            if b not in ids:
+                errs.append(f"negotiation.ladder[{i}].bands[{j}]: {b!r} is not a band id of products.bands")
+    for key, policy, needs in (("non_business_day", ("next", "prev"), "template"),
+                               ("after_deadline", ("offer_deadline",), "template"),
+                               ("vague", ("propose_deadline",), "propose_template")):
+        part = neg.get(key) or {}
+        field = "then" if key == "vague" else "policy"
+        if part.get(field) in policy and part.get(needs) in (None, NS):
+            errs.append(f"negotiation.{key}.{needs}: {field} {part.get(field)!r} needs this template")
+    phrases = [p.get("phrase") for p in (s.get("calendar") or {}).get("named_periods") or [] if isinstance(p, dict)]
+    for d in sorted({p for p in phrases if phrases.count(p) > 1 and isinstance(p, str)}):
+        errs.append(f"calendar.named_periods: phrase {d!r} is listed twice")
     return errs
 
 

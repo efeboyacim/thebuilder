@@ -10,7 +10,16 @@ MAIN = dict(open=("confirmed", "someone_else", "unclear"),
             identity=("answers", "refuses", "unclear"),
             negotiate=("accepts", "refuses", "too_much", "proposes", "unclear"),
             confirm=("yes", "no", "change", "unclear"))
-STAGE_SLOTS = dict(open=(), third=("day", "time"), identity=("answer",), negotiate=(), confirm=())
+STAGE_SLOTS = dict(open=(), third=("day", "time"), identity=("answer",), negotiate=("day",), confirm=("day",))
+DAY_TEXT = dict(
+    third="The day named in the LAST message exactly as said (for example a weekday, tomorrow, or a date); none if "
+          "absent.",
+    negotiate="The day or period the person offers or agrees to pay on in the LAST message, exactly as said, with "
+              "every word that places it (a weekday with this or next, a date, a day of the month, tomorrow, a "
+              "number of days, a week or a month, or an event such as a payday). none if absent, and none when the person only says they cannot pay on "
+              "a day.",
+    confirm="A different day the person now wants to pay on in the LAST message, exactly as said; none if absent or "
+            "if they only repeat the day that was read back.")
 
 
 def extraction(S):
@@ -31,7 +40,7 @@ def extraction(S):
         refuses="the person does not want to answer or says no",
         accepts="the person agrees to the payment the agent proposed",
         too_much="the person says the amount is too much",
-        proposes="the person proposes their own date or amount",
+        proposes="the person proposes their own date, period or amount instead",
         yes="the person clearly confirms what was read back",
         no="the person does not confirm what was read back",
         change="the person wants to change the date or the amount")
@@ -55,9 +64,7 @@ def extraction(S):
                 "The answer to the security question in the LAST message exactly as said, in the person's own "
                 "words and numbers; do not reformat it. none if absent.")))
         if "day" in STAGE_SLOTS[stage]:
-            fields.append(dict(name=x_var("day"), type="string", enum=None, description=(
-                "The day named in the LAST message exactly as said (for example a weekday, tomorrow, or a date); "
-                "none if absent.")))
+            fields.append(dict(name=x_var("day"), type="string", enum=None, description=DAY_TEXT[stage]))
         if "time" in STAGE_SLOTS[stage]:
             fields.append(dict(name=x_var("time"), type="string", enum=None, description=(
                 "The clock time named in the LAST message exactly as said; none if absent.")))

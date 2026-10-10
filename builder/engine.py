@@ -73,15 +73,17 @@ def context(vars, S, E):
     if not isinstance(st, dict):
         st = new_state()
     cv = dict((name, vars.get(name)) for name in S.get("call_variables") or [])
+    wmode = "calendar_week" if S["calendar"].get("weekday_semantics") == "calendar_week" else "nearest"
     return dict(v=vars, S=S, E=E, now=now, today=now.date(), cal=cal, H=helpers(cal), st=st, say=[], out=dict(),
-                cv=cv)
+                cv=cv, wmode=wmode)
 
 
 def new_state():
     return dict(stage="open", wait="open", asks=1, miss=0, last="", loops=0, closing="", transferred=False,
                 pending=None, third=dict(bad=0, none=0, other=0, day="", cb=None),
                 ident=dict(q=0, wrong=0, qwrong=dict(), partial=None, refusals=0, purpose=0, fails=0, passed=[]),
-                products=[], offers=[], agreed=[], recorded=[], fails=dict(), neg=0, conf=0)
+                products=[], offers=[], agreed=[], recorded=[], fails=dict(), pp=dict(), cur="", conf=0,
+                no_transfer=False)
 
 
 def step(c):
@@ -155,7 +157,7 @@ def close(c, sid):
     if sit is None:
         sid = hangup(c, st.get("stage"))
         sit = situation(c, sid) or dict(say="", farewell="")
-    if sit.get("queue") and "transfer" in S["bindings"]["tools"] and not st.get("transferred"):
+    if sit.get("queue") and "transfer" in S["bindings"]["tools"] and not st.get("transferred") and             not st.get("no_transfer"):
         return call(c, "transfer", dict(queue=sit["queue"]), dict(kind="transfer", sid=sid))
     st["closing"] = sid
     vals = values(c)
@@ -224,9 +226,25 @@ def on_result(c, p, r):
     if kind == "callback":
         return callback_result(c, p, r)
     if kind == "transfer":
-        c["st"]["transferred"] = True
-        return close(c, p.get("sid"))
+        if r["ok"]:
+            c["st"]["transferred"] = True
+            return close(c, p.get("sid"))
+        return failed(c, "transfer", lambda: close(c, p.get("sid")), c["st"].get("stage"))
     raise ValueError("unknown pending call " + str(kind))
+
+
+def failed(c, role, again, stage, key=None):
+    """A failed bank call: call again while the spec's retries last, else close with its situation."""
+    st = c["st"]
+    key = key or role
+    st["fails"][key] = st["fails"].get(key, 0) + 1
+    pol = (c["S"].get("failure_policy") or dict()).get(role) or dict()
+    n = to_int(pol.get("retries"))
+    if st["fails"][key] <= (1 if n is None else n):
+        return again()
+    if role == "transfer":
+        st["no_transfer"] = True
+    return close(c, sit_ref(c, pol.get("on_exhausted"), stage))
 
 
 # ---------- template values ----------
@@ -248,6 +266,8 @@ def product_values(c, p, extra=None):
     vals = values(c, p.get("raw"))
     vals.update(dict(product_name=product_name(c, p), due_amount=say_money(p.get("due") or 0),
                      days_overdue=str(p.get("days") if p.get("days") is not None else "")))
+    if p.get("deadline"):
+        vals["deadline"] = say_date(datetime.date.fromisoformat(p["deadline"]), c["today"])
     vals.update(extra or dict())
     return vals
 
@@ -376,7 +396,7 @@ def turn_third(c, x):
 def callback_offer(c, x):
     S, st, today = c["S"], c["st"], c["today"]
     cb, t3 = S["third_party"]["callback"], st["third"]
-    d = resolve_day(x["day"], today) if x["day"] else None
+    d = customer_day(c, x["day"]) if x["day"] else None
     if d is None and t3.get("day"):
         d = datetime.date.fromisoformat(t3["day"])
     t = parse_time(x["time"]) if x["time"] else None
@@ -429,8 +449,13 @@ def callback_ok(c, d, h, m):
 def callback_result(c, p, r):
     if r["ok"]:
         return close(c, sit_ref(c, c["S"]["third_party"]["callback"].get("on_booked"), "third"))
-    c["st"]["third"]["cb"] = None
-    return close(c, hangup(c, "third"))  # item 12: failure_policy for book_callback
+    t3 = c["st"]["third"]
+    cb, t3["cb"] = t3["cb"], None
+
+    def again():
+        t3["cb"] = cb
+        return call(c, "book_callback", dict(date=datetime.date.fromisoformat(cb[0]), time=cb[1]), dict(kind="callback"))
+    return failed(c, "book_callback", again, "third")
 
 
 # ---------- identity ----------
@@ -520,19 +545,21 @@ def verify_result(c, p, r):
     return ask_question(c, i if nxt is None else nxt, reask=(nxt in (None, i)))
 
 
-# ---------- account, disclosure, first ask ----------
+# ---------- account, bands, disclosure, first ask ----------
 
 def lookup_result(c, p, r):
     st = c["st"]
     if not r["ok"]:
-        st["fails"]["lookup"] = st["fails"].get("lookup", 0) + 1
-        if st["fails"]["lookup"] <= 1:  # item 12: failure_policy for lookup
-            return call(c, "lookup", dict(), dict(kind="lookup"))
-        return close(c, hangup(c, "identity"))
+        return failed(c, "lookup", lambda: call(c, "lookup", dict(), dict(kind="lookup")), "identity")
     st["products"] = read_products(c)
     if not st["products"]:
         return close(c, hangup(c, "identity"))
+    for prod in st["products"]:
+        classify(c, prod)
     st["stage"] = "negotiate"
+    first = st["products"][0]
+    if len(st["products"]) == 1 and first.get("close"):  # item 14: bands that close among several products
+        return close(c, first["close"])
     d = c["S"]["disclosure"]
     c["say"].append(render(d["intro_template"], values(c, dict(product_count=len(st["products"])))))
     for prod in st["products"]:
@@ -566,6 +593,29 @@ def read_products(c):
     return out
 
 
+def classify(c, p):
+    """The product's band, deadline, attempts and floor, from the spec's expressions at call time."""
+    P = c["S"].get("products") or dict()
+    names = expr_names(c, p)
+    p.update(band="", deadline="", attempts=0, close="")
+    for i, b in enumerate(P.get("bands") or []):
+        if expr(c, "products.bands[" + str(i) + "].selector", names):
+            p["band"] = b.get("id")
+            path = "products.bands[" + str(i) + "].deadline"
+            if path in c["E"]:
+                d = expr(c, path, names)
+                p["deadline"] = (d.date() if isinstance(d, datetime.datetime) else d).isoformat()
+            n = to_int(b.get("attempts"))
+            p["attempts"] = 1 if n is None else n
+            if b.get("action") == "close":
+                p["close"] = sit_ref(c, b.get("situation"), "negotiate")
+            break
+    if not p["band"]:
+        p["close"] = sit_ref(c, P.get("unmatched"), "negotiate")
+    f = expr(c, "products.floor", names) if "products.floor" in c["E"] else None
+    p["floor"] = float(p.get("due") or 0) if f is None else float(f)
+
+
 def first_ask(c):
     S, st = c["S"], c["st"]
     fa = S["negotiation"]["first_ask"]
@@ -576,8 +626,10 @@ def first_ask(c):
         date = expr(c, "negotiation.first_ask.date", names)
         if isinstance(date, datetime.datetime):
             date = date.date()
-        offers.append(dict(ref=prod["ref"], amount=float(amount), date=date.isoformat()))
+        offers.append(dict(ref=prod["ref"], amount=float(amount), date=date.isoformat(), kind="first"))
+        pstate(c, prod)["offer"] = dict(offers[-1])
     st["offers"] = offers
+    st["cur"] = str(st["products"][0]["ref"])
     o = offers[0]
     dt = datetime.date.fromisoformat(o["date"])
     if len(offers) > 1 and fa.get("template_multi") not in (None, NS):
@@ -590,17 +642,175 @@ def first_ask(c):
     return ask(c, "negotiate", text)
 
 
-# ---------- negotiation (slice: the first ask only; item 11 adds dates, amounts and the ladder) ----------
+# ---------- negotiation: dates and the persuasion ladder (item 12 adds amounts, events and side questions) ----------
+
+def pstate(c, p):
+    pp = c["st"]["pp"]
+    k = str(p.get("ref"))
+    if k not in pp:
+        pp[k] = dict(used=0, vague=0, proposed=False, refused=[], offer=None, too_much=False)
+    return pp[k]
+
+
+def current(c):
+    return product_by_ref(c, c["st"].get("cur"))
+
+
+def deadline(p):
+    return datetime.date.fromisoformat(p["deadline"]) if p.get("deadline") else None
+
+
+def customer_day(c, text):
+    """The day a customer names: a period the spec defines, else resolved against today; None when vague."""
+    low = " " + re.sub(r"\s+", " ", str(text or "").lower()) + " "
+    for i, np in enumerate(c["S"]["calendar"].get("named_periods") or []):
+        ph = str(np.get("phrase") or "").lower().strip()
+        if ph and (" " + ph + " ") in low:
+            d = expr(c, "calendar.named_periods[" + str(i) + "].date", dict(today=c["today"], now=c["now"]))
+            return d.date() if isinstance(d, datetime.datetime) else d
+    return resolve_day(text, c["today"], c["wmode"])
+
+
+def reask(c):
+    st = c["st"]
+    st["loops"] += 1
+    if st["loops"] > LOOP_LIMIT:
+        return close(c, hangup(c, st.get("stage")))
+    return ask(c, st.get("stage") or "negotiate", st.get("last") or "")
+
 
 def turn_negotiate(c, x):
+    st, neg = c["st"], c["S"]["negotiation"]
+    p = current(c)
+    s = pstate(c, p)
+    o = s.get("offer") or dict()
+    if x["day"]:
+        d = customer_day(c, x["day"])
+        if not (x["main"] == "refuses" and d is not None and d.isoformat() == o.get("date")):
+            return propose_day(c, p, d)
+    m = x["main"]
+    if m == "accepts" and o:
+        if o.get("kind") == "first" and len(st["offers"]) > 1:  # item 14: several products
+            st["agreed"] = [dict(a) for a in st["offers"]]
+            return readback(c)
+        return propose_day(c, p, datetime.date.fromisoformat(o["date"]), o["amount"])
+    if m == "proposes":
+        return vague_day(c, p)
+    if m == "too_much":
+        s["too_much"] = True  # item 12: the floor policy
+        return refusal(c, p)
+    if m == "refuses":
+        return refusal(c, p)
+    if x["side_q"] in SIDE_Q or x["event"]:  # item 12: side questions and events
+        return reask(c)
+    if neg.get("non_answer_is_refusal") is False:
+        return reask(c)
+    return refusal(c, p)
+
+
+def propose_day(c, p, d, amount=None):
+    """A day for the product: agreed when it is allowed, else the spec's policy (offer another day, or ask)."""
+    S, st, cal, today = c["S"], c["st"], c["cal"], c["today"]
+    neg, s = S["negotiation"], pstate(c, p)
+    amount = (s.get("offer") or dict()).get("amount", p.get("due") or 0) if amount is None else amount
+    if d is None:
+        return vague_day(c, p)
+    st["stage"] = "negotiate"
+    end = deadline(p)
+    if d < today:
+        return ask_day(c, p)
+    if end is not None and d > end:
+        pol = neg.get("after_deadline") or dict()
+        if pol.get("policy") == "offer_deadline" and pol.get("template") not in (None, NS):
+            return offer(c, p, amount, end, "deadline", pol["template"], d)
+        return ask_day(c, p)
+    if not is_business_day(cal, d):
+        pol = neg.get("non_business_day") or dict()
+        way = pol.get("policy")
+        if way in ("next", "prev") and pol.get("template") not in (None, NS):
+            d2 = roll(cal, d, way)
+            if d2 < today:
+                d2 = roll(cal, d, "next")
+            if end is not None and d2 > end:
+                return propose_day(c, p, d2, amount)
+            return offer(c, p, amount, d2, "shift", pol["template"], d)
+        return ask_day(c, p)
+    st["agreed"] = [dict(ref=p["ref"], amount=float(amount), date=d.isoformat())]
+    return readback(c)
+
+
+def ask_day(c, p):
     st = c["st"]
-    if x["main"] == "accepts":
-        st["agreed"] = [dict(o) for o in st["offers"]]
-        return readback(c)
-    st["neg"] += 1
-    if st["neg"] >= 2:
+    st["loops"] += 1
+    if st["loops"] > LOOP_LIMIT:
         return close(c, hangup(c, "negotiate"))
-    return ask(c, "negotiate", st["last"])
+    return ask(c, "negotiate", render(c["S"]["negotiation"]["ask_date_template"], product_values(c, p)))
+
+
+def vague_day(c, p):
+    v, s = c["S"]["negotiation"]["vague"], pstate(c, p)
+    s["vague"] += 1
+    n = to_int(v.get("re_asks"))
+    if s["vague"] <= (1 if n is None else n):
+        return ask(c, "negotiate", render(v["template"], product_values(c, p)))
+    end = deadline(p)
+    if v.get("then") == "propose_deadline" and end is not None and not s["proposed"] and \
+            v.get("propose_template") not in (None, NS):
+        s["proposed"] = True
+        amount = (s.get("offer") or dict()).get("amount", p.get("due") or 0)
+        return offer(c, p, amount, clamp(c, p, end), "deadline", v["propose_template"])
+    return refusal(c, p)
+
+
+def offer_names(c, p):
+    s = pstate(c, p)
+    n = expr_names(c, p)
+    n.update(dict(floor=p.get("floor"), deadline=deadline(p), said_too_much=bool(s.get("too_much"))))
+    return n
+
+
+def clamp(c, p, d):
+    """d kept a business day from today up to the product's deadline."""
+    cal, today, end = c["cal"], c["today"], deadline(p)
+    if isinstance(d, datetime.datetime):
+        d = d.date()
+    if end is not None and d > end:
+        d = end
+    if d < today:
+        d = today
+    if not is_business_day(cal, d):
+        d2 = roll(cal, d, "next")
+        if end is not None and d2 > end:
+            d2 = roll(cal, d, "prev")
+        d = d2 if d2 >= today else d
+    return d
+
+
+def refusal(c, p):
+    """A flat refusal of the offer on the table: the next ladder step of the product's band, or the end."""
+    neg, s = c["S"]["negotiation"], pstate(c, p)
+    o = s.get("offer")
+    if o:
+        s["refused"].append([round(float(o["amount"]), 2), o["date"]])
+    steps = [(i, x) for i, x in enumerate(neg.get("ladder") or []) if not x.get("bands") or p.get("band") in x["bands"]]
+    while s["used"] < p.get("attempts", 0) and s["used"] < len(steps):
+        i, step = steps[s["used"]]
+        s["used"] += 1
+        names = offer_names(c, p)
+        amount = float(expr(c, "negotiation.ladder[" + str(i) + "].amount", names))
+        d = clamp(c, p, expr(c, "negotiation.ladder[" + str(i) + "].date", names))
+        if neg.get("dedupe_refused_offers") is not False and [round(amount, 2), d.isoformat()] in s["refused"]:
+            continue
+        return offer(c, p, amount, d, "ladder", step["template"])
+    return close(c, sit_ref(c, neg.get("on_exhausted"), "negotiate"))
+
+
+def offer(c, p, amount, d, kind, template, named=None):
+    s = pstate(c, p)
+    s["offer"] = dict(ref=p["ref"], amount=float(amount), date=d.isoformat(), kind=kind)
+    vals = product_values(c, p, dict(amount=say_money(amount), date=say_date(d, c["today"]),
+                                     named_date=say_date(named, c["today"]) if named else ""))
+    return ask(c, "negotiate", render(template, vals))
 
 
 # ---------- confirmation and recording ----------
@@ -612,6 +822,7 @@ def product_by_ref(c, ref):
 def readback(c):
     S, st = c["S"], c["st"]
     cf = S["confirm"]
+    st["conf"] = 0
     items = []
     for a in st["agreed"]:
         dt = datetime.date.fromisoformat(a["date"])
@@ -623,8 +834,18 @@ def readback(c):
 
 def turn_confirm(c, x):
     st = c["st"]
-    if x["main"] == "yes":
+    a = st["agreed"][0] if st["agreed"] else None
+    d = customer_day(c, x["day"]) if x["day"] else None
+    if x["main"] == "yes" and a and (d is None or d.isoformat() == a["date"]):
         return record_next(c)
+    if a and x["day"] and len(st["agreed"]) == 1:  # a changed date: checked again, then read back again
+        return propose_day(c, product_by_ref(c, a["ref"]), d, a["amount"])
+    if a and x["main"] == "no" and len(st["agreed"]) == 1:  # not confirmed: a refusal of what was agreed
+        p = product_by_ref(c, a["ref"])
+        pstate(c, p)["offer"] = dict(a, kind="agreed")
+        st["agreed"] = []
+        st["stage"] = "negotiate"
+        return refusal(c, p)
     st["conf"] += 1
     if st["conf"] >= 2:
         return close(c, hangup(c, "confirm"))
@@ -647,7 +868,7 @@ def promise_result(c, p, r):
     if r["ok"]:
         st["recorded"].append(p["ref"])
         return record_next(c)
-    return close(c, hangup(c, "confirm"))  # item 11: retry and failure_policy
+    return failed(c, "record_promise", lambda: record_next(c), "confirm", "record_promise:" + str(p["ref"]))
 
 
 def finish_recorded(c):

@@ -14,7 +14,7 @@ def api():
 
 @pytest.fixture(scope="module")
 def spec():
-    return load(FIX / "spec-a-v0.json")
+    return load(FIX / "spec-a-v1.json")
 
 
 @pytest.fixture(scope="module")

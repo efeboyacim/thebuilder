@@ -44,7 +44,7 @@ def test_slot_option_and_env(tmp_path, monkeypatch):
     assert name.startswith("env-")
 
 
-SPEC = "tests/fixtures/spec-a-v0.json"
+SPEC = "tests/fixtures/spec-a-v1.json"
 
 
 def test_until_compile_writes_the_workflow(tmp_path, monkeypatch):

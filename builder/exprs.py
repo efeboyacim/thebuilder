@@ -189,35 +189,49 @@ def check_values(spec, api, today=None, skip=()):
             errs.append(f"{path}: cannot be compiled ({e})")
             continue
         names = sp.EXPRESSIONS.get(pattern, ())
-        err = _run(f, kind, nows, products, fields, "d" in names, sp.ITEM_FIELDS in names or "due_amount" in names, h)
+        err = _run(f, kind, nows, products, fields, names, h)
         if err:
             errs.append(f"{path}: {err}")
     return errs
 
 
-def _run(f, kind, nows, products, fields, with_d, with_product, h):
+def _run(f, kind, nows, products, fields, names, h):
+    with_d = "d" in names
+    with_product = sp.ITEM_FIELDS in names or "due_amount" in names
+    flags = [False, True] if "said_too_much" in names else [None]
+    # Every clock with one product of each kind, and every product on a few clocks (the first, a Friday, a Sunday).
+    per_kind = list({p["kind"]: p for p in products}.values())
+    full = {nows[0]} | {n for n in nows if n.weekday() in (4, 6) and n.hour == 11}
     for now in nows:
         today = now.date()
         base = {"today": today, "now": now}
         ds = [today + datetime.timedelta(days=k) for k in range(-2, 22)] if with_d else [None]
-        prods = products if with_product else [None]
+        prods = (products if now in full else per_kind) if with_product else [None]
         for d in ds:
             for p in prods:
-                n = dict(base)
-                extra = {}
-                if d is not None:
-                    n["d"] = d
-                    extra["d"] = d.isoformat()
-                if p is not None:
-                    n.update({name: None for name in fields})
-                    n.update(p["raw"])
-                    n.update({k: p[k] for k in ("ref", "kind", "due_amount", "days_overdue")})
-                    extra.update({k: p[k] for k in ("kind", "due_amount", "days_overdue")})
-                try:
-                    v = f(n, h)
-                except Exception as e:  # noqa: BLE001
-                    return f"raises {type(e).__name__}: {e} on {_where(now, extra)}"
-                bad = _type_error(kind, v)
-                if bad:
-                    return f"{bad} on {_where(now, extra)}"
+                for flag in flags:
+                    n = dict(base)
+                    extra = {}
+                    if d is not None:
+                        n["d"] = d
+                        extra["d"] = d.isoformat()
+                    if p is not None:
+                        n.update({name: None for name in fields})
+                        n.update(p["raw"])
+                        n.update({k: p[k] for k in ("ref", "kind", "due_amount", "days_overdue")})
+                        extra.update({k: p[k] for k in ("kind", "due_amount", "days_overdue")})
+                        if "floor" in names:
+                            n["floor"] = round(p["due_amount"] * 0.3, 2)
+                    if "deadline" in names:
+                        n["deadline"] = h["add_business_days"](today, 7)
+                    if flag is not None:
+                        n["said_too_much"] = flag
+                        extra["said_too_much"] = flag
+                    try:
+                        v = f(n, h)
+                    except Exception as e:  # noqa: BLE001
+                        return f"raises {type(e).__name__}: {e} on {_where(now, extra)}"
+                    bad = _type_error(kind, v)
+                    if bad:
+                        return f"{bad} on {_where(now, extra)}"
     return None

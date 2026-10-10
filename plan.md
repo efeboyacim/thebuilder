@@ -49,7 +49,6 @@ All times UTC (Istanbul = UTC+3). About 20 working hours, with a sleep block. Ba
 
 ## Backlog
 
-- [ ] 11 Dates and persuasion ladder. Bands, deadline expressions, date parts resolved against `now`, holiday shift, vague dates, after-deadline offer, ladder with per-product offer record, promise retry; extend the spec schema, digest/spec prompts and validator for `calendar`, `products.bands`, `negotiation.ladder` and `failure_policy`. Acceptance: `python3 -m pytest tests/unit/test_dates.py -q` → green, including Christmas and New Year weeks, Fridays, weekends and after-hours `now`; and `python3 tools/run_cases.py <agent_id> --only PUB-07,PUB-10` → 2/2.
 - [ ] 12 Amounts, events, side questions. Floor policies, hardship precedence and suppression, paid, dispute, restructuring, human, no-talk (`min_occurrences`), robot/scam side questions, llm twins for `side_q=other` with the pre-verification facts guard, loop guards; extend the spec schema, prompts and validator for `negotiation` amounts, `events[]`, `situations[]` and `phrases`. Acceptance: `python3 tools/run_cases.py <agent_id> --only PUB-04,PUB-05,PUB-06,PUB-08,PUB-09` → 5/5.
 - [ ] 13 Full Brief A from an LLM-built spec. Fix loop until stable. Acceptance: `python3 builder/build.py briefs/brief-a.md tools/openapi.json --slot hub-a` (no `--spec`) then `python3 tools/run_cases.py <agent_id> --brief A --reps 3` → 10/10.
 - [ ] 14 Multi-product Brief B. Extend the spec and engine for notes, multi-product flow and `closing.aggregation`; write `tests/cases/a-under-b.json` (A cases plus the B8 notes). Acceptance: `python3 builder/build.py briefs/brief-a.md briefs/brief-b.md tools/openapi.json --slot hub-ab` then `python3 tools/run_cases.py <agent_id> --brief B --reps 3` → 3/3, and `python3 tools/run_cases.py <agent_id> --cases tests/cases/a-under-b.json --brief A` → 10/10.
@@ -82,6 +81,8 @@ Never cut: M1 (16), M2's spec diff (20), M3 (24), the styles run (22).
 - 2026-10-10: Outcome when the customer hangs up mid-call: the briefs are silent; use the spec's per-stage hang-up situation (neutral, logged).
 - 2026-10-10 (07): The spec stage took 288 s and 341 s on Brief A (digest 114–134 s, spec 172–196 s, Agent SDK, Opus 5.5 at effort high). A+B and a raw-material brief will be longer. Measure in 14 and 20; options: digest at effort medium, or the spec call split into parallel calls.
 - 2026-10-10 (08): The brain code is about 50 KB on the Brief A v0 spec (policy_lib 17 KB, engine 21 KB, compact spec 12 KB), against the 15 KB target in Decisions (S1). S1b ran a 60 KB brain with the same answers and code-run time; the open risk is the transcript size (the code is copied into every `function_call_start`). Measure on Freya in 09; option: a `boot` code node writes the spec into a variable once, so the brain code shrinks to ~38 KB. Measured in 09: each brain run copies about 130 KB into the call's messages (0.4–1.2 MB per call); PUB-01..03 still passed all conversation checks, the slowest turn 2–7 s. Keep it unless the judge or latency suffers in 13 or 22.
+
+- 2026-10-11 (11): docs/design.md §2.2 and §7.1 still list a calendar `earliest_date` expression ("no today after a given hour") and a `week_start`; item 11 did not add them (Brief A needs neither). Add them in a later item if M1/M3 should cover that mutation?
 
 ## Decisions
 
@@ -118,6 +119,8 @@ Never cut: M1 (16), M2's spec diff (20), M3 (24), the styles run (22).
   - `init` sets `final_outcome`/`final_reason` to the opening's hang-up situation: it runs before the opening in simulations (Plan Z PUB-01 call), and the hook's default pair covers the chat route, where `init` is skipped.
   - The close fires 0.3 s after the end node and about 11 s after a hang-up (`chat/end`, `endedReason` `customer-ended-call`); `chat/end` after an end node does not close twice.
   - Pre- and post-hooks run on pre_actions api nodes (L3 stays viable). The event log names every pre_actions call `api_call`; the chat self-test identifies the tool by `args.url`.
+- 2026-10-11 (11): The brain size limit is 80 KB (`builder/brain.py` `MAX_BYTES`). With dates and the ladder the brain is 62 KB on the Brief A fixture; it has no dead code, and it ran live at 62 KB with 2–6 s slowest turns. Splitting it (brain_pre/brain_post) stays the option if 12–14 push it past 80 KB or turns slow down.
+- 2026-10-11 (11): `nearest` weekday semantics (the neutral choice) now reads "this" and "next" as the first such day after today, as §2.5 says; item 08 had "next" as one week later. A weekday said alone is the first such day from today on in both modes.
 - 2026-10-10 (05): The default slot is `hub-` + the brief stems joined by `+` (`hub-brief-a`, `hub-brief-a+brief-b`), not the bare stem as docs/design.md first said: the bare stem is the kit builder's slot name, and `.freya-agents.json` already holds Plan Z's `brief-a`/`brief-b` agents.
 - 2026-10-10 (07, user): Evaluating spec expressions on synthetic inputs (design §2.4) moves to 08, together with the `policy_lib` helpers it needs; 07 checks only the AST whitelist and names.
 

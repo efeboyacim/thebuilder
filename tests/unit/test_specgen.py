@@ -25,7 +25,7 @@ class FakeBackend:
 
 @pytest.fixture
 def spec_a():
-    return load(FIX / "spec-a-v0.json")
+    return load(FIX / "spec-a-v1.json")
 
 
 @pytest.fixture
