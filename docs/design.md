@@ -63,7 +63,7 @@ be judged on Freya independently of the extractor.
 
 | # | Stage | LLM | What it does | Est. time |
 |---|---|---|---|---|
-| 1 | Ingest | no | Expands directories and dedupes paths. Reads every file as utf-8 with a fallback. Classifies by content (see below). Slot: `--slot`, else env `BUILDER_SLOT`, else the stem of the first brief file or the directory name. The env var lets a test redirect the slot while keeping the exact form command. `.eml`/zip/HTML decoding is below the cut line | <1 s |
+| 1 | Ingest | no | Expands directories and dedupes paths. Reads every file as utf-8 with a fallback. Classifies by content (see below). Slot: `--slot`, else env `BUILDER_SLOT`, else `hub-` + the brief stems joined by `+` (Decisions, 05). The env var lets a test redirect the slot while keeping the exact form command. `.eml`/zip/HTML decoding is below the cut line | <1 s |
 | 2 | ToolAPI | no | Server URL; per tool: request fields, types, enums, required fields, descriptions, response schema. Generates the stub bank (§4.1) | <1 s |
 | 3 | Digest | yes | One consolidated, numbered rule list with source quotes (detail below) | 2–4 min |
 | 4 | Spec + fact pass | yes, 2 calls in parallel | (a) Fills the spec schema with structured output, from digest + ToolAPI summary. (b) An independent fact pass with a different prompt over every number, enum, date and code, read from the **raw sources** | 2–4 min |
