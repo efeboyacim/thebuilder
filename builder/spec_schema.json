@@ -267,7 +267,8 @@
   "confirm": {
    "type": "object", "additionalProperties": false,
    "required": ["mode", "readback_template", "item_template", "question", "needs_clear_yes", "on_change",
-                "recording_template", "recorded_template", "after_recorded_sentence", "change_after_record_template", "refs"],
+                "recording_template", "recorded_template", "after_recorded_sentence", "change_after_record_template",
+                "on_recorded", "refs"],
    "properties": {
     "mode": {"enum": ["all_at_once", "per_product", "not_specified"]},
     "readback_template": {"$ref": "#/$defs/text", "description": "The read-back; contains {{items}} and {{question}}."},
@@ -280,6 +281,7 @@
     "recorded_template": {"$ref": "#/$defs/text", "description": "Said after the tool confirmed the write."},
     "after_recorded_sentence": {"$ref": "#/$defs/optional_text", "description": "A sentence the brief requires after a recorded promise."},
     "change_after_record_template": {"$ref": "#/$defs/optional_text", "description": "Reply when the customer wants to change a recorded promise."},
+    "on_recorded": {"$ref": "#/$defs/situation_ref", "description": "Situation once at least one promise is recorded (unless a later situation such as a transfer overrides it)."},
     "refs": {"$ref": "#/$defs/refs"}
    }
   },

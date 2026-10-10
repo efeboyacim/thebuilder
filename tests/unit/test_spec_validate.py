@@ -157,3 +157,49 @@ def test_facts_report_not_specified_and_residuals(spec):
     assert all(sp.resolve(spec, p) == (True, sp.NS) for p in f["not_specified"])
     assert sum(f["residuals"].values()) == len(spec["residual_rules"])
     assert all(r["trigger"] for r in f["flow_residuals"])
+
+
+# ---------- expressions evaluated on synthetic inputs (item 08) ----------
+
+def test_seeded_expression_that_raises_on_one_synthetic_input(spec, api, ids):
+    spec["negotiation"]["first_ask"]["amount"] = "due_amount / abs(days_overdue - 7)"  # passes the AST check
+    errs = errors(spec, api, ids)
+    hit = [e for e in errs if e.startswith("negotiation.first_ask.amount: raises ZeroDivisionError")]
+    assert hit and "days_overdue=7" in hit[0] and "now=" in hit[0]
+
+
+def test_expression_with_the_wrong_type(spec, api, ids):
+    spec["negotiation"]["first_ask"]["date"] = "add_business_days(today, 2) if days_overdue > 30 else 'soon'"
+    spec["third_party"]["callback"]["day_rule"] = "add_business_days(today, 1)"
+    errs = errors(spec, api, ids)
+    assert any(e.startswith("negotiation.first_ask.date: returns str 'soon', expected a date") for e in errs)
+    assert any(e.startswith("third_party.callback.day_rule: returns date") and "expected true or false" in e
+               for e in errs)
+
+
+def test_helper_misuse_and_negative_amounts_are_caught(spec, api, ids):
+    spec["negotiation"]["first_ask"]["date"] = "add_business_days(today, due_amount)"
+    spec["negotiation"]["first_ask"]["amount"] = "due_amount - 100"
+    errs = errors(spec, api, ids)
+    assert any(e.startswith("negotiation.first_ask.date: raises TypeError") for e in errs)
+    assert any(e.startswith("negotiation.first_ask.amount: returns -") and "expected an amount of 0 or more" in e
+               for e in errs)
+
+
+def test_expressions_that_hold_on_every_synthetic_day(spec, api, ids):
+    spec["negotiation"]["first_ask"]["date"] = ("last_bd_of_week(today, 1) if today == last_bd_of_week(today, 0) "
+                                                "else roll(today, 'next')")
+    spec["negotiation"]["first_ask"]["amount"] = "round_half_up(max(due_amount * 0.3, minimum_payment), 2)"
+    spec["third_party"]["callback"]["day_rule"] = "d >= today and d <= add_business_days(today, 2) and is_business_day(d)"
+    assert errors(spec, api, ids) == []
+
+
+def test_synthetic_nows_cover_weekends_holiday_eves_and_after_hours(spec):
+    from builder import exprs
+    nows = exprs.synthetic_nows(spec)
+    days = {n.date() for n in nows}
+    for h in spec["calendar"]["holidays"]:
+        d = __import__("datetime").date.fromisoformat(h)
+        assert d in days and d - __import__("datetime").timedelta(days=1) in days
+    assert {n.weekday() for n in nows} == set(range(7))
+    assert any(n.hour >= 21 for n in nows) and any(n.hour < 8 for n in nows)

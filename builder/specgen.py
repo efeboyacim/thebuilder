@@ -325,9 +325,10 @@ def templates_text():
 
 def expressions_text():
     lines = []
+    returns = {"bool": "true or false", "amount": "a number of 0 or more", "date": "a date"}
     for path, names in sp.EXPRESSIONS.items():
         shown = [("<any field of the lookup tool's product row>" if x == sp.ITEM_FIELDS else x) for x in names]
-        lines.append(f"  {path}: {', '.join(shown)}")
+        lines.append(f"  {path}: {', '.join(shown)}; returns {returns[sp.EXPR_TYPES[path]]}")
     lines.append("  (today and d are dates, now a date-time; ref, kind, due_amount, days_overdue are the product's "
                  "bound item roles.)")
     return "\n".join(lines)

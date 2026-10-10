@@ -201,6 +201,12 @@ Every one that is used produces a trace `warning`.
 | Callback window | Accept any time in the future |
 | Re-ask limits | 1 |
 | Hang-up situation per stage | The situation the LLM marks as closest in meaning (logged) |
+| Business weekdays (item 08) | Monday to Friday |
+| Confirmation asks, refusals (item 08) | 2 in total (one re-ask, then the second closes) |
+| After a wrong identity answer (item 08) | Ask the same question again |
+| Purpose question during identity (item 08) | Not a refusal; the question is asked again |
+| Callback window ends, `after_now` (item 08) | Inclusive; the callback must be later than `now` |
+| A situation reference that is `not_specified` (item 08) | The stage's hang-up situation |
 
 ---
 
@@ -279,6 +285,22 @@ Settings on every node type:
   the recorded set.
 - **Outcome.** `final_outcome`/`final_reason` hold the current situation all through the call, so a hang-up still
   closes correctly. The reason sentinel is `-`.
+
+**Implementation (item 08).**
+- `builder/policy_lib.py` (calendar and expression helpers, spoken numbers, dates, times, answer normalizers,
+  converters, templates) and `builder/engine.py` (the state machine) are the brain. Both run locally and inside the
+  code node: imports `json`/`re`/`datetime` only, no `global`, no doubled braces, no f-strings.
+- `builder/brain.py` builds the code string: both modules without docstrings and comments, one space per indent
+  level, the compact spec as an ASCII literal with escaped braces, and the expressions as lambdas
+  (`builder/exprs.py` prints them; the brain needs no `eval`). Everything sits inside `def _brain(vars)`, so it runs
+  with separate global and local namespaces. On the Brief A v0 fixture it is about 50 KB (12 KB of it the spec).
+- Names shared with the compiler (`engine.py`): talk nodes `talk_<stage>`, api nodes `api_<role>`, the end node
+  `end_call`; `route` value `brain_failed` after a caught error; extraction fields `x_<slot>` (`contract.py` builds
+  each stage's fields from the spec); api arguments `a_<role>__<body field>`; mapped responses `r_<role>__<role>`;
+  outputs `say_next`, `say_fallback`, `farewell`, `final_outcome`, `final_reason` (`-` = none), `brain_state`.
+- `builder/replay.py` emulates the Freya runtime (counters, flattened and mapped keys, lifecycle close) around the
+  stub bank; `tests/unit/test_engine_slice.py` drives it.
+- `confirm.on_recorded` (spec schema) names the situation once a promise is recorded.
 
 ### 3.4 Extraction contract
 

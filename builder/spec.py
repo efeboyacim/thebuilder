@@ -56,6 +56,12 @@ EXPRESSIONS = {
     "negotiation.first_ask.amount": ("today",) + ITEM_ROLES + (ITEM_FIELDS,),
     "negotiation.first_ask.date": ("today", "now") + ITEM_ROLES + (ITEM_FIELDS,),
 }
+# What each expression must return on every synthetic input (builder/exprs.py).
+EXPR_TYPES = {
+    "third_party.callback.day_rule": "bool",
+    "negotiation.first_ask.amount": "amount",
+    "negotiation.first_ask.date": "date",
+}
 _AST_OK = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.UnaryOp, ast.Not, ast.USub, ast.UAdd, ast.BinOp, ast.Add,
            ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Compare, ast.Eq, ast.NotEq, ast.Lt, ast.LtE, ast.Gt,
            ast.GtE, ast.In, ast.NotIn, ast.IfExp, ast.Call, ast.Name, ast.Load, ast.Constant, ast.List, ast.Tuple)
@@ -74,6 +80,7 @@ SITUATION_REFS = {
     "closing.hangup.identity.situation": True,
     "closing.hangup.negotiate.situation": False,
     "closing.hangup.confirm.situation": False,
+    "confirm.on_recorded": False,
 }
 
 _PLACEHOLDER = re.compile(r"\{\{\s*([^{}]*?)\s*\}\}")
@@ -565,13 +572,18 @@ def _check_templates(ctx, _):
 
 
 def _check_expressions(ctx, _):
-    errs, item_fields = [], ctx.item_fields()
+    """Names and the AST whitelist first; an expression that passes is then evaluated on synthetic inputs."""
+    from builder import exprs
+    errs, bad, item_fields = [], set(), ctx.item_fields()
     for pattern, names in EXPRESSIONS.items():
         allowed = {n for n in names if n != ITEM_FIELDS} | (set(item_fields) if ITEM_FIELDS in names else set())
         for path, text in expand(ctx.spec, pattern):
             if isinstance(text, str) and text != NS:
-                errs += [f"{path}: {e}" for e in expr_errors(text, allowed)]
-    return errs
+                found = [f"{path}: {e}" for e in expr_errors(text, allowed)]
+                errs += found
+                if found:
+                    bad.add(path)
+    return errs + exprs.check_values(ctx.spec, ctx.api, skip=bad)
 
 
 def _check_identity(ctx, _):

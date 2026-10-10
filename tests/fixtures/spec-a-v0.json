@@ -408,6 +408,7 @@
   "recorded_template": "Your promise to pay {{amount}} on your {{product_name}} on {{date}} is recorded.",
   "after_recorded_sentence": "You will receive a text message confirming this promise.",
   "change_after_record_template": "A recorded promise cannot be changed or cancelled during this call, but you can change it in the mobile app.",
+  "on_recorded": "promise_recorded",
   "refs": [
    "R51",
    "R52",
