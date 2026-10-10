@@ -1,0 +1,484 @@
+{
+ "at": "20261010-175546",
+ "now": "2026-11-25T10:00",
+ "s1": {
+  "call_id": "66b72608-6636-4805-aa6d-20411d6c3d95",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 1.25
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 8.83
+   },
+   {
+    "user": "again",
+    "agent": "Again 2, brain runs 2.",
+    "s": 9.57
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 10.84
+   },
+   {
+    "user": "code 4321",
+    "agent": "Code noted, any 4321, last 4321, turn 4, brain runs 4.",
+    "s": 8.86
+   },
+   {
+    "user": "check",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 8.64
+   },
+   {
+    "user": "check again, nothing new",
+    "agent": "Slots now, any , last , turn 6, brain runs 6.",
+    "s": 7.85
+   },
+   {
+    "user": "date tomorrow",
+    "agent": "Date slot 2026-10-11, turn 7, brain runs 7.",
+    "s": 7.14
+   },
+   {
+    "user": "crash",
+    "agent": "Crash caught. Failures 1, status error, before yes.",
+    "s": 12.6
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 9, brain runs 9.",
+    "s": 6.49
+   },
+   {
+    "user": "hop",
+    "agent": "Hopped. Hop count 12, brain runs 22.",
+    "s": 48.2
+   },
+   {
+    "user": "bye",
+    "agent": "Custom farewell for Dana after turn 11, brain runs 23.",
+    "s": 20.77,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n",
+    "completed_s": 21.4
+   }
+  ],
+  "messages_bytes": 714275,
+  "ended_reason": "assistant-ended-call",
+  "code_run_s": {
+   "median": 2.33,
+   "max": 7.91,
+   "n": 36
+  },
+  "sandbox_down_from_turn": null,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.03
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      1.51
+     ],
+     [
+      "talk_a",
+      8.74
+     ]
+    ],
+    "code_s": [
+     7.23
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      10.99
+     ],
+     [
+      "talk_a",
+      18.04
+     ]
+    ],
+    "code_s": [
+     7.04
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      19.99
+     ],
+     [
+      "talk_a",
+      27.91
+     ]
+    ],
+    "code_s": [
+     7.91
+    ],
+    "errors": []
+   },
+   {
+    "user": "code 4321",
+    "nodes": [
+     [
+      "brain",
+      31.4
+     ],
+     [
+      "talk_a",
+      37.71
+     ]
+    ],
+    "code_s": [
+     6.3
+    ],
+    "errors": []
+   },
+   {
+    "user": "check",
+    "nodes": [
+     [
+      "brain",
+      39.77
+     ],
+     [
+      "talk_a",
+      46.3
+     ]
+    ],
+    "code_s": [
+     6.52
+    ],
+    "errors": []
+   },
+   {
+    "user": "check again, nothing new",
+    "nodes": [
+     [
+      "brain",
+      48.33
+     ],
+     [
+      "talk_a",
+      54.33
+     ]
+    ],
+    "code_s": [
+     5.99
+    ],
+    "errors": []
+   },
+   {
+    "user": "date tomorrow",
+    "nodes": [
+     [
+      "brain",
+      56.5
+     ],
+     [
+      "talk_a",
+      61.43
+     ]
+    ],
+    "code_s": [
+     4.93
+    ],
+    "errors": []
+   },
+   {
+    "user": "crash",
+    "nodes": [
+     [
+      "brain",
+      63.26
+     ],
+     [
+      "crasher",
+      68.24
+     ],
+     [
+      "talk_err",
+      73.9
+     ]
+    ],
+    "code_s": [
+     4.98,
+     5.65
+    ],
+    "errors": [
+     "Traceback (most recent call last):\n  File \"<string>\", line 21, in <module>\n    _result = __user_main__()\n  File \"<string>\", line 19, in __user_main__\n    raise "
+    ]
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      76.13
+     ],
+     [
+      "talk_a",
+      80.53
+     ]
+    ],
+    "code_s": [
+     4.39
+    ],
+    "errors": []
+   },
+   {
+    "user": "hop",
+    "nodes": [
+     [
+      "brain",
+      82.41
+     ],
+     [
+      "hop",
+      87.13
+     ],
+     [
+      "brain",
+      91.4
+     ],
+     [
+      "hop",
+      94.5
+     ],
+     [
+      "brain",
+      98.13
+     ],
+     [
+      "hop",
+      101.63
+     ],
+     [
+      "brain",
+      103.9
+     ],
+     [
+      "hop",
+      105.82
+     ],
+     [
+      "brain",
+      108.15
+     ],
+     [
+      "hop",
+      110.52
+     ],
+     [
+      "brain",
+      112.22
+     ],
+     [
+      "hop",
+      113.54
+     ],
+     [
+      "brain",
+      115.18
+     ],
+     [
+      "hop",
+      117.31
+     ],
+     [
+      "brain",
+      119.54
+     ],
+     [
+      "hop",
+      120.5
+     ],
+     [
+      "brain",
+      121.21
+     ],
+     [
+      "hop",
+      122.6
+     ],
+     [
+      "brain",
+      123.52
+     ],
+     [
+      "hop",
+      124.73
+     ],
+     [
+      "brain",
+      125.01
+     ],
+     [
+      "hop",
+      125.13
+     ],
+     [
+      "brain",
+      125.34
+     ],
+     [
+      "hop",
+      126.23
+     ],
+     [
+      "brain",
+      127.23
+     ],
+     [
+      "talk_a",
+      127.72
+     ]
+    ],
+    "code_s": [
+     4.72,
+     4.27,
+     3.1,
+     3.62,
+     3.49,
+     2.27,
+     1.91,
+     2.33,
+     2.36,
+     1.69,
+     1.31,
+     1.64,
+     2.12,
+     2.22,
+     0.96,
+     0.71,
+     1.38,
+     0.92,
+     1.21,
+     0.28,
+     0.12,
+     0.21,
+     0.88,
+     1.0,
+     0.48
+    ],
+    "errors": []
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      131.53
+     ],
+     [
+      "end_custom",
+      134.6
+     ]
+    ],
+    "code_s": [
+     3.07
+    ],
+    "errors": []
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "D38 first code node (init) runs on the chat route",
+    "status": "FAIL",
+    "detail": "Spike opening. Init ran {{init_ran}}. Send a command. (init skipped: literal placeholder)"
+   },
+   {
+    "behaviour": "D03 loop core talk->brain->talk",
+    "status": "PASS",
+    "detail": "Pong 1, brain runs 1."
+   },
+   {
+    "behaviour": "D04 no dialogue call in a talk node whose always fired",
+    "status": "PASS",
+    "detail": "marker in []; assistant messages per turn [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+   },
+   {
+    "behaviour": "D07 say_next re-renders on re-entry of the same tts node",
+    "status": "PASS",
+    "detail": "Again 2, brain runs 2. | Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "D04 no cascade: one brain run per plain turn",
+    "status": "PASS",
+    "detail": "brain entries per turn [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 13, 1]"
+   },
+   {
+    "behaviour": "D08 12-hop ping-pong in one turn",
+    "status": "PASS",
+    "detail": "Hopped. Hop count 12, brain runs 22. | turn 48.2 s wall, 1.87 s per code run"
+   },
+   {
+    "behaviour": "D12 code_last ('LAST message only') not refilled from an older message",
+    "status": "PASS",
+    "detail": "Code noted, any 4321, last 4321, turn 4, brain runs 4. | Slots now, any , last , turn 5, brain runs 5. | Slots now, any , last , turn 6, brain runs 6."
+   },
+   {
+    "behaviour": "D12 code_any (no 'LAST message' wording) not refilled",
+    "status": "PASS",
+    "detail": "Slots now, any , last , turn 5, brain runs 5. | Slots now, any , last , turn 6, brain runs 6."
+   },
+   {
+    "behaviour": "D34 date-type anchor (probe)",
+    "status": "INFO",
+    "detail": "Date slot 2026-10-11, turn 7, brain runs 7. -> real clock (2026-10-11)"
+   },
+   {
+    "behaviour": "D14 a raising code node: the call survives and the failure is visible to routing",
+    "status": "PASS",
+    "detail": "Crash caught. Failures 1, status error, before yes. | errors ['Traceback (most recent call last):\\n  File \"<string>\", line 21, in <module>\\n    _result = __user_main__()\\n  File \"<string>\", line 19, in __user_main__\\n    raise '] | next turn: Pong 9, brain runs 9."
+   },
+   {
+    "behaviour": "Custom farewell from code; endedReason = terminal function name",
+    "status": "FAIL",
+    "detail": "Custom farewell for Dana after turn 11, brain runs 23. | endedReason assistant-ended-call"
+   },
+   {
+    "behaviour": "Code run time (S1, 2 KB brain)",
+    "status": "INFO",
+    "detail": "{'median': 2.33, 'max': 7.91, 'n': 36}; plain turn 8.83 s wall, nodes [('brain', 1.51), ('talk_a', 8.74)]"
+   }
+  ],
+  "crash_vars": {
+   "crasher.current_turns": 0,
+   "crasher.total_turns": 0,
+   "talk_after_crash.current_turns": 0,
+   "talk_after_crash.total_turns": 0,
+   "before_raise": "yes",
+   "crasher_response.status": "error",
+   "crasher_response.data": "null",
+   "crasher_response.error": "Sandbox exception",
+   "crasher_response.message": "Traceback (most recent call last):\n  File \"<string>\", line 21, in <module>\n    _result = __user_main__()\n  File \"<string>\", line 19, in __user_main__\n    raise ValueError('deliberate spike raise')\nValueError: deliberate spike raise\n",
+   "crasher_response.status_code": 500,
+   "crasher_status_code": 500,
+   "crasher_failure_count": 1
+  },
+  "version": 17
+ },
+ "s1b_brain_bytes": 63825
+}

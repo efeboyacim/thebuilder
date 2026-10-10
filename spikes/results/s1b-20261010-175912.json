@@ -1,0 +1,154 @@
+{
+ "at": "20261010-175912",
+ "now": "2026-11-25T10:00",
+ "s1b_brain_bytes": 63825,
+ "s1b": {
+  "call_id": "bcd295ff-d4fe-4732-a50e-bf24a1c1655c",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 1.19
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 3.46
+   },
+   {
+    "user": "again",
+    "agent": "Again 2, brain runs 2.",
+    "s": 3.72
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 5.85
+   },
+   {
+    "user": "bye",
+    "agent": "Custom farewell for Dana after turn 4, brain runs 4.",
+    "s": 15.18,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n",
+    "completed_s": 15.7
+   }
+  ],
+  "messages_bytes": 449974,
+  "ended_reason": "assistant-ended-call",
+  "code_run_s": {
+   "median": 2.25,
+   "max": 2.42,
+   "n": 4
+  },
+  "sandbox_down_from_turn": null,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.03
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      1.61
+     ],
+     [
+      "talk_a",
+      3.12
+     ]
+    ],
+    "code_s": [
+     1.51
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      5.06
+     ],
+     [
+      "talk_a",
+      6.69
+     ]
+    ],
+    "code_s": [
+     1.63
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      9.79
+     ],
+     [
+      "talk_a",
+      12.21
+     ]
+    ],
+    "code_s": [
+     2.42
+    ],
+    "errors": []
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      14.86
+     ],
+     [
+      "end_custom",
+      17.12
+     ]
+    ],
+    "code_s": [
+     2.25
+    ],
+    "errors": []
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "S1b loop works with a 60 KB brain",
+    "status": "PASS",
+    "detail": "Pong 1, brain runs 1. | Again 2, brain runs 2. | Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "S1b code run time <= 1.5 s",
+    "status": "FAIL",
+    "detail": "{'median': 2.25, 'max': 2.42, 'n': 4} vs S1 median None"
+   },
+   {
+    "behaviour": "S1b code kept out of the transcript",
+    "status": "FAIL",
+    "detail": "4 function_call_start events carry the code"
+   },
+   {
+    "behaviour": "S1b transcript size",
+    "status": "INFO",
+    "detail": "449974 bytes for 5 turns vs S1 None bytes"
+   },
+   {
+    "behaviour": "S1b custom farewell",
+    "status": "FAIL",
+    "detail": "Custom farewell for Dana after turn 4, brain runs 4. | endedReason assistant-ended-call"
+   }
+  ],
+  "version": 20
+ }
+}

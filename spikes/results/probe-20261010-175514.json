@@ -1,0 +1,64 @@
+{
+ "at": "20261010-175514",
+ "now": "2026-11-25T10:00",
+ "probe": {
+  "call_id": "42f9ac50-d55e-4a6e-b6e9-2f99b56e280b",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 1.77
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 6.43
+   }
+  ],
+  "messages_bytes": 51781,
+  "ended_reason": null,
+  "code_run_s": {
+   "median": 4.59,
+   "max": 4.59,
+   "n": 1
+  },
+  "sandbox_down_from_turn": null,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.02
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      2.08
+     ],
+     [
+      "talk_a",
+      6.68
+     ]
+    ],
+    "code_s": [
+     4.59
+    ],
+    "errors": []
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "Sandbox up; code run time",
+    "status": "PASS",
+    "detail": "Pong 1, brain runs 1. | code runs [4.59] s | errors []"
+   }
+  ]
+ }
+}

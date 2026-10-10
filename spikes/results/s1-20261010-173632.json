@@ -1,0 +1,625 @@
+{
+ "at": "20261010-173632",
+ "now": "2026-11-25T10:00",
+ "s1": {
+  "call_id": "24640bfb-e734-4f5c-a677-7d064a5f796a",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 1.42
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 7.67
+   },
+   {
+    "user": "again",
+    "agent": "Again 2, brain runs 2.",
+    "s": 7.69
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 8.3
+   },
+   {
+    "user": "hop",
+    "agent": null,
+    "s": 60.25,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n"
+   },
+   {
+    "user": "code 4321",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 13.82
+   },
+   {
+    "user": "check",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 4.87
+   },
+   {
+    "user": "check again, nothing new",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 3.79
+   },
+   {
+    "user": "date tomorrow",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 3.3
+   },
+   {
+    "user": "crash",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 4.22
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 3.33
+   },
+   {
+    "user": "bye",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 7.85
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "D38 first code node runs on chat",
+    "status": "INFO",
+    "detail": "Spike opening. Init ran {{init_ran}}. Send a command."
+   },
+   {
+    "behaviour": "D03 loop core talk->brain->talk",
+    "status": "PASS",
+    "detail": "Pong 1, brain runs 1."
+   },
+   {
+    "behaviour": "D04 no dialogue call in a talk node whose always fired",
+    "status": "PASS",
+    "detail": "marker seen in: []"
+   },
+   {
+    "behaviour": "D07 say_next re-renders on re-entry of the same tts node",
+    "status": "PASS",
+    "detail": "Again 2, brain runs 2."
+   },
+   {
+    "behaviour": "D04 no cascade: one brain run per plain turn",
+    "status": "PASS",
+    "detail": "brain runs reported [1, 2, 3, 3, 3, 3, 3, 3, 3, 3]"
+   },
+   {
+    "behaviour": "D08 12-hop ping-pong in one turn",
+    "status": "FAIL",
+    "detail": "None | turn 60.25 s wall, 5.878 s per code run"
+   },
+   {
+    "behaviour": "D12 code_last not refilled from an older message",
+    "status": "PASS",
+    "detail": "Pong 3, brain runs 3. | Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "D12 code_any (no 'LAST message' wording) not refilled",
+    "status": "PASS",
+    "detail": "Pong 3, brain runs 3. | Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "D34 date-type anchor (probe)",
+    "status": "INFO",
+    "detail": "Pong 3, brain runs 3. -> other"
+   },
+   {
+    "behaviour": "D14 a raising code node: call survives and the failure is visible",
+    "status": "FAIL",
+    "detail": "Pong 3, brain runs 3. | errors [] | next turn: Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "Custom farewell from code, endedReason = terminal name",
+    "status": "FAIL",
+    "detail": "Pong 3, brain runs 3. | endedReason None"
+   },
+   {
+    "behaviour": "Timing",
+    "status": "INFO",
+    "detail": "plain turn 7.67 s wall; nodes [('brain', 1.9115748405456543), ('talk_a', 7.142399787902832)]"
+   }
+  ],
+  "messages_bytes": 790356,
+  "ended_reason": null,
+  "turn_nodes": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.022901535034179688
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      1.9115748405456543
+     ],
+     [
+      "talk_a",
+      7.142399787902832
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      10.132691860198975
+     ],
+     [
+      "talk_a",
+      15.171211242675781
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      17.092772722244263
+     ],
+     [
+      "talk_a",
+      23.469010591506958
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "hop",
+    "nodes": [
+     [
+      "brain",
+      25.30788254737854
+     ],
+     [
+      "hop",
+      32.16901969909668
+     ],
+     [
+      "brain",
+      37.65889930725098
+     ],
+     [
+      "hop",
+      42.55939269065857
+     ],
+     [
+      "brain",
+      48.03491258621216
+     ],
+     [
+      "hop",
+      53.379292726516724
+     ],
+     [
+      "brain",
+      61.4296932220459
+     ],
+     [
+      "hop",
+      67.67236638069153
+     ],
+     [
+      "brain",
+      73.15943717956543
+     ],
+     [
+      "hop",
+      79.45439743995667
+     ],
+     [
+      "brain",
+      84.14709043502808
+     ],
+     [
+      "hop",
+      89.96268439292908
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "code 4321",
+    "nodes": [
+     [
+      "brain",
+      95.68587803840637
+     ],
+     [
+      "hop",
+      95.72995018959045
+     ],
+     [
+      "brain",
+      95.77585077285767
+     ],
+     [
+      "hop",
+      95.82227277755737
+     ],
+     [
+      "brain",
+      95.86931586265564
+     ],
+     [
+      "hop",
+      95.91529560089111
+     ],
+     [
+      "brain",
+      95.96054744720459
+     ],
+     [
+      "hop",
+      96.00749564170837
+     ],
+     [
+      "brain",
+      96.05287599563599
+     ],
+     [
+      "hop",
+      96.09999918937683
+     ],
+     [
+      "brain",
+      96.14674425125122
+     ],
+     [
+      "hop",
+      96.1946473121643
+     ],
+     [
+      "brain",
+      96.20561623573303
+     ],
+     [
+      "brain",
+      96.24128079414368
+     ],
+     [
+      "hop",
+      96.28910803794861
+     ],
+     [
+      "talk_a",
+      96.3045859336853
+     ],
+     [
+      "brain",
+      96.33776259422302
+     ],
+     [
+      "hop",
+      96.38386583328247
+     ],
+     [
+      "brain",
+      96.43348455429077
+     ],
+     [
+      "hop",
+      96.4850845336914
+     ],
+     [
+      "brain",
+      96.53594899177551
+     ],
+     [
+      "hop",
+      96.58611989021301
+     ],
+     [
+      "brain",
+      96.6367347240448
+     ],
+     [
+      "hop",
+      96.68501496315002
+     ],
+     [
+      "brain",
+      96.73412466049194
+     ],
+     [
+      "hop",
+      96.78286743164062
+     ],
+     [
+      "brain",
+      96.83103585243225
+     ],
+     [
+      "hop",
+      96.8801543712616
+     ],
+     [
+      "brain",
+      97.1907889842987
+     ],
+     [
+      "hop",
+      97.2417562007904
+     ],
+     [
+      "brain",
+      97.29129934310913
+     ],
+     [
+      "hop",
+      97.34219312667847
+     ],
+     [
+      "brain",
+      97.3923728466034
+     ],
+     [
+      "hop",
+      97.44362235069275
+     ],
+     [
+      "brain",
+      97.4935462474823
+     ],
+     [
+      "hop",
+      97.54368114471436
+     ],
+     [
+      "brain",
+      97.59436130523682
+     ],
+     [
+      "hop",
+      97.6447126865387
+     ],
+     [
+      "brain",
+      97.69523096084595
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "check",
+    "nodes": [
+     [
+      "brain",
+      101.12764406204224
+     ],
+     [
+      "talk_a",
+      101.17518353462219
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "check again, nothing new",
+    "nodes": [
+     [
+      "brain",
+      104.58748817443848
+     ],
+     [
+      "talk_a",
+      104.66268062591553
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "date tomorrow",
+    "nodes": [
+     [
+      "brain",
+      108.39418005943298
+     ],
+     [
+      "talk_a",
+      108.43869709968567
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "crash",
+    "nodes": [
+     [
+      "brain",
+      112.44466376304626
+     ],
+     [
+      "talk_a",
+      112.49735641479492
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      115.63472294807434
+     ],
+     [
+      "talk_a",
+      115.68516874313354
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      123.23414921760559
+     ],
+     [
+      "talk_a",
+      123.30526351928711
+     ]
+    ],
+    "errors": []
+   }
+  ],
+  "crash_vars": {
+   "crasher.current_turns": 0,
+   "crasher.total_turns": 0,
+   "talk_after_crash.current_turns": 0,
+   "talk_after_crash.total_turns": 0
+  },
+  "version": 2
+ },
+ "s1b_brain_bytes": 63825,
+ "s1b": {
+  "call_id": "610df574-5b8a-4a34-bc80-1e630fb3b854",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 1.48
+   },
+   {
+    "user": "ping",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 3.62
+   },
+   {
+    "user": "again",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 3.51
+   },
+   {
+    "user": "hop",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 2.6
+   },
+   {
+    "user": "bye",
+    "agent": null,
+    "s": 12.92,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n"
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "S1b loop works with a 60 KB brain",
+    "status": "FAIL",
+    "detail": "Fallback. Route was {{route}}. | Fallback. Route was {{route}}."
+   },
+   {
+    "behaviour": "S1b latency per code run",
+    "status": "FAIL",
+    "detail": "None s per run (hop turn 2.6 s wall); S1: None | turn 60.25 s wall, 5.878 s per code run"
+   },
+   {
+    "behaviour": "S1b code visible in the transcript",
+    "status": "FAIL",
+    "detail": "marker in messages: True"
+   },
+   {
+    "behaviour": "S1b transcript size",
+    "status": "INFO",
+    "detail": "446516 bytes vs S1 790356"
+   },
+   {
+    "behaviour": "S1b custom farewell",
+    "status": "FAIL",
+    "detail": "None | endedReason assistant-ended-call"
+   }
+  ],
+  "messages_bytes": 446516,
+  "ended_reason": "assistant-ended-call",
+  "turn_nodes": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.03924131393432617
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      2.141134262084961
+     ],
+     [
+      "talk_fallback",
+      2.183168888092041
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      5.900776147842407
+     ],
+     [
+      "talk_fallback",
+      5.933741807937622
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "hop",
+    "nodes": [
+     [
+      "brain",
+      9.058069705963135
+     ],
+     [
+      "talk_fallback",
+      9.100400686264038
+     ]
+    ],
+    "errors": []
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      11.65196704864502
+     ],
+     [
+      "end_custom",
+      11.898973941802979
+     ]
+    ],
+    "errors": []
+   }
+  ],
+  "version": 3
+ }
+}

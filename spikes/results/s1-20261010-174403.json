@@ -1,0 +1,467 @@
+{
+ "at": "20261010-174403",
+ "now": "2026-11-25T10:00",
+ "s1": {
+  "call_id": "02e95b95-d4f2-49ec-b145-43d8b4382206",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 3.72
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 6.18
+   },
+   {
+    "user": "again",
+    "agent": "Again 2, brain runs 2.",
+    "s": 6.35
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 7.19
+   },
+   {
+    "user": "hop",
+    "agent": null,
+    "s": 60.22,
+    "error": "POST /api/v2/chat/message -> 504: error code: 504\n"
+   }
+  ],
+  "messages_bytes": 303482,
+  "ended_reason": null,
+  "code_run_s": {
+   "median": 4.35,
+   "max": 7.94,
+   "n": 28
+  },
+  "sandbox_down_from_turn": null,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.03
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      3.51
+     ],
+     [
+      "talk_a",
+      6.88
+     ]
+    ],
+    "code_s": [
+     3.36
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      9.17
+     ],
+     [
+      "talk_a",
+      13.68
+     ]
+    ],
+    "code_s": [
+     4.5
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      15.67
+     ],
+     [
+      "talk_a",
+      20.48
+     ]
+    ],
+    "code_s": [
+     4.8
+    ],
+    "errors": []
+   },
+   {
+    "user": "hop",
+    "nodes": [
+     [
+      "brain",
+      23.06
+     ],
+     [
+      "hop",
+      27.7
+     ],
+     [
+      "brain",
+      32.02
+     ],
+     [
+      "hop",
+      35.86
+     ],
+     [
+      "brain",
+      41.89
+     ],
+     [
+      "hop",
+      48.21
+     ],
+     [
+      "brain",
+      55.59
+     ],
+     [
+      "hop",
+      62.59
+     ],
+     [
+      "brain",
+      67.49
+     ],
+     [
+      "hop",
+      74.45
+     ],
+     [
+      "brain",
+      80.47
+     ],
+     [
+      "hop",
+      85.38
+     ],
+     [
+      "brain",
+      89.08
+     ],
+     [
+      "hop",
+      92.29
+     ],
+     [
+      "brain",
+      96.05
+     ],
+     [
+      "hop",
+      99.89
+     ],
+     [
+      "brain",
+      103.59
+     ],
+     [
+      "hop",
+      107.17
+     ],
+     [
+      "brain",
+      110.55
+     ],
+     [
+      "hop",
+      114.18
+     ],
+     [
+      "brain",
+      118.5
+     ],
+     [
+      "hop",
+      122.06
+     ],
+     [
+      "brain",
+      126.41
+     ],
+     [
+      "hop",
+      130.76
+     ],
+     [
+      "brain",
+      138.71
+     ],
+     [
+      "talk_a",
+      145.48
+     ]
+    ],
+    "code_s": [
+     4.63,
+     4.31,
+     3.83,
+     6.03,
+     6.31,
+     7.38,
+     6.99,
+     4.89,
+     6.96,
+     6.01,
+     4.9,
+     3.7,
+     3.21,
+     3.75,
+     3.84,
+     3.69,
+     3.57,
+     3.38,
+     3.62,
+     4.31,
+     3.56,
+     4.35,
+     4.35,
+     7.94,
+     6.77
+    ],
+    "errors": []
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "D38 first code node (init) runs on the chat route",
+    "status": "FAIL",
+    "detail": "Spike opening. Init ran {{init_ran}}. Send a command. (init skipped: literal placeholder)"
+   },
+   {
+    "behaviour": "D03 loop core talk->brain->talk",
+    "status": "PASS",
+    "detail": "Pong 1, brain runs 1."
+   },
+   {
+    "behaviour": "D04 no dialogue call in a talk node whose always fired",
+    "status": "PASS",
+    "detail": "marker in []; assistant messages per turn [1, 1, 1, 1, 1]"
+   },
+   {
+    "behaviour": "D07 say_next re-renders on re-entry of the same tts node",
+    "status": "PASS",
+    "detail": "Again 2, brain runs 2. | Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "D04 no cascade: one brain run per plain turn",
+    "status": "PASS",
+    "detail": "brain entries per turn [0, 1, 1, 1, 13]"
+   },
+   {
+    "behaviour": "D08 12-hop ping-pong in one turn",
+    "status": "FAIL",
+    "detail": "None | turn 60.22 s wall (POST /api/v2/chat/message -> 504: error ; completed after None s), 4.82 s per code run"
+   },
+   {
+    "behaviour": "D12 code_last ('LAST message only') not refilled from an older message",
+    "status": "INVALID",
+    "detail": "<not sent> | <not sent> | <not sent>"
+   },
+   {
+    "behaviour": "D12 code_any (no 'LAST message' wording) not refilled",
+    "status": "INVALID",
+    "detail": "<not sent> | <not sent>"
+   },
+   {
+    "behaviour": "D34 date-type anchor (probe)",
+    "status": "INVALID",
+    "detail": "<not sent> -> other"
+   },
+   {
+    "behaviour": "D14 a raising code node: the call survives and the failure is visible to routing",
+    "status": "INVALID",
+    "detail": "<not sent> | errors None | next turn: <not sent>"
+   },
+   {
+    "behaviour": "Custom farewell from code; endedReason = terminal function name",
+    "status": "INVALID",
+    "detail": "<not sent> | endedReason None"
+   },
+   {
+    "behaviour": "Code run time (S1, 2 KB brain)",
+    "status": "INFO",
+    "detail": "{'median': 4.35, 'max': 7.94, 'n': 28}; plain turn 6.18 s wall, nodes [('brain', 3.51), ('talk_a', 6.88)]"
+   }
+  ],
+  "crash_vars": {},
+  "version": 7
+ },
+ "s1b_brain_bytes": 63825,
+ "s1b": {
+  "call_id": "0609d847-85d2-4751-bfc0-34758034ce3c",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 3.63
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 11.86
+   },
+   {
+    "user": "again",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 3.44
+   },
+   {
+    "user": "hop",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 4.38
+   },
+   {
+    "user": "bye",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 3.1
+   }
+  ],
+  "messages_bytes": 453990,
+  "ended_reason": null,
+  "code_run_s": {
+   "median": 9.24,
+   "max": 9.24,
+   "n": 1
+  },
+  "sandbox_down_from_turn": 2,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.02
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      2.76
+     ],
+     [
+      "talk_a",
+      12.01
+     ]
+    ],
+    "code_s": [
+     9.24
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      14.41
+     ],
+     [
+      "talk_a",
+      14.44
+     ]
+    ],
+    "code_s": [
+     0.03
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "hop",
+    "nodes": [
+     [
+      "brain",
+      18.24
+     ],
+     [
+      "talk_a",
+      18.28
+     ]
+    ],
+    "code_s": [
+     0.03
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      22.27
+     ],
+     [
+      "talk_a",
+      22.32
+     ]
+    ],
+    "code_s": [
+     0.04
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "S1b loop works with a 60 KB brain",
+    "status": "INVALID",
+    "detail": "Pong 1, brain runs 1. | Pong 1, brain runs 1."
+   },
+   {
+    "behaviour": "S1b 12 hops with a 60 KB brain",
+    "status": "INVALID",
+    "detail": "Pong 1, brain runs 1. | turn 4.38 s wall"
+   },
+   {
+    "behaviour": "S1b code run time <= 1.5 s",
+    "status": "FAIL",
+    "detail": "{'median': 9.24, 'max': 9.24, 'n': 1} vs S1 median 4.35"
+   },
+   {
+    "behaviour": "S1b code kept out of the transcript",
+    "status": "FAIL",
+    "detail": "4 function_call_start events carry the code"
+   },
+   {
+    "behaviour": "S1b transcript size",
+    "status": "INFO",
+    "detail": "453990 bytes for 5 turns vs S1 303482 bytes"
+   },
+   {
+    "behaviour": "S1b custom farewell",
+    "status": "INVALID",
+    "detail": "Pong 1, brain runs 1. | endedReason None"
+   }
+  ],
+  "version": 8
+ }
+}

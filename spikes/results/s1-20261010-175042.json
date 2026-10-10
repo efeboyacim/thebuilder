@@ -1,0 +1,514 @@
+{
+ "at": "20261010-175042",
+ "now": "2026-11-25T10:00",
+ "s1": {
+  "call_id": "4a4a9471-ea4f-4220-bf42-99602fa119bc",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 2.98
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 1, brain runs 1.",
+    "s": 12.02
+   },
+   {
+    "user": "again",
+    "agent": "Again 2, brain runs 2.",
+    "s": 11.4
+   },
+   {
+    "user": "ping",
+    "agent": "Pong 3, brain runs 3.",
+    "s": 11.21
+   },
+   {
+    "user": "code 4321",
+    "agent": "Code noted, any 4321, last 4321, turn 4, brain runs 4.",
+    "s": 9.29
+   },
+   {
+    "user": "check",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 10.81
+   },
+   {
+    "user": "check again, nothing new",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 3.43
+   },
+   {
+    "user": "date tomorrow",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 3.57
+   },
+   {
+    "user": "crash",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 2.98
+   },
+   {
+    "user": "ping",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 7.14
+   },
+   {
+    "user": "ping",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 2.58
+   },
+   {
+    "user": "bye",
+    "agent": "Slots now, any , last , turn 5, brain runs 5.",
+    "s": 2.78
+   }
+  ],
+  "messages_bytes": 553237,
+  "ended_reason": null,
+  "code_run_s": {
+   "median": 7.7,
+   "max": 8.17,
+   "n": 5
+  },
+  "sandbox_down_from_turn": 6,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.06
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      3.4
+     ],
+     [
+      "talk_a",
+      10.77
+     ]
+    ],
+    "code_s": [
+     7.36
+    ],
+    "errors": []
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      15.5
+     ],
+     [
+      "talk_a",
+      23.67
+     ]
+    ],
+    "code_s": [
+     8.17
+    ],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      26.67
+     ],
+     [
+      "talk_a",
+      34.59
+     ]
+    ],
+    "code_s": [
+     7.92
+    ],
+    "errors": []
+   },
+   {
+    "user": "code 4321",
+    "nodes": [
+     [
+      "brain",
+      37.66
+     ],
+     [
+      "talk_a",
+      43.97
+     ]
+    ],
+    "code_s": [
+     6.3
+    ],
+    "errors": []
+   },
+   {
+    "user": "check",
+    "nodes": [
+     [
+      "brain",
+      46.63
+     ],
+     [
+      "talk_a",
+      54.34
+     ]
+    ],
+    "code_s": [
+     7.7
+    ],
+    "errors": []
+   },
+   {
+    "user": "check again, nothing new",
+    "nodes": [
+     [
+      "brain",
+      57.17
+     ],
+     [
+      "talk_a",
+      57.22
+     ]
+    ],
+    "code_s": [
+     0.04
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "date tomorrow",
+    "nodes": [
+     [
+      "brain",
+      61.0
+     ],
+     [
+      "talk_a",
+      61.04
+     ]
+    ],
+    "code_s": [
+     0.04
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "crash",
+    "nodes": [
+     [
+      "brain",
+      64.29
+     ],
+     [
+      "talk_a",
+      64.36
+     ]
+    ],
+    "code_s": [
+     0.06
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      69.58
+     ],
+     [
+      "talk_a",
+      69.63
+     ]
+    ],
+    "code_s": [
+     0.05
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      74.29
+     ],
+     [
+      "talk_a",
+      74.34
+     ]
+    ],
+    "code_s": [
+     0.05
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      76.89
+     ],
+     [
+      "talk_a",
+      76.96
+     ]
+    ],
+    "code_s": [
+     0.07
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "D38 first code node (init) runs on the chat route",
+    "status": "FAIL",
+    "detail": "Spike opening. Init ran {{init_ran}}. Send a command. (init skipped: literal placeholder)"
+   },
+   {
+    "behaviour": "D03 loop core talk->brain->talk",
+    "status": "PASS",
+    "detail": "Pong 1, brain runs 1."
+   },
+   {
+    "behaviour": "D04 no dialogue call in a talk node whose always fired",
+    "status": "PASS",
+    "detail": "marker in []; assistant messages per turn [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+   },
+   {
+    "behaviour": "D07 say_next re-renders on re-entry of the same tts node",
+    "status": "PASS",
+    "detail": "Again 2, brain runs 2. | Pong 3, brain runs 3."
+   },
+   {
+    "behaviour": "D04 no cascade: one brain run per plain turn",
+    "status": "PASS",
+    "detail": "brain entries per turn [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+   },
+   {
+    "behaviour": "D08 12-hop ping-pong in one turn",
+    "status": "INFO",
+    "detail": "not run in this pass (--no-hop)"
+   },
+   {
+    "behaviour": "D12 code_last ('LAST message only') not refilled from an older message",
+    "status": "INVALID",
+    "detail": "Code noted, any 4321, last 4321, turn 4, brain runs 4. | Slots now, any , last , turn 5, brain runs 5. | Slots now, any , last , turn 5, brain runs 5."
+   },
+   {
+    "behaviour": "D12 code_any (no 'LAST message' wording) not refilled",
+    "status": "INVALID",
+    "detail": "Slots now, any , last , turn 5, brain runs 5. | Slots now, any , last , turn 5, brain runs 5."
+   },
+   {
+    "behaviour": "D34 date-type anchor (probe)",
+    "status": "INVALID",
+    "detail": "Slots now, any , last , turn 5, brain runs 5. -> other"
+   },
+   {
+    "behaviour": "D14 a raising code node: the call survives and the failure is visible to routing",
+    "status": "INVALID",
+    "detail": "Slots now, any , last , turn 5, brain runs 5. | errors ['Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]'] | next turn: Slots now, any , last , turn 5, brain runs 5."
+   },
+   {
+    "behaviour": "Custom farewell from code; endedReason = terminal function name",
+    "status": "INVALID",
+    "detail": "Slots now, any , last , turn 5, brain runs 5. | endedReason None"
+   },
+   {
+    "behaviour": "Code run time (S1, 2 KB brain)",
+    "status": "INFO",
+    "detail": "{'median': 7.7, 'max': 8.17, 'n': 5}; plain turn 12.02 s wall, nodes [('brain', 3.4), ('talk_a', 10.77)]"
+   }
+  ],
+  "crash_vars": {
+   "crasher.current_turns": 0,
+   "crasher.total_turns": 0,
+   "talk_after_crash.current_turns": 0,
+   "talk_after_crash.total_turns": 0
+  },
+  "version": 12
+ },
+ "s1b_brain_bytes": 63825,
+ "s1b": {
+  "call_id": "f91ca9d2-18b2-4e1a-9d6e-b41840432e64",
+  "rows": [
+   {
+    "user": "Hello?",
+    "agent": "Spike opening. Init ran {{init_ran}}. Send a command.",
+    "s": 2.55
+   },
+   {
+    "user": "ping",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 3.23
+   },
+   {
+    "user": "again",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 3.06
+   },
+   {
+    "user": "ping",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 3.02
+   },
+   {
+    "user": "bye",
+    "agent": "Fallback. Route was {{route}}.",
+    "s": 3.57
+   }
+  ],
+  "messages_bytes": 444286,
+  "ended_reason": null,
+  "code_run_s": {
+   "median": null,
+   "max": null,
+   "n": 0
+  },
+  "sandbox_down_from_turn": 1,
+  "turns": [
+   {
+    "user": "Hello?",
+    "nodes": [
+     [
+      "opening",
+      0.02
+     ]
+    ],
+    "code_s": [],
+    "errors": []
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      3.14
+     ],
+     [
+      "talk_fallback",
+      3.18
+     ]
+    ],
+    "code_s": [
+     0.03
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "again",
+    "nodes": [
+     [
+      "brain",
+      5.9
+     ],
+     [
+      "talk_fallback",
+      5.93
+     ]
+    ],
+    "code_s": [
+     0.03
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "ping",
+    "nodes": [
+     [
+      "brain",
+      9.07
+     ],
+     [
+      "talk_fallback",
+      9.11
+     ]
+    ],
+    "code_s": [
+     0.03
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   },
+   {
+    "user": "bye",
+    "nodes": [
+     [
+      "brain",
+      12.59
+     ],
+     [
+      "talk_fallback",
+      12.63
+     ]
+    ],
+    "code_s": [
+     0.04
+    ],
+    "errors": [
+     "Failed to reach snekbox: Cannot connect to host snekbox-svc.staging.local:8060 ssl:default [Name or service not known]"
+    ]
+   }
+  ],
+  "checks": [
+   {
+    "behaviour": "S1b loop works with a 60 KB brain",
+    "status": "INVALID",
+    "detail": "Fallback. Route was {{route}}. | Fallback. Route was {{route}}. | Fallback. Route was {{route}}."
+   },
+   {
+    "behaviour": "S1b code run time <= 1.5 s",
+    "status": "INVALID",
+    "detail": "{'median': None, 'max': None, 'n': 0} vs S1 median 7.7"
+   },
+   {
+    "behaviour": "S1b code kept out of the transcript",
+    "status": "FAIL",
+    "detail": "4 function_call_start events carry the code"
+   },
+   {
+    "behaviour": "S1b transcript size",
+    "status": "INFO",
+    "detail": "444286 bytes for 5 turns vs S1 553237 bytes"
+   },
+   {
+    "behaviour": "S1b custom farewell",
+    "status": "INVALID",
+    "detail": "Fallback. Route was {{route}}. | endedReason None"
+   }
+  ],
+  "version": 13
+ }
+}
