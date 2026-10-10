@@ -8,8 +8,9 @@ Write a **builder**: one command that reads a bank brief and its tool API file a
 
     python3 builder/build.py <brief_path> <tool_api_path>      # the run command on the submission form
 
-- Brief B builds on Brief A, so the builder must also accept several brief files. Tell the tool API file apart by its content (JSON with an `openapi` key), not by its position.
-- One hidden brief is raw bank material (a mail, a policy extract, a memo that changes it, a code list). It may arrive as one file or several. A later memo overrides the text it amends.
+- Each hidden brief is ONE Markdown file next to its own tool API file; `{brief_path}` is that one file (organisers, 2026-10-10).
+- Brief B builds on Brief A, so the builder also accepts several brief files; that is the only multi-file case. Tell the tool API file apart by its content (JSON with an `openapi` key), not by its position.
+- One hidden brief is raw bank material: one file with sections (a mail, a policy extract, a memo that changes it, a code list). A later memo overrides the text it amends.
 - At the end of a run: `freya.export_workflow(workflow_id, "submission/<slot>.workflow.json")` and a trace in `traces/`.
 
 ## Repo map
@@ -51,7 +52,7 @@ Tie-breaks: total promised amount on passed cases, then shorter build time, then
 - **Nothing brief-specific in code or prompts.** Holidays, bands, deadlines, persuasion counts, floor fields, outcome/reason tables, queues, identity questions, field names, enum values, server URL: read them from the brief and the tool API file at build time. Writing anything from a hidden brief into the builder is disqualifying. Hardcoding Brief A/B values just breaks on hidden briefs.
 - The phone agent calls only the tool API from the given file. Code nodes and hooks inside the workflow are allowed and expected.
 - Do not change the Freya model (`AGENT_LLM` in `freya.py`).
-- Update workflows in place with `freya.save_workflow(slot, ...)`. Use a few fixed slots. (Event page: 10 workflows per workspace. Kit README: 200. Treat them as scarce.)
+- Update workflows in place with `freya.save_workflow(slot, ...)`, one fixed slot per purpose. Workflow limit: 200 (organisers).
 - One builder run ≤ 30 minutes per brief, **including** its own tests. A 10-case run takes 3 to 11 minutes.
 - Trace per run: start and end time, every model call (model + one-line purpose), workflow id, agent id, number of nodes and tools, every self-test and its result. No API keys in traces.
 - Do not probe or load-test the platform.
@@ -89,7 +90,9 @@ Condensed from `docs/`. Read the full pages before relying on any of these.
 - **No `null` anywhere, and leave `agent_config` out.**
 - **Extraction**:
   - Set `min_confidence` on every field. The 0.95 default silently discards values.
-  - Declare dates as `type: "date"`.
+  - Do not extract the customer's dates as `type: "date"` in this event. The date types anchor relative dates
+    ("Friday", "tomorrow") to the platform's own clock, and the system dates are the real clock, while every date
+    rule here uses the call variable `now`. Extract date parts as strings and resolve them in code against `now`.
   - A custom `extraction_prompt` replaces the whole template.
 - **`end_call` nodes**: the farewell comes from `terminal`. `endedReason` is the terminal's `function.name`.
 - **`close_call` in `examples/base-agent.json`** is a workflow-level lifecycle tool (`alwaysRunsAt: ["end_of_call"]`). One model call fills `outcome` and `reason` from the conversation after the call. Either way it must be the last tool call and happen exactly once.
@@ -100,16 +103,21 @@ Condensed from `docs/`. Read the full pages before relying on any of these.
   - `route_evaluated` events show why a transition did or did not fire.
   - `POST /api/v2/chat/message` tests one turn in seconds. It may skip a first code node.
 
-## Self-testing on a brief nobody has seen (open question)
+## Organisers' answers (2026-10-10) and self-testing
 
-`run_cases.py` creates mock-bank sessions by case id (`POST /v1/practice/sessions {"case": id}`), so the mock seems to know only the PUB-xx customers. It is not confirmed whether it accepts custom customers. Until it is, the builder cannot get ledger-scored tests on a hidden brief. Cheaper checks that do work:
+a. The practice bank opens only PUB-01..PUB-13; a builder cannot define its own customers.
+b. Hidden briefs come only with their own tool API file; no practice cases.
+c. The workflow limit is 200 per workspace.
+d. Each hidden brief is ONE Markdown file next to its tool API file. The raw-material brief is also one file, with mail / policy extract / memo / code list as sections. `{brief_path}` is that one file.
 
-- the workflow dry run (`freya.validate_workflow`);
-- graph checks: every path reaches an end, every passthrough node ends with `always`;
-- running the generated code-node Python locally on synthetic `vars`;
-- chat-API smoke turns.
+So the builder gets no ledger-scored tests on a hidden brief. The self-tests that still work there:
 
-Ask the organisers before designing around custom cases.
+- the workflow dry run (`freya.validate_workflow`), save, read-back and diff against what was sent;
+- graph and lint checks: every path reaches an end, every passthrough node ends with `always`, no A/B literals;
+- local replay of the generated code-node Python on synthetic `vars`;
+- turn-by-turn chat via `POST /api/v2/chat/message` with an LLM playing the customer. It never reaches a bank write with a made-up customer id.
+
+Before Sunday, live rehearsals still reuse PUB customer ids (`tools/run_cases.py`, later `tools/rehearse.py`).
 
 ## Lessons from the paper behind this format (τ-bench, arXiv 2609.04611)
 
@@ -138,9 +146,13 @@ Ask the organisers before designing around custom cases.
   4. `## Open questions` and `## Decisions`: one dated line each.
   5. `## Done`: finished items, each with its commit hash and how it was verified.
 - Work on exactly one item at a time: the one the user names. Do not start the next one unasked.
-- An item is finished only when its acceptance check ran and passed. Then report what changed, the check and its result, and stop. The user moves the item to `## Done`, or tells you to.
+- An item is finished only when its acceptance check ran and passed. Then, without being asked:
+  1. tick it and move it to `## Done`, with the date, the acceptance result and anything later items need (ids, slots, scores);
+  2. commit (message starts with the item number) and add the commit hash to its Done line;
+  3. report what changed and the check result in a few lines, and stop.
+  If the check did not pass, the item stays in the backlog: report why and stop.
+- Everything the next session needs must be in files (`plan.md`, `docs/`), because the user runs `/clear` between items.
 - If an item turns out bigger than planned or wrong, say so and propose a change to `plan.md`. Do not change the scope silently. A new finding becomes a new backlog item.
-- Commit after each finished item, with a message that starts with the item number, unless the user says otherwise.
 
 ## Deadlines
 
@@ -153,18 +165,26 @@ Times are UTC; Istanbul is UTC+3.
 
 Before Sun 17:00 UTC the builder must be complete and rehearsed on self-made mock hidden briefs:
 - a mutated Brief A with other numbers, identity questions, calendar and outcome codes, plus its own tool API file;
-- a raw-material version: mail + policy extract + amending memo + code list.
+- a raw-material version: one file with mail, policy extract, amending memo and code list as sections.
 
 ## Status
 
 - `plan.md` and `docs/design.md` are approved and committed. Architecture: hybrid compiler with a hub-and-spoke "brain" (see `docs/design.md`). Work follows `plan.md`, one item at a time.
-- Item 01 is done (see `plan.md` Done). Next: item 02 (Plan Z builds), which can run in parallel with 03–04 (chat-API spikes).
+- The organisers' answers above are in `plan.md` Decisions. Where `docs/design.md` still plans directory or multi-file ingest, custom customers or scarce slots, the answers win.
+- Items 01 and 02 are done (see `plan.md` Done). Next: item 03 (chat-API spikes S1 + S1b).
 - Local facts:
   - `python3` on this machine is the Windows Store stub. Run `python` (3.10.11) locally; keep `python3` in the form command.
   - `env.sh` is verified. `FREYA_BANK_TEAM_KEY` was regenerated on 2026-10-10 (32 chars). Keep it from now on: practice sessions belong to it.
   - Slot `scratch` = agent `d59d3574-e7fa-48ce-bd5d-9433ebd57421`. It holds the base agent and is reused for spikes.
-  - Run `run_cases.py` and builders in the background and wait for the completion notice. A 10-case run took 126 s.
+  - Plan Z agents from item 02: slot `brief-a` = agent `413df77e-9c57-43be-951b-42fcd0edf06f` (A), slot `brief-b` = agent `cd5d5f42-5205-4277-a490-c0bd5c21afae` (A+B). Their files are in `results/02-planz/`.
+  - Run `run_cases.py` and builders in the background and wait for the completion notice. A 10-case run took 95 to 168 s.
+  - The kit builder (Claude Agent SDK) run from inside a Claude Code session needs the host's `CLAUDE*`/`ANTHROPIC*` variables unset, a `python3` → `python` shim on `PATH` and `PYTHONUTF8=1`.
 - Mock bank facts learned in item 01:
   - It rejects a close_call reason outside its outcome table (`ok:false`); the ledger outcome then stays empty.
   - A failed create_promise returns `ok:false` "service unavailable, nothing was recorded", not an HTTP 500.
   - The ledger (`/v1/practice/ledger/<customer_id>`) also shows `verified`, `wrong`, `hinted`, `failures` and every call with args and result: useful for debugging.
+- Platform facts learned in item 02:
+  - The event model can go down: around 13:45–14:00 UTC every agent, the base agent too, went silent after the first customer turn. Before debugging an all-fail run, run one case on `scratch` as a control.
+  - Tool hooks can fail late in a call with "did not return a parseable result". A failing pre-hook stopped `close_call` from going out (Plan Z, Brief B run 2).
+  - A newly created workflow has no event model in `agent_config` until its first update (`freya.update_workflow` sets it). The chat route needs it, so save a new slot twice.
+  - The kit builder reads `CLAUDE.md`, `plan.md`, `results/` and earlier `out/` files and reuses them (its A+B build copied `out/gen_brief_a.py`, which hard-codes Brief A values).
