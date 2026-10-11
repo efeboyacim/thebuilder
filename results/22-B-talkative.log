@@ -1,0 +1,15 @@
+FAIL PUB-11 medium Multi-product  | verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 220.0, '2026-10-16'), ('p2', 640.0, '2026-10-16'), ('p3', 75.0, '2026-10-16')]
+       - conversation: The call failed all success criteria because it never progressed past the identity verification stage. Specifically: 1) No products were ever stated to the customer. 2) No read-backs or confirmations for products occurred. 3) The 'create_promise'
+PASS PUB-12 hard   Multi-product  | verify > verify > verify > get_account > promise > add_note > add_note > close_call
+FAIL PUB-13 hard   Multi-product  | verify > verify > get_account > add_note > add_note > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]
+       - notes [('p1', 'refused'), ('p2', 'refused')], expected []
+       - conversation: The agent failed to record the payment promises. While the read-back in Message 10 correctly identified the dates (30 October for the credit card and 23 October for the loan), the system events show that the agent ultimately recorded both items a
+
+slowest agent turn per call: median 14 s, worst 14 s. Failed calls where the customer hung up: 0.
+WARNING: the phone agent was slow in this run. If the same agent is fast in another run, the model was busy and this score is too low.
+
+1 / 3 passed (bank records and conversation checks). Last simulation 3ed658f5-5edf-47b3-9e1b-72b4de024c18, status completed, 104 s.

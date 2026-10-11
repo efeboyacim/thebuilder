@@ -1,0 +1,7 @@
+PASS PUB-11 medium Multi-product  | verify > verify > get_account > promise > promise > promise > close_call
+PASS PUB-12 hard   Multi-product  | verify > verify > verify > get_account > promise > add_note > add_note > close_call
+PASS PUB-13 hard   Multi-product  | verify > verify > get_account > promise > promise > close_call
+
+slowest agent turn per call: median 7 s, worst 12 s. Failed calls where the customer hung up: 0.
+
+3 / 3 passed (bank records and conversation checks). Last simulation a4a39b54-9c7c-4dc7-8571-f6327b9256fc, status completed, 74 s.

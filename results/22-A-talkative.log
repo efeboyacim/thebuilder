@@ -1,0 +1,27 @@
+PASS PUB-01 easy   Happy path     | verify > verify > get_account > promise > close_call
+PASS PUB-02 medium Third party    | schedule_callback > close_call
+FAIL PUB-03 medium Identity       | verify > verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')
+       - conversation: The conversation failed on two success criteria: 1. The check ended prematurely: The system events show the call was terminated after the second wrong answer (with `wrong_answers_left: 1` remaining) instead of the third. 2. The assistant did not 
+FAIL PUB-04 medium Dates          | verify > verify > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 1250.0, '2026-10-23')]
+       - conversation: The conversation failed to meet several success criteria: 1. The agent did not state it was a digital assistant when asked in Message 15 ("...but are you"); instead, it responded in Message 16 with "I am sorry, I do not have that information." 2.
+PASS PUB-05 medium Hardship       | verify > verify > get_account > close_call
+PASS PUB-06 hard   Amounts        | verify > verify > get_account > promise > close_call
+FAIL PUB-07 hard   Dates          | verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 540.0, '2026-10-27')]
+       - conversation: - The agent never asked for the exact day of payment because the call ended during the verification phase. - The agent never encountered or rejected the date 26 October. - No promise for 27 October was recorded as the user failed to verify their 
+FAIL PUB-08 medium Already paid   | verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('paid', None)
+       - conversation: The agent failed to meet the first success criterion: the transcript shows that the agent never mentioned that payments can take one business day to appear. The conversation ended because the user failed to provide the required verification infor
+PASS PUB-09 medium Restructuring  | verify > verify > get_account > transfer_to_agent > close_call
+FAIL PUB-10 hard   Tool failure   | verify > verify > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 365.0, '2026-10-16')]
+       - conversation: The call failed to meet the success criteria because it did not result in exactly one promise in the ledger. While the user initially indicated a willingness to pay in Message 11, the assistant's interruption and subsequent confirmation requests 
+
+slowest agent turn per call: median 10 s, worst 13 s. Failed calls where the customer hung up: 0.
+
+5 / 10 passed (bank records and conversation checks). Last simulation aceead06-a16e-4034-aa03-eca782f9125a, status completed, 156 s.

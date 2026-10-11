@@ -1,0 +1,166 @@
+{
+ "agent_id": "bf97e129-500c-4768-bec8-81c18bbb9c2a",
+ "simulation_id": "3ed658f5-5edf-47b3-9e1b-72b4de024c18",
+ "iteration_id": "877322db-1e5c-4724-ae5d-9482151e97c0",
+ "seconds": 104,
+ "passed": 1,
+ "total": 3,
+ "runs": 1,
+ "final": [
+  {
+   "id": "PUB-11",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-12",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-13",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  }
+ ],
+ "rows": [
+  {
+   "id": "PUB-11",
+   "level": "medium",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('promise', None)",
+    "promises [], expected [('p1', 220.0, '2026-10-16'), ('p2', 640.0, '2026-10-16'), ('p3', 75.0, '2026-10-16')]",
+    "conversation: The call failed all success criteria because it never progressed past the identity verification stage. Specifically: 1) No products were ever stated to the customer. 2) No read-backs or confirmations for products occurred. 3) The 'create_promise' function was never called. The call ended properly as the assistant terminated the call after the user repeatedly failed to provide the required authenti"
+   ],
+   "call_id": "2930d1cd-a024-4c3f-b05a-97a28b7234ef",
+   "tools": [
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_a1ec9e27-a94",
+   "slowest_turn_s": 12.2,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-12",
+   "level": "hard",
+   "family": "Multi-product",
+   "pass": true,
+   "failed": [],
+   "call_id": "cb872ef1-b083-42e6-a2aa-60427b19cf41",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "add_note",
+    "add_note",
+    "close_call"
+   ],
+   "customer_id": "c_f03d83a6-54c",
+   "slowest_turn_s": 13.9,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-13",
+   "level": "hard",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "outcome ('no_promise', 'refused'), expected ('promise', None)",
+    "promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]",
+    "notes [('p1', 'refused'), ('p2', 'refused')], expected []",
+    "conversation: The agent failed to record the payment promises. While the read-back in Message 10 correctly identified the dates (30 October for the credit card and 23 October for the loan), the system events show that the agent ultimately recorded both items as 'no promise, reason refused' because the user never provided a confirmation, instead talking about personal matters in messages 11, 13, and 15. Conseque"
+   ],
+   "call_id": "06529b61-7178-4c15-b100-4ac649927772",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "add_note",
+    "add_note",
+    "close_call"
+   ],
+   "customer_id": "c_7d0923c5-610",
+   "slowest_turn_s": 14.3,
+   "ended": "assistant-ended-call"
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "PUB-11",
+    "level": "medium",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('promise', None)",
+     "promises [], expected [('p1', 220.0, '2026-10-16'), ('p2', 640.0, '2026-10-16'), ('p3', 75.0, '2026-10-16')]",
+     "conversation: The call failed all success criteria because it never progressed past the identity verification stage. Specifically: 1) No products were ever stated to the customer. 2) No read-backs or confirmations for products occurred. 3) The 'create_promise' function was never called. The call ended properly as the assistant terminated the call after the user repeatedly failed to provide the required authenti"
+    ],
+    "call_id": "2930d1cd-a024-4c3f-b05a-97a28b7234ef",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_a1ec9e27-a94",
+    "slowest_turn_s": 12.2,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-12",
+    "level": "hard",
+    "family": "Multi-product",
+    "pass": true,
+    "failed": [],
+    "call_id": "cb872ef1-b083-42e6-a2aa-60427b19cf41",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_f03d83a6-54c",
+    "slowest_turn_s": 13.9,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-13",
+    "level": "hard",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]",
+     "notes [('p1', 'refused'), ('p2', 'refused')], expected []",
+     "conversation: The agent failed to record the payment promises. While the read-back in Message 10 correctly identified the dates (30 October for the credit card and 23 October for the loan), the system events show that the agent ultimately recorded both items as 'no promise, reason refused' because the user never provided a confirmation, instead talking about personal matters in messages 11, 13, and 15. Conseque"
+    ],
+    "call_id": "06529b61-7178-4c15-b100-4ac649927772",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_7d0923c5-610",
+    "slowest_turn_s": 14.3,
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

@@ -1,0 +1,14 @@
+PASS PUB-11 medium Multi-product  | verify > verify > get_account > promise > promise > promise > close_call
+FAIL PUB-12 hard   Multi-product  | verify > verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-15')]
+       - notes [], expected [('p2', 'refused'), ('p3', 'refused')]
+       - conversation: The conversation failed several success criteria: 1. The date of birth was asked a second time in Message 4, violating the requirement that it not be asked again. 2. No promises were made regarding a credit card. 3. No 'refused' notes were record
+FAIL PUB-13 hard   Multi-product  | verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]
+       - conversation: The conversation failed all success criteria because the assistant terminated the call during the identity verification phase before any discussion of credit cards or loans took place. Specifically: 1) The credit card was not recorded for 30 Octo
+
+slowest agent turn per call: median 9 s, worst 10 s. Failed calls where the customer hung up: 0.
+
+1 / 3 passed (bank records and conversation checks). Last simulation 393f1e24-73ce-475e-9f2e-d20f683514d7, status completed, 74 s.

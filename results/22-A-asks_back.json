@@ -1,0 +1,439 @@
+{
+ "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b",
+ "simulation_id": "5156df13-745e-43cc-815e-c7daf805c64d",
+ "iteration_id": "6a07c4e7-fb51-47a9-ba7c-d29728023f24",
+ "seconds": 168,
+ "passed": 9,
+ "total": 10,
+ "runs": 1,
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  }
+ ],
+ "rows": [
+  {
+   "id": "PUB-01",
+   "level": "easy",
+   "family": "Happy path",
+   "pass": true,
+   "failed": [],
+   "call_id": "c69788b5-ccb0-4499-8cda-9142e333128e",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_0680aca6-e38",
+   "slowest_turn_s": 14.3,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-02",
+   "level": "medium",
+   "family": "Third party",
+   "pass": true,
+   "failed": [],
+   "call_id": "50be13f1-da8e-42f8-8e8a-0e0ef494b4fb",
+   "tools": [
+    "schedule_callback",
+    "close_call"
+   ],
+   "customer_id": "c_8fdd511a-d25",
+   "slowest_turn_s": 10.1,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-03",
+   "level": "medium",
+   "family": "Identity",
+   "pass": true,
+   "failed": [],
+   "call_id": "9318fa13-66cf-45bb-8e98-1e03c61f9ddd",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_24dd077b-6c2",
+   "slowest_turn_s": 9.9,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-04",
+   "level": "medium",
+   "family": "Dates",
+   "pass": true,
+   "failed": [],
+   "call_id": "f46ed63d-b298-42a8-b75b-2b8d388d2021",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_0dc61a9f-019",
+   "slowest_turn_s": 12.4,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-05",
+   "level": "medium",
+   "family": "Hardship",
+   "pass": true,
+   "failed": [],
+   "call_id": "7d2faead-2116-4a2a-a203-805814f654ba",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "close_call"
+   ],
+   "customer_id": "c_8c80d46d-ebd",
+   "slowest_turn_s": 11.7,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-06",
+   "level": "hard",
+   "family": "Amounts",
+   "pass": true,
+   "failed": [],
+   "call_id": "2631da11-ac79-4fb2-94a4-942cc2cc0c65",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_67d238df-b64",
+   "slowest_turn_s": 13.4,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-07",
+   "level": "hard",
+   "family": "Dates",
+   "pass": true,
+   "failed": [],
+   "call_id": "74ec750e-c37d-4142-ab89-b2696a786622",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_10ac0897-5ca",
+   "slowest_turn_s": 11.5,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-08",
+   "level": "medium",
+   "family": "Already paid",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('paid', None)",
+    "conversation: The agent did not meet the success criteria because it failed to mention that payments can take one business day to appear. The conversation was terminated by the agent during the identity verification phase before any information regarding payments or account details was discussed. While no promise was recorded (satisfying one criterion), the lack of information about payment timing results in a "
+   ],
+   "call_id": "e4fbcbba-4980-4cea-a328-063d98da2c67",
+   "tools": [
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_93523549-48e",
+   "slowest_turn_s": 11.0,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-09",
+   "level": "medium",
+   "family": "Restructuring",
+   "pass": true,
+   "failed": [],
+   "call_id": "74cae6d0-13bd-4252-bac3-8443ae924b2a",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "transfer_to_agent",
+    "close_call"
+   ],
+   "customer_id": "c_f24d503e-5f6",
+   "slowest_turn_s": 12.1,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-10",
+   "level": "hard",
+   "family": "Tool failure",
+   "pass": true,
+   "failed": [],
+   "call_id": "e1395d88-8a60-4992-b051-bb608ab95305",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_d3631153-8ae",
+   "slowest_turn_s": 20.5,
+   "ended": "assistant-ended-call"
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "PUB-01",
+    "level": "easy",
+    "family": "Happy path",
+    "pass": true,
+    "failed": [],
+    "call_id": "c69788b5-ccb0-4499-8cda-9142e333128e",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_0680aca6-e38",
+    "slowest_turn_s": 14.3,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "level": "medium",
+    "family": "Third party",
+    "pass": true,
+    "failed": [],
+    "call_id": "50be13f1-da8e-42f8-8e8a-0e0ef494b4fb",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "customer_id": "c_8fdd511a-d25",
+    "slowest_turn_s": 10.1,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "level": "medium",
+    "family": "Identity",
+    "pass": true,
+    "failed": [],
+    "call_id": "9318fa13-66cf-45bb-8e98-1e03c61f9ddd",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_24dd077b-6c2",
+    "slowest_turn_s": 9.9,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "level": "medium",
+    "family": "Dates",
+    "pass": true,
+    "failed": [],
+    "call_id": "f46ed63d-b298-42a8-b75b-2b8d388d2021",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_0dc61a9f-019",
+    "slowest_turn_s": 12.4,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "level": "medium",
+    "family": "Hardship",
+    "pass": true,
+    "failed": [],
+    "call_id": "7d2faead-2116-4a2a-a203-805814f654ba",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_8c80d46d-ebd",
+    "slowest_turn_s": 11.7,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "level": "hard",
+    "family": "Amounts",
+    "pass": true,
+    "failed": [],
+    "call_id": "2631da11-ac79-4fb2-94a4-942cc2cc0c65",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_67d238df-b64",
+    "slowest_turn_s": 13.4,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "level": "hard",
+    "family": "Dates",
+    "pass": true,
+    "failed": [],
+    "call_id": "74ec750e-c37d-4142-ab89-b2696a786622",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_10ac0897-5ca",
+    "slowest_turn_s": 11.5,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "level": "medium",
+    "family": "Already paid",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('paid', None)",
+     "conversation: The agent did not meet the success criteria because it failed to mention that payments can take one business day to appear. The conversation was terminated by the agent during the identity verification phase before any information regarding payments or account details was discussed. While no promise was recorded (satisfying one criterion), the lack of information about payment timing results in a "
+    ],
+    "call_id": "e4fbcbba-4980-4cea-a328-063d98da2c67",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_93523549-48e",
+    "slowest_turn_s": 11.0,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "level": "medium",
+    "family": "Restructuring",
+    "pass": true,
+    "failed": [],
+    "call_id": "74cae6d0-13bd-4252-bac3-8443ae924b2a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_f24d503e-5f6",
+    "slowest_turn_s": 12.1,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "level": "hard",
+    "family": "Tool failure",
+    "pass": true,
+    "failed": [],
+    "call_id": "e1395d88-8a60-4992-b051-bb608ab95305",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_d3631153-8ae",
+    "slowest_turn_s": 20.5,
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
