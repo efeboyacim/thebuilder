@@ -21,6 +21,15 @@ SYSTEM_PROMPT = ("You are the bank's phone agent. In every turn, say exactly the
                  "you, word for word, and nothing else. Never call a tool.")
 TALK_TASK = "Say exactly this text, word for word, and nothing else: {{say_next}}. No tool call is allowed."
 TWIN_STAGES = ("open", "identity", "negotiate", "confirm")
+FREE_TASK = (
+    "A rule of the bank applies here that the standard script does not cover: {{free_rule}} "
+    "Facts: {{free_facts}} {{free_feedback}} "
+    "First say exactly this text, if it is not empty: {{say_next}} "
+    "Then apply the rule to this customer using only the rule and the facts, in one or two short sentences. When you "
+    "propose a payment, name the product, the amount and the date with its weekday, day, month and year, and ask "
+    "whether the customer agrees. Never offer any reduction, waiver, plan, term or option the rule and the facts do "
+    "not give; never ask how much the customer can pay; never say that anything is recorded or booked. No tool call "
+    "is allowed.")
 TWIN_TASK = (
     "The customer just asked: {{side_question}} "
     "Facts you may use (they may be empty): {{facts}} "
@@ -205,7 +214,9 @@ def compile_workflow(spec, api):
     nodes["opening"] = talk_node("opening", opening, "Say exactly this text, word for word, and nothing else: "
                                  + opening + " No tool call is allowed.", fields["open"])
     twins = list(TWIN_STAGES) if engine.llm_answers(spec) else []
-    targets = [engine.talk_node(s) for s in engine.STAGES] + [engine.llm_node(s) for s in twins] +         [engine.api_node(r) for r in roles] + [engine.END]
+    frees = sorted({r["stage"] for r in brain.free_rules(spec)}, key=engine.STAGES.index)
+    targets = [engine.talk_node(s) for s in engine.STAGES] + [engine.llm_node(s) for s in twins] + \
+        [engine.free_node(s) for s in frees] + [engine.api_node(r) for r in roles] + [engine.END]
     nodes["brain"] = code_node("brain", code, [when("brain_response.status", "error", "talk_error")]
                                + [when("route", t, t) for t in targets] + [always("talk_fallback")])
     for stage in engine.STAGES:
@@ -218,7 +229,12 @@ def compile_workflow(spec, api):
         node = talk_node(name, "", task, fields[stage])
         node["on_enter"] = {"type": "llm", "prompt": task}
         nodes[name] = node
-    every = union_fields(fields)
+    for stage in frees:
+        name = engine.free_node(stage)
+        node = talk_node(name, "", FREE_TASK, fields[name])
+        node["on_enter"] = {"type": "llm", "prompt": FREE_TASK}
+        nodes[name] = node
+    every = union_fields({k: v for k, v in fields.items() if k in engine.STAGES})
     nodes["talk_fallback"] = talk_node("talk_fallback", "{{say_fallback}}", TALK_TASK.replace("say_next", "say_fallback"), every)
     nodes["talk_error"] = talk_node("talk_error", SAY_AGAIN, f"Say exactly: {SAY_AGAIN} No tool call is allowed.", every)
     for role in roles:

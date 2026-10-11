@@ -43,7 +43,17 @@ def compact_spec(spec, api):
     S["call_variables"] = [v["name"] for v in spec.get("call_variables") or [] if isinstance(v, dict)]
     products, fields = exprs.item_schema(spec, api)
     S["_api"] = {"products": products, "item_fields": fields}
+    S["_free"] = free_rules(spec)
     return S
+
+
+def free_rules(spec):
+    """The flow residuals a model applies at run time: event id, stage and the rule text."""
+    return [{"id": engine.FREE + str(r.get("id")).lower(), "stage": r.get("stage"), "rule": r.get("text"),
+             "trigger": r.get("trigger")}
+            for r in spec.get("residual_rules") or []
+            if isinstance(r, dict) and r.get("free_mode") is True and r.get("class") == "flow"
+            and r.get("stage") in engine.STAGES]
 
 
 def module_source(module):

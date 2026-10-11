@@ -420,6 +420,18 @@ silently disappear into a prompt.
 7. A rejected action gets a `say_next` explanation and the call stays in free mode. `done` returns to the normal flow.
 8. The trace lists every flow residual, its trigger and how it is executed. M1 contains one such rule (backlog 19).
 
+**Implementation (item 18).** A residual rule has `free_mode` (schema): true only for a flow rule no section carries,
+in one stage. `brain.free_rules(spec)` turns each into an event `free_<residual id>` (its trigger joins that stage's
+`x_event` enum after the spec's events) and a `free_<stage>` llm node (`compiler.FREE_TASK`: the rule, the facts from
+`engine.free_facts`, the gate feedback, then a proposal with a full date). The node extracts `x_free_action` (promise,
+callback, close, transfer, done, continue), product, amount, date, time and target. `engine.turn_free` runs the gates:
+a promise needs a known open product, an amount the spec accepts, a business day from today up to the deadline, and
+then goes through the normal read-back and confirmation; close/transfer need a situation (a transfer one with a
+queue); a callback needs `callback_ok`. A rejected action goes back to the free node with the reason in
+`free_feedback`; `done` or more than `FREE_LIMIT` (4) free turns go back to the question that was asked before.
+Deviation from point 4: two unparsed turns do not enter free mode. A spec's generic flow residuals (for example "a
+date the customer proposes is never a refusal") would otherwise take over flows the engine already handles.
+
 ### 3.7 What runs where
 
 | Mechanism | What it carries |

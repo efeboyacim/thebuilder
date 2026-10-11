@@ -19,12 +19,15 @@ NS = "not_specified"
 TALK, API, END, FAILED = "talk_", "api_", "end_call", "brain_failed"
 STATE = "brain_state"
 STAGES = ("open", "third", "identity", "negotiate", "confirm")
-SLOTS = ("main", "side_q", "event", "reply", "answer", "day", "time", "amount", "scope", "product", "said")
+SLOTS = ("main", "side_q", "event", "reply", "answer", "day", "time", "amount", "scope", "product", "free_action",
+         "free_product", "free_amount", "free_date", "free_time", "free_target", "said")
 SIDE_Q = ("purpose", "other")
 CONTINUE = "Please go on."
 LOOP_LIMIT = 3
 TURN_LIMIT = 40
 LLM = "_llm"
+FREE = "free_"
+FREE_LIMIT = 4
 
 
 # ---------- names shared with the compiler ----------
@@ -51,6 +54,14 @@ def x_var(slot):
 
 def llm_node(stage):
     return TALK + stage + LLM
+
+
+def free_node(stage):
+    return FREE + stage
+
+
+def free_rules(S, stage=None):
+    return [r for r in S.get("_free") or [] if stage is None or r.get("stage") == stage]
 
 
 def side_ids(S):
@@ -383,6 +394,8 @@ def on_turn(c, stage, x):
     st["turns"] = st.get("turns", 0) + 1
     if st["turns"] > TURN_LIMIT:
         return close(c, hangup(c, stage))
+    if stage.startswith(FREE):  # the free node's own fields; a miss is one more free turn
+        return turn_free(c, stage[len(FREE):], x)
     filled = any(x[k] for k in ("main", "side_q", "event", "reply", "answer", "day", "time", "amount"))
     if not filled and not fallback_main(c, stage, x):
         if not st.get("miss"):
@@ -396,6 +409,8 @@ def on_turn(c, stage, x):
     if stage != "third":
         side_answer(c, stage, x)
     if st.get("pev") and event_reply(c, stage, x):
+        return None
+    if x["event"].startswith(FREE) and enter_free(c, stage, x["event"]):
         return None
     if x["event"] and fire_event(c, stage, x):
         return None
@@ -656,6 +671,113 @@ def event_reply(c, stage, x):
     ask(c, stage, e["template"])
     st["evq"] = True
     return True
+
+
+# ---------- free mode: flow rules no section carries ----------
+
+def enter_free(c, stage, fid):
+    """A flow rule only a model can apply: the free node talks, code checks every action it brings back."""
+    r = next((r for r in free_rules(c["S"], stage) if r.get("id") == fid), None)
+    if r is None:
+        return False
+    st = c["st"]
+    st["free"] = dict(id=fid, stage=stage, n=0, resume=st.get("last") or "")
+    free_ask(c, stage, "")
+    return True
+
+
+def free_ask(c, stage, feedback):
+    st, out = c["st"], c["out"]
+    f = st.get("free") or dict()
+    r = next((r for r in free_rules(c["S"]) if r.get("id") == f.get("id")), dict())
+    out["free_rule"], out["free_facts"], out["free_feedback"] = r.get("rule") or "", free_facts(c), feedback
+    out["say_next"] = join(*c["say"])
+    c["say"] = []
+    st["stage"], st["wait"], st["evq"] = stage, free_node(stage), False
+    out["route"] = free_node(stage)
+
+
+def free_facts(c):
+    st, cal, today = c["st"], c["cal"], c["today"]
+    days = ", ".join(WEEKDAY_WORDS[i].capitalize() for i in cal["wd"])
+    hol = sorted(h for h in cal["hol"] if today.isoformat() <= h <= (today + 120 * DAY).isoformat())
+    out = ["Today is " + say_date(today) + ".", "Business days: " + days + ", except the holidays " +
+           (", ".join(say_date(datetime.date.fromisoformat(h)) for h in hol) or "none") + "."]
+    for p in st.get("products") or []:
+        s = pstate(c, p)
+        line = "Product " + str(p.get("ref")) + " (" + product_name(c, p) + "): overdue " + say_money(p.get("due") or 0) \
+            + ", lowest amount that can be recorded " + say_money(p.get("floor") or 0)
+        if p.get("deadline"):
+            line += ", latest promise date " + say_date(datetime.date.fromisoformat(p["deadline"]))
+        o = s.get("offer")
+        if o:
+            line += ", last offer " + say_money(o["amount"]) + " on " + say_date(datetime.date.fromisoformat(o["date"]))
+        out.append(line + ", status " + str(s.get("status")) + ".")
+    return " ".join(out)
+
+
+def turn_free(c, stage, x):
+    st = c["st"]
+    f = st.get("free") or dict(stage=stage, n=0, resume=st.get("last") or "")
+    st["free"] = f
+    f["n"] = f.get("n", 0) + 1
+    a = x["free_action"]
+    if a == "promise":
+        return free_promise(c, stage, x)
+    if a in ("close", "transfer"):
+        t = x["free_target"]
+        sit = situation(c, t) or next((s for s in c["S"]["situations"] if s.get("queue") and s.get("queue") == t), None)
+        if sit is not None and (a == "close" or sit.get("queue")):
+            st["free"] = None
+            return target(c, sit["id"], stage)
+        return free_ask(c, stage, "That is not an outcome the bank allows here.")
+    if a == "callback" and stage == "third":
+        d, t = free_date(c, x["free_date"]), parse_time(x["free_time"])
+        if d is not None and t is not None and callback_ok(c, d, t[0], t[1]):
+            st["free"] = None
+            st["third"]["cb"] = [d.isoformat(), hhmm(t[0], t[1])]
+            return call(c, "book_callback", dict(date=d, time=hhmm(t[0], t[1])), dict(kind="callback"))
+        return free_ask(c, stage, "That callback day or time is not allowed.")
+    if a == "done" or f["n"] > FREE_LIMIT:
+        st["free"] = None
+        return ask(c, stage, f.get("resume") or st.get("last") or "")
+    return free_ask(c, stage, "")
+
+
+def free_date(c, text):
+    try:
+        return datetime.date.fromisoformat(str(text or "").strip()[:10])
+    except ValueError:
+        return customer_day(c, text) if text else None
+
+
+def free_promise(c, stage, x):
+    """The gates of a promise proposed in free mode: a known open product, an amount the spec accepts, a valid date."""
+    st = c["st"]
+    ref = str(x["free_product"] or "").strip()
+    p = next((q for q in st.get("products") or [] if str(q.get("ref")) == ref), None) or \
+        (match_product(c, ref) if ref else (current(c) if st.get("cur") else None))
+    if p is None or pstate(c, p).get("status") == "ended" or str(p.get("ref")) in [str(r) for r in st["recorded"]]:
+        return free_ask(c, stage, "That product cannot take a promise now; use one of the products in the facts.")
+    A = c["S"]["negotiation"].get("amounts") or dict()
+    due, fl = float(p.get("due") or 0), float(p.get("floor") or 0)
+    a = parse_amount(x["free_amount"], due, fl) if x["free_amount"] else None
+    a = float((pstate(c, p).get("offer") or dict()).get("amount", due)) if a is None else min(a, due)
+    lo = due if A.get("accept_range") == "due_only" else min(fl, due)
+    d, end = free_date(c, x["free_date"]), deadline(p)
+    why = ""
+    if a < lo - 0.005:
+        why = "The amount " + say_money(a) + " is below the lowest amount that can be recorded, " + say_money(lo) + "."
+    elif d is None:
+        why = "No exact date was agreed."
+    elif d < c["today"] or not is_business_day(c["cal"], d):
+        why = say_date(d, c["today"]) + " is not a business day from today on."
+    elif end is not None and d > end:
+        why = say_date(d, c["today"]) + " is after the latest promise date, " + say_date(end, c["today"]) + "."
+    if why:
+        return free_ask(c, stage, "The bank cannot record that: " + why + " Propose something the facts allow.")
+    st["free"] = None
+    return agree(c, p, a, d)
 
 
 # ---------- identity ----------

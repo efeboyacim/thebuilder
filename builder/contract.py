@@ -3,7 +3,7 @@
 The compiler builds every talk node's extraction schema from `extraction(spec)`; the local replay checks its acts
 against it. The brain (builder/engine.py) reads these fields as x_<slot>. Builder side only: not part of the brain.
 """
-from builder.engine import STAGES, x_var
+from builder.engine import FREE, STAGES, x_var
 
 MAIN = dict(open=("confirmed", "someone_else", "unclear"),
             third=("gives_time", "no_time", "offers_to_pay", "customer_available", "unclear"),
@@ -80,7 +80,8 @@ def extraction(S):
                        description=side_desc),
                   dict(name=x_var("said"), type="string", enum=None,
                        description="The person's LAST message, word for word.")]
-        evs = [e for e in events if stage in (e.get("stages") or [])]
+        evs = [e for e in events if stage in (e.get("stages") or [])] + \
+            [dict(id=r["id"], trigger=r["trigger"]) for r in free(S, stage)]
         if evs:
             fields.append(dict(name=x_var("event"), type="string", enum=[e["id"] for e in evs] + ["none"],
                                description="What the person says in their LAST message, if it is one of these "
@@ -106,4 +107,33 @@ def extraction(S):
             fields.append(dict(name=x_var("scope"), type="string", enum=["all", "one", "none"], description=SCOPE_TEXT))
             fields.append(dict(name=x_var("product"), type="string", enum=None, description=PRODUCT_TEXT))
         out[stage] = fields
+    for stage in STAGES:
+        if free(S, stage):
+            out[FREE + stage] = free_fields()
     return out
+
+
+def free(S, stage):
+    from builder.brain import free_rules
+    return [r for r in free_rules(S) if r["stage"] == stage]
+
+
+def free_fields():
+    return [
+        dict(name=x_var("free_action"), type="string",
+             enum=["promise", "callback", "close", "transfer", "done", "continue", "none"],
+             description="What the conversation has now settled, judged from the agent's last message and the person's "
+                         "LAST message: promise (the person accepts a payment the agent proposed), callback (the person "
+                         "accepts a callback day and time the agent proposed), close or transfer (the agent said the call "
+                         "ends that way), done (the special rule no longer applies, or the person wants to go back), "
+                         "continue (still being discussed), none."),
+        dict(name=x_var("free_product"), type="string", enum=None,
+             description="For promise: the product of that payment as the agent named it (its id such as p1, or its name)."),
+        dict(name=x_var("free_amount"), type="string", enum=None,
+             description="For promise: the amount of that payment as the agent named it."),
+        dict(name=x_var("free_date"), type="string", enum=None,
+             description="For promise or callback: the date the agent named, as YYYY-MM-DD (the agent says the year)."),
+        dict(name=x_var("free_time"), type="string", enum=None, description="For callback: the time as HH:MM."),
+        dict(name=x_var("free_target"), type="string", enum=None,
+             description="For close or transfer: the outcome or queue the agent named."),
+        dict(name=x_var("said"), type="string", enum=None, description="The person's LAST message, word for word.")]

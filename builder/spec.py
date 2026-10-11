@@ -475,8 +475,8 @@ def facts(spec):
     hang = (spec.get("closing") or {}).get("hangup") or {}
     neutral = sorted(k for k, v in hang.items() if isinstance(v, dict) and v.get("stated_in_brief") is False)
     return {"not_specified": ns, "residuals": by_class,
-            "flow_residuals": [{"id": r.get("id"), "stage": r.get("stage"), "trigger": r.get("trigger")}
-                               for r in res if r.get("class") == "flow"],
+            "flow_residuals": [{"id": r.get("id"), "stage": r.get("stage"), "trigger": r.get("trigger"),
+                                "free_mode": r.get("free_mode")} for r in res if r.get("class") == "flow"],
             "hangup_chosen_by_model": neutral,
             "situations": len(spec.get("situations") or []),
             "bands": [b.get("id") for b in (spec.get("products") or {}).get("bands") or [] if isinstance(b, dict)],
@@ -856,6 +856,12 @@ def _check_index(ctx, rule_ids, known_ids=None):
     for i, r in enumerate(s.get("residual_rules") or []):
         if isinstance(r, dict) and r.get("class") == "flow" and not str(r.get("trigger") or "").strip():
             errs.append(f"residual_rules[{i}].trigger: a flow rule needs a trigger")
+        if isinstance(r, dict) and r.get("free_mode") is True:
+            if r.get("class") != "flow":
+                errs.append(f"residual_rules[{i}].free_mode: only a flow rule can run in free mode")
+            if r.get("stage") not in ("open", "third", "identity", "negotiate", "confirm"):
+                errs.append(f"residual_rules[{i}].stage: a free-mode rule needs the one stage where the customer "
+                            f"triggers it (open, third, identity, negotiate or confirm)")
     indexed = []
     for i, row in enumerate(s.get("rule_index") or []):
         if not isinstance(row, dict):

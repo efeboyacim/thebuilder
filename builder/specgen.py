@@ -133,6 +133,9 @@ Rules for the spec:
    deadlines, the floor, amounts, the persuasion ladder, tool failures, events, side questions, notes and several
    products have their own sections (calendar, products, negotiation, failure_policy, events, side_questions, notes,
    negotiation.multi, closing.aggregation): use them, and keep residual_rules for what none of them can say.
+   free_mode is true only for a flow rule that none of those sections carries, typically one that depends on
+   something only the customer can say; its trigger is what the customer says, in one stage. At run time a model
+   applies it and code checks every action. A rule that restates what a section already does has free_mode false.
 7. rule_index: every digest rule with status binding appears exactly once, with the spec paths that carry it and/or
    residual:<id>. Paths are dotted, list items by [index] or [id] (situations[some_id], identity.questions[0]).
 8. refs: the ids of the digest rules a part comes from.

@@ -89,6 +89,10 @@ class Replay:
             if route.startswith(engine.TALK):
                 self._agent(self.vars.get("say_next", ""), route)
                 continue
+            if route.startswith(engine.FREE):
+                self._agent(" ".join(x for x in (self.vars.get("say_next"), "[free mode: " + str(
+                    self.vars.get("free_rule")) + "]", self.vars.get("free_feedback")) if x), route)
+                continue
             raise ReplayError(f"route {route!r}; brain_error {self.vars.get('brain_error')!r}")
 
     def waiting(self):

@@ -1124,7 +1124,8 @@
    "trigger": "any date or time computation",
    "refs": [
     "R7"
-   ]
+   ],
+   "free_mode": false
   },
   {
    "id": "X20",
@@ -1134,7 +1135,8 @@
    "trigger": "",
    "refs": [
     "R50"
-   ]
+   ],
+   "free_mode": false
   },
   {
    "id": "X21",
@@ -1144,7 +1146,8 @@
    "trigger": "a promise was recorded for the product, or the customer asks to change or cancel it",
    "refs": [
     "R53"
-   ]
+   ],
+   "free_mode": false
   },
   {
    "id": "X29",
@@ -1154,7 +1157,8 @@
    "trigger": "",
    "refs": [
     "R6"
-   ]
+   ],
+   "free_mode": false
   }
  ],
  "rule_index": [

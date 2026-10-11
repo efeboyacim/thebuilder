@@ -551,13 +551,14 @@
   "residual_rules": {
    "description": "Every rule the sections above cannot express.",
    "type": "array",
-   "items": {"type": "object", "additionalProperties": false, "required": ["id", "text", "stage", "class", "trigger", "refs"],
+   "items": {"type": "object", "additionalProperties": false, "required": ["id", "text", "stage", "class", "trigger", "free_mode", "refs"],
              "properties": {"id": {"type": "string", "pattern": "^X[0-9]+$"},
                             "text": {"$ref": "#/$defs/text", "description": "The rule, self-contained, with every value."},
                             "stage": {"$ref": "#/$defs/stage"},
                             "class": {"enum": ["speech", "flow"],
                                       "description": "speech: only wording or tone. flow: changes a tool call, an outcome, an amount, a date or a count."},
                             "trigger": {"type": "string", "description": "For flow: what in the conversation starts it. Empty for speech."},
+                            "free_mode": {"type": "boolean", "description": "true for a flow rule that no section of this spec carries (for example a rule that depends on something only the customer can say): at run time a model applies it, and code checks every action it proposes. false when a section already does what the rule says, and for speech rules."},
                             "refs": {"$ref": "#/$defs/refs"}}}
   },
 
