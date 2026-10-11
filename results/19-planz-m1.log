@@ -1,0 +1,93 @@
+  [Skill] {'skill': 'build-phone-agent', 'args': 'briefs/1-m1.md tools/openapi.json slot m1-z'}
+  [PowerShell] Get-ChildItem -Recurse -File | Select-Object FullName,Length | Format-Table -AutoSize | Out-String -Width 300
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\briefs\1-m1.md
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\tools\openapi.json
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\docs\workflow-format.md
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\docs\tools-and-code.md
+I've read the brief, the tool API and the format docs; reading the API doc and example next, then writing the workflow.
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\docs\api.md
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\examples\base-agent.json
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\tools\chat.py
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\freya.py
+  [Bash] cd /c/Users/efeby/AppData/Local/Temp/planz-cpto4jsx; cat .freya-agents.json; echo; for b in '{"customer_id":"c_selftest_
+Probing done (the mock answers `unknown customer_id` for made-up ids). Now writing a generator script for the workflow.
+  [Write] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+Now a local check of the code snippets (run with separate globals/locals, as a sandbox might).
+  [Bash] mkdir -p build && cat > build/test_snippets.py <<'EOF'
+import sys, json
+sys.path.insert(0, 'build')
+import m1_z_build as
+Snippets behave correctly across three dates. Saving the workflow.
+  [Bash] python3 -c "import freya,json,sys; print(json.dumps(freya.save_workflow(sys.argv[1], json.load(open(sys.argv[2])))))" m1
+Saved. Running four chat tests in parallel on different dates.
+  [Bash] W=9099b834-f887-4470-bfc0-15ceb8397dd9
+python3 tools/chat.py $W "Hello?" "What's this about?" --name opening-unclear --n
+  [Bash] export PYTHONPATH=$PWD && W=9099b834-f887-4470-bfc0-15ceb8397dd9
+python3 tools/chat.py $W "Hello?" "What's this about?" 
+Routing seems to lag one turn behind on the first message. Checking the call events.
+  [Bash] export PYTHONPATH=$PWD && cat > build/events.py <<'EOF'
+import json, sys, freya
+names = sys.argv[1:]
+rows = [json.loads(
+  [Bash] export PYTHONPATH=$PWD && python3 build/events.py someone-else-callback 2>&1 | cut -c1-900
+  [Bash] python3 - <<'EOF'
+import re, pathlib
+p = pathlib.Path('build/m1_z_build.py'); s = p.read_text(encoding='utf-8')
+# openin
+  [Read] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Grep] {'pattern': 'SEC_TASK \\+ "', 'path': 'C:\\Users\\efeby\\AppData\\Local\\Temp\\planz-cpto4jsx\\build\\m1_z_build.py', 'o
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Bash] export PYTHONPATH=$PWD && python3 build/test_snippets.py > /dev/null && python3 build/m1_z_build.py && grep -c c_test ou
+Saved version 2 with the fixes. Now running round 2 of chat tests. The first customer turn is "Hello?", to stand for picking up the phone.
+  [Bash] export PYTHONPATH=$PWD && W=9099b834-f887-4470-bfc0-15ceb8397dd9
+python3 tools/chat.py $W "Hello?" "Hello? Who is this?"
+Opening, unclear, deceased and wrong-number paths now work. Checking the callback and security events:
+  [Bash] export PYTHONPATH=$PWD && python3 build/events.py r2-someone-else-callback r2-dob-numbers 2>&1 | grep -v "variable_extra
+  [Bash] export PYTHONPATH=$PWD && python3 - <<'EOF'
+import pathlib
+p = pathlib.Path('build/m1_z_build.py'); s = p.read_text(enco
+The script failed before writing, so nothing changed. Doing the edits directly:
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Grep] {'pattern': 'SEC_TASK \\+', 'path': 'C:\\Users\\efeby\\AppData\\Local\\Temp\\planz-cpto4jsx\\build\\m1_z_build.py', 'out
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Bash] export PYTHONPATH=$PWD && python3 build/test_snippets.py > /dev/null && python3 build/m1_z_build.py && grep -c "probe\|_
+Version 3 saved. Round 3 tests: callback outside the limits twice, a human request, the scam question, and refusing the security questions twice.
+  [Bash] export PYTHONPATH=$PWD && W=9099b834-f887-4470-bfc0-15ceb8397dd9
+python3 tools/chat.py $W "Hello?" "No, this is her husb
+Most paths are right. Two things to check: the 502 on the second out-of-limits callback, and the scam answer, which wasn't the exact sentence from the brief. Checking events:
+  [Bash] export PYTHONPATH=$PWD && python3 build/events.py r3-callback-outside-twice r3-human-before-id 2>&1 | grep -v "variable_
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Edit] C:\Users\efeby\AppData\Local\Temp\planz-cpto4jsx\build\m1_z_build.py
+  [Bash] export PYTHONPATH=$PWD && python3 build/test_snippets.py > /dev/null && python3 build/m1_z_build.py && python3 -c "impor
+I built and saved the Kestrel Bank agent for slot m1-z: `workflow_id` 9099b834-f887-4470-bfc0-15ceb8397dd9, `agent_id` 120c6270-c3a5-4985-bfcf-bae3cb9eb8e5 (version 4). Over 15 chat conversations on dates from 2026-10-29 to 2026-12-28, every path before identity behaved as the brief says, with one small exception below. The part after identity (stating what's overdue, agreeing dates, recording promises, notes, closing codes) has not been seen in a chat. The made-up customer id makes the bank answer "unknown customer_id" (HTTP 404), so no call gets past the security questions.
+
+**What the chat tests showed**
+- **Opening:** the first line is exactly the brief's (automated assistant, call recorded, "Could I speak to Mrs Moreau, please?"). A question gets an answer plus the second ask; another unclear reply closes as `not_reached`/`unclear`.
+- **Robot and scam questions:** both now get the brief's exact sentences.
+- **Wrong number and deceased:** close as `wrong_number` and `deceased` ("My condolences.").
+- **Asking for a person:** transfers to `general`, then closes as `transferred`/`human`.
+- **Someone else answering:** they're told nothing about the accounts, even when the son offered to pay, and are asked when the customer will be available.
+  - A time inside the limits goes to `schedule_callback`; the bank refused the made-up id and the agent said the booking failed.
+  - A time outside the limits gets one more ask, listing the allowed times. A second bad time closes as `not_reached`/`no_callback`.
+- **Security questions:**
+  - A number-only date goes to the bank day first (03/04/1985 → 1985-04-03).
+  - "Why are you calling?" in place of an answer counts as a refusal. One refusal gets the one-time explanation; a second closes as `not_verified`/`declined`.
+- **Limitation:** when someone else answers and asks "is this a scam?" in the same breath, the scam question goes unanswered. I'd used my three allowed fix rounds, so it stays.
+
+**How the rules are enforced**
+- **In code, from `now`:** all dates, deadlines, bands, offer dates, payday dates and callback times. I checked these locally on three dates, including the Christmas holidays.
+- **Promises:** before a promise is sent, a check blocks any amount below the floor or above the overdue amount, any date that isn't allowed, and a second promise for the same product. Blocked calls go to example.com instead of the bank, so nothing is recorded and the agent is told why.
+- **Callbacks:** the same check blocks times outside the limits.
+- **Closing code:** worked out in code from what the bank actually confirmed.
+
+**Untested, and the main risk**
+- The promise flow: persuasion attempts, payday rule, hardship and restructuring transfers, read-back, three tries per promise, notes and the closing code.
+- The automatic close once every product is settled. It reads values that only appear after a successful call to the bank. If one isn't set the way I expect, the call doesn't close by itself and waits for the 60-turn limit.
+- If the bank fails during the security check, the call closes as `not_verified`/`failed`, because the brief has no code for that case. Closing as `no_promise`/`service_error` when `get_account` fails is also my choice.
+
+The workflow is in `out/m1-z.workflow.json`, generated by `build/m1_z_build.py`.
+
+planz ok: slot m1-z, workflow 9099b834-f887-4470-bfc0-15ceb8397dd9, agent 120c6270-c3a5-4985-bfcf-bae3cb9eb8e5, 846 s, trace C:\Users\efeby\Desktop\builder\traces\planz-m1-z-20261011-073854.jsonl

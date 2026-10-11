@@ -1,0 +1,91 @@
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+FAIL M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise
+       - outcome (None, None), expected ('promise', None)
+       - the call was not closed with close_call
+       - conversation: - The agent correctly proposed the full amount (540) on Thursday 22 October, which is the day after the customer's next payday (customer stated they get paid on Wednesdays). - However, the promise was NOT successfully recorded. Every attempt to c
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+FAIL M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-23')]
+       - notes [], expected [('p2', 'refused'), ('p3', 'refused')]
+       - the call was not closed with close_call
+       - conversation: The assistant failed several success criteria. While it correctly stated all products before asking any questions in [Message 8], it did not meet the requirement for two attempts on the car loan (early band). Furthermore, no promise was recorded 
+FAIL M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+       - promises [('p1', 300.0, '2026-12-30'), ('p2', 900.0, '2026-12-22')], expected [('p1', 300.0, '2026-12-30'), ('p2', 900.0, '2026-12-23')]
+       - conversation: - 31 December was correctly rejected for both products. - The credit card promise was correctly recorded for 30 December. - The loan promise was recorded and read back as 22 December, which fails the requirement that it be recorded for the specif
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+FAIL M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+       - outcome ('transferred', 'human'), expected ('transferred', 'support')
+       - transfers [{'queue': 'general'}], expected [{'queue': 'support'}]
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+FAIL M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+       - conversation: The call failed the success criteria because the first proposal made by the assistant was for the customer to pay 'today' in Message 6, whereas the criteria specified that the first proposal must be Thursday 19 November. Additionally, while the a
+-- run 1 of 3: 8 / 13 passed, 251 s
+
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+FAIL M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-23')]
+       - notes [], expected [('p2', 'refused'), ('p3', 'refused')]
+       - the call was not closed with close_call
+       - conversation: The assistant failed to meet several success criteria: 1) It did not make the required two attempts on the car loan (early band); only one collective question was asked in Message 8 before the call ended. 2) No tool calls were executed to record 
+FAIL M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+       - promises [('p1', 300.0, '2026-12-30'), ('p2', 900.0, '2026-12-22')], expected [('p1', 300.0, '2026-12-30'), ('p2', 900.0, '2026-12-23')]
+       - conversation: The assistant failed to meet the specific date requirement for the personal loan. While 31 December was correctly rejected for both products and the credit card promise was recorded for 30 December, the success criteria explicitly required the pe
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+FAIL M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+       - outcome ('transferred', 'human'), expected ('transferred', 'support')
+       - transfers [{'queue': 'general'}], expected [{'queue': 'support'}]
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+PASS M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+-- run 2 of 3: 10 / 13 passed, 230 s
+
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+FAIL M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-23')]
+       - notes [], expected [('p2', 'refused'), ('p3', 'refused')]
+       - the call was not closed with close_call
+       - conversation: The assistant failed to meet the following success criteria: 1) Only one attempt was made on the car loan (early band), whereas two were required. 2) No promise was recorded for the credit card for Friday 23 October. 3) No refused notes were reco
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+FAIL M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise
+       - outcome (None, None), expected ('promise', None)
+       - promises [('p1', 220.0, '2026-11-19')], expected [('p1', 220.0, '2026-11-19'), ('p2', 640.0, '2026-11-19'), ('p3', 75.0, '2026-11-19')]
+       - the call was not closed with close_call
+       - conversation: The agent successfully stated all three products before asking a question (Message 6), proposed the correct date (Message 8), and performed a consolidated read-back for all three products that the user confirmed (Messages 10 and 11). However, the
+-- run 3 of 3: 11 / 13 passed, 239 s
+
+PASS M1-01 3/3
+PASS M1-02 3/3
+FAIL M1-03 2/3
+PASS M1-04 3/3
+PASS M1-05 3/3
+PASS M1-06 3/3
+PASS M1-07 3/3
+FAIL M1-08 0/3
+FAIL M1-09 1/3
+PASS M1-10 3/3
+FAIL M1-11 1/3
+PASS M1-12 3/3
+FAIL M1-13 1/3
+
+8 / 13 passed. Last simulation 1970f33c-9e11-41c8-b2f4-4db332ad745a, status completed, 721 s.
