@@ -1,0 +1,23 @@
+[
+ {
+  "id": "R-PUB01-FRI",
+  "base": "PUB-01",
+  "title": "Cannot pay today, which is a Friday; accepts the next proposal",
+  "variables": {"now": "2026-10-16T11:00"},
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Says he cannot pay today. Accepts the date the caller proposes next and confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [{"product_id": "p1", "amount": 420.0, "date": "2026-10-23"}],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "both security questions passed before get_account",
+   "after the customer cannot pay today, the agent proposes the full amount on Friday 23 October",
+   "create_promise called exactly once",
+   "text-message sentence said after the promise"
+  ]
+ }
+]

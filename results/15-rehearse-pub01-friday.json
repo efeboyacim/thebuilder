@@ -1,0 +1,34 @@
+{
+ "agent_id": "bf97e129-500c-4768-bec8-81c18bbb9c2a",
+ "cases": "tests/cases/pub01-friday.json",
+ "passed": 1,
+ "total": 1,
+ "final": [
+  {
+   "id": "R-PUB01-FRI",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "R-PUB01-FRI",
+    "base": "PUB-01",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a0e8fd51-20be-46de-86b3-a76b5cdcafa1",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_8735ba11-6c3"
+   }
+  ]
+ ]
+}
