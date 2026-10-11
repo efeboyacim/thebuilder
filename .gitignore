@@ -11,3 +11,6 @@ env.sh
 __pycache__/
 *.pyc
 .venv/
+
+# local Claude Code settings
+.claude/settings.local.json

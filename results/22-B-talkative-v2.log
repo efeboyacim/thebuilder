@@ -1,0 +1,17 @@
+FAIL PUB-11 medium Multi-product  | verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 220.0, '2026-10-16'), ('p2', 640.0, '2026-10-16'), ('p3', 75.0, '2026-10-16')]
+       - conversation: The call failed to meet any of the success criteria because the assistant never reached the product discussion phase. 1. No products were stated before any ask; the conversation stayed within the identity verification phase. 2. There were no read
+FAIL PUB-12 hard   Multi-product  | verify > verify > verify > get_account > add_note > add_note > add_note > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-15')]
+       - notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]
+       - conversation: The assistant failed to meet the promise and note requirements. While the phone question was asked again once ([Message 6]), the date of birth was asked only once ([Message 2]), and the collection attempts were correct (two for the personal loan 
+FAIL PUB-13 hard   Multi-product  | verify > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]
+       - conversation: The call failed to meet any of the success criteria because the identity verification process was not completed. - The user failed to provide the last four digits of their phone number despite multiple requests. - As a result, the assistant ended
+
+slowest agent turn per call: median 4 s, worst 7 s. Failed calls where the customer hung up: 0.
+
+0 / 3 passed (bank records and conversation checks). Last simulation 25f4d415-1a49-4ed0-b663-0ac6d8717e40, status completed, 95 s.

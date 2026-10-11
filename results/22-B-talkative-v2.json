@@ -1,0 +1,166 @@
+{
+ "agent_id": "bf97e129-500c-4768-bec8-81c18bbb9c2a",
+ "simulation_id": "25f4d415-1a49-4ed0-b663-0ac6d8717e40",
+ "iteration_id": "ad4c14b3-b67c-40a7-b1f9-3a966c38bf3a",
+ "seconds": 95,
+ "passed": 0,
+ "total": 3,
+ "runs": 1,
+ "final": [
+  {
+   "id": "PUB-11",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-12",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-13",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  }
+ ],
+ "rows": [
+  {
+   "id": "PUB-11",
+   "level": "medium",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('promise', None)",
+    "promises [], expected [('p1', 220.0, '2026-10-16'), ('p2', 640.0, '2026-10-16'), ('p3', 75.0, '2026-10-16')]",
+    "conversation: The call failed to meet any of the success criteria because the assistant never reached the product discussion phase. 1. No products were stated before any ask; the conversation stayed within the identity verification phase. 2. There were no read-backs or confirmations for any products. 3. No 'create_promise' tool calls were made. The assistant ended the call appropriately after several unsuccessf"
+   ],
+   "call_id": "64cc4d91-2f3e-443e-8e26-c3cd595c7372",
+   "tools": [
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_693a9664-400",
+   "slowest_turn_s": 3.8,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-12",
+   "level": "hard",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "outcome ('no_promise', 'refused'), expected ('promise', None)",
+    "promises [], expected [('p1', 510.0, '2026-10-15')]",
+    "notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]",
+    "conversation: The assistant failed to meet the promise and note requirements. While the phone question was asked again once ([Message 6]), the date of birth was asked only once ([Message 2]), and the collection attempts were correct (two for the personal loan at [Message 12] and [Message 14]; one for the car loan at [Message 16]), the assistant did not record a promise for the credit card. Despite the user agre"
+   ],
+   "call_id": "eafab51e-d4da-4939-9078-4dd5498d5012",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "add_note",
+    "add_note",
+    "add_note",
+    "close_call"
+   ],
+   "customer_id": "c_13e71a99-233",
+   "slowest_turn_s": 7.2,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-13",
+   "level": "hard",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('promise', None)",
+    "promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]",
+    "conversation: The call failed to meet any of the success criteria because the identity verification process was not completed. - The user failed to provide the last four digits of their phone number despite multiple requests. - As a result, the assistant ended the call before any discussion of credit cards or loans could take place. - No dates were recorded and no read-back occurred."
+   ],
+   "call_id": "33b1b629-c3c5-4e28-823b-5ba4d6ae4022",
+   "tools": [
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_c9ba6c77-e0e",
+   "slowest_turn_s": 4.1,
+   "ended": "assistant-ended-call"
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "PUB-11",
+    "level": "medium",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('promise', None)",
+     "promises [], expected [('p1', 220.0, '2026-10-16'), ('p2', 640.0, '2026-10-16'), ('p3', 75.0, '2026-10-16')]",
+     "conversation: The call failed to meet any of the success criteria because the assistant never reached the product discussion phase. 1. No products were stated before any ask; the conversation stayed within the identity verification phase. 2. There were no read-backs or confirmations for any products. 3. No 'create_promise' tool calls were made. The assistant ended the call appropriately after several unsuccessf"
+    ],
+    "call_id": "64cc4d91-2f3e-443e-8e26-c3cd595c7372",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_693a9664-400",
+    "slowest_turn_s": 3.8,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-12",
+    "level": "hard",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 510.0, '2026-10-15')]",
+     "notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]",
+     "conversation: The assistant failed to meet the promise and note requirements. While the phone question was asked again once ([Message 6]), the date of birth was asked only once ([Message 2]), and the collection attempts were correct (two for the personal loan at [Message 12] and [Message 14]; one for the car loan at [Message 16]), the assistant did not record a promise for the credit card. Despite the user agre"
+    ],
+    "call_id": "eafab51e-d4da-4939-9078-4dd5498d5012",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_13e71a99-233",
+    "slowest_turn_s": 7.2,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-13",
+    "level": "hard",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('promise', None)",
+     "promises [], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]",
+     "conversation: The call failed to meet any of the success criteria because the identity verification process was not completed. - The user failed to provide the last four digits of their phone number despite multiple requests. - As a result, the assistant ended the call before any discussion of credit cards or loans could take place. - No dates were recorded and no read-back occurred."
+    ],
+    "call_id": "33b1b629-c3c5-4e28-823b-5ba4d6ae4022",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_c9ba6c77-e0e",
+    "slowest_turn_s": 4.1,
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

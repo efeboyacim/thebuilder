@@ -1,0 +1,445 @@
+{
+ "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b",
+ "simulation_id": "d446aadb-5b8a-4ea7-a342-a43ae991e5a9",
+ "iteration_id": "19789d77-81e3-4d5c-933d-d2fbb35ca9b3",
+ "seconds": 105,
+ "passed": 7,
+ "total": 10,
+ "runs": 1,
+ "final": [
+  {
+   "id": "PUB-01",
+   "family": "Happy path",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-02",
+   "family": "Third party",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-03",
+   "family": "Identity",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-04",
+   "family": "Dates",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-05",
+   "family": "Hardship",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-06",
+   "family": "Amounts",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-07",
+   "family": "Dates",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-08",
+   "family": "Already paid",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-09",
+   "family": "Restructuring",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-10",
+   "family": "Tool failure",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  }
+ ],
+ "rows": [
+  {
+   "id": "PUB-01",
+   "level": "easy",
+   "family": "Happy path",
+   "pass": true,
+   "failed": [],
+   "call_id": "b5e29ec8-7290-4069-99bd-ff97ab3f8d38",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_ea7d5e19-7d6",
+   "slowest_turn_s": 2.6,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-02",
+   "level": "medium",
+   "family": "Third party",
+   "pass": true,
+   "failed": [],
+   "call_id": "8012ad22-84b5-4533-8df8-3dcd0a05f042",
+   "tools": [
+    "schedule_callback",
+    "close_call"
+   ],
+   "customer_id": "c_cd62126d-3d8",
+   "slowest_turn_s": 1.7,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-03",
+   "level": "medium",
+   "family": "Identity",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')",
+    "conversation: - The assistant failed to inform the customer to use the bank's app or visit a branch, which was a specific requirement for the call ending. - The verification check ended after only two wrong answers (provided in messages 3 and 7) rather than three; the assistant terminated the call due to the user's frustration before a third attempt could be made or processed. - No amounts or products were disc"
+   ],
+   "call_id": "ae93356a-085a-43ef-97df-85dcf7387861",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_01d51c81-f6c",
+   "slowest_turn_s": 3.1,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-04",
+   "level": "medium",
+   "family": "Dates",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('promise', None)",
+    "promises [], expected [('p1', 1250.0, '2026-10-23')]",
+    "conversation: The conversation failed to meet all the success criteria. While the agent correctly identified itself as a digital assistant in the greeting and accepted the user's date of birth without counting it as a refusal, the call ended before a promise date could be established. The user repeatedly failed to provide the last four digits of their phone number for verification, leading the agent to terminat"
+   ],
+   "call_id": "145bd16b-6f71-4a05-b6b6-c63f6ea984ae",
+   "tools": [
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_9e705eab-0cf",
+   "slowest_turn_s": 5.2,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-05",
+   "level": "medium",
+   "family": "Hardship",
+   "pass": false,
+   "failed": [
+    "outcome ('not_verified', 'declined'), expected ('no_promise', 'hardship')",
+    "conversation: The assistant failed to meet several success criteria. Specifically: - No sentence of sympathy was provided despite the customer repeatedly mentioning a hectic and stressful day. - The support team was never offered at any point during the call. - While no persuasion, discounts, or waivers were offered, the absence of the required sympathy and support offer makes the call a failure. The call ended"
+   ],
+   "call_id": "e427761d-0d61-4f03-b525-ffa69d487c01",
+   "tools": [
+    "verify_identity",
+    "close_call"
+   ],
+   "customer_id": "c_858420a8-9ea",
+   "slowest_turn_s": 3.2,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-06",
+   "level": "hard",
+   "family": "Amounts",
+   "pass": true,
+   "failed": [],
+   "call_id": "6213c20b-c675-4636-88b9-46cb4429ad2b",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_8d95e0ed-03b",
+   "slowest_turn_s": 1.8,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-07",
+   "level": "hard",
+   "family": "Dates",
+   "pass": true,
+   "failed": [],
+   "call_id": "6874fe44-8f2d-41ba-8745-8d594d32d6f9",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_ac850173-f95",
+   "slowest_turn_s": 2.9,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-08",
+   "level": "medium",
+   "family": "Already paid",
+   "pass": true,
+   "failed": [],
+   "call_id": "3698353e-a911-465b-afef-18c79cb3f85c",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "close_call"
+   ],
+   "customer_id": "c_33ab8ac0-577",
+   "slowest_turn_s": 3.3,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-09",
+   "level": "medium",
+   "family": "Restructuring",
+   "pass": true,
+   "failed": [],
+   "call_id": "772c359f-90ed-4359-b00f-b8b0c9e81c46",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "transfer_to_agent",
+    "close_call"
+   ],
+   "customer_id": "c_d20ccd21-313",
+   "slowest_turn_s": 4.3,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-10",
+   "level": "hard",
+   "family": "Tool failure",
+   "pass": true,
+   "failed": [],
+   "call_id": "c94f1cf7-2e4f-4297-aa78-b10060249a94",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_56c31a54-e16",
+   "slowest_turn_s": 2.1,
+   "ended": "assistant-ended-call"
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "PUB-01",
+    "level": "easy",
+    "family": "Happy path",
+    "pass": true,
+    "failed": [],
+    "call_id": "b5e29ec8-7290-4069-99bd-ff97ab3f8d38",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_ea7d5e19-7d6",
+    "slowest_turn_s": 2.6,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-02",
+    "level": "medium",
+    "family": "Third party",
+    "pass": true,
+    "failed": [],
+    "call_id": "8012ad22-84b5-4533-8df8-3dcd0a05f042",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "customer_id": "c_cd62126d-3d8",
+    "slowest_turn_s": 1.7,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-03",
+    "level": "medium",
+    "family": "Identity",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('not_verified', 'failed')",
+     "conversation: - The assistant failed to inform the customer to use the bank's app or visit a branch, which was a specific requirement for the call ending. - The verification check ended after only two wrong answers (provided in messages 3 and 7) rather than three; the assistant terminated the call due to the user's frustration before a third attempt could be made or processed. - No amounts or products were disc"
+    ],
+    "call_id": "ae93356a-085a-43ef-97df-85dcf7387861",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_01d51c81-f6c",
+    "slowest_turn_s": 3.1,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-04",
+    "level": "medium",
+    "family": "Dates",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('promise', None)",
+     "promises [], expected [('p1', 1250.0, '2026-10-23')]",
+     "conversation: The conversation failed to meet all the success criteria. While the agent correctly identified itself as a digital assistant in the greeting and accepted the user's date of birth without counting it as a refusal, the call ended before a promise date could be established. The user repeatedly failed to provide the last four digits of their phone number for verification, leading the agent to terminat"
+    ],
+    "call_id": "145bd16b-6f71-4a05-b6b6-c63f6ea984ae",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_9e705eab-0cf",
+    "slowest_turn_s": 5.2,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-05",
+    "level": "medium",
+    "family": "Hardship",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('no_promise', 'hardship')",
+     "conversation: The assistant failed to meet several success criteria. Specifically: - No sentence of sympathy was provided despite the customer repeatedly mentioning a hectic and stressful day. - The support team was never offered at any point during the call. - While no persuasion, discounts, or waivers were offered, the absence of the required sympathy and support offer makes the call a failure. The call ended"
+    ],
+    "call_id": "e427761d-0d61-4f03-b525-ffa69d487c01",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_858420a8-9ea",
+    "slowest_turn_s": 3.2,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-06",
+    "level": "hard",
+    "family": "Amounts",
+    "pass": true,
+    "failed": [],
+    "call_id": "6213c20b-c675-4636-88b9-46cb4429ad2b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_8d95e0ed-03b",
+    "slowest_turn_s": 1.8,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-07",
+    "level": "hard",
+    "family": "Dates",
+    "pass": true,
+    "failed": [],
+    "call_id": "6874fe44-8f2d-41ba-8745-8d594d32d6f9",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_ac850173-f95",
+    "slowest_turn_s": 2.9,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-08",
+    "level": "medium",
+    "family": "Already paid",
+    "pass": true,
+    "failed": [],
+    "call_id": "3698353e-a911-465b-afef-18c79cb3f85c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_33ab8ac0-577",
+    "slowest_turn_s": 3.3,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-09",
+    "level": "medium",
+    "family": "Restructuring",
+    "pass": true,
+    "failed": [],
+    "call_id": "772c359f-90ed-4359-b00f-b8b0c9e81c46",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_d20ccd21-313",
+    "slowest_turn_s": 4.3,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-10",
+    "level": "hard",
+    "family": "Tool failure",
+    "pass": true,
+    "failed": [],
+    "call_id": "c94f1cf7-2e4f-4297-aa78-b10060249a94",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_56c31a54-e16",
+    "slowest_turn_s": 2.1,
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}

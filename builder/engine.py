@@ -384,7 +384,7 @@ def unfinished(said):
     if s[-1] in ",-:;" or s.endswith("..."):
         return True
     words = re.findall(r"[a-z']+", s)
-    return bool(words) and words[-1] in UNFINISHED_WORDS
+    return bool(words) and (words[-1] in UNFINISHED_WORDS or len(words) >= 4)  # a long line with no full stop was cut
 
 
 def fallback_main(c, stage, x):
@@ -421,7 +421,7 @@ def on_turn(c, stage, x):
         x["main"] = "unclear"
     st["miss"] = 0
     if stage in ("identity", "negotiate", "confirm") and x["main"] in ("", "unclear") and unfinished(x["said"]) and \
-            not any(x[k] for k in ("side_q", "event", "day", "amount", "reply", "answer")) and st.get("cont", 0) < 2:
+            not any(x[k] for k in ("side_q", "event", "day", "amount", "reply", "answer")) and st.get("cont", 0) < 3:
         st["cont"] = st.get("cont", 0) + 1  # the customer stopped mid-sentence: no attempt used
         last, evq = st.get("last") or "", st.get("evq")
         ask(c, stage, CONTINUE)
