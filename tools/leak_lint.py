@@ -5,7 +5,7 @@
 
 The candidate literals are extracted at lint time, so this file holds no list of them. Sources:
 
-- every `briefs/*.md`: dates, clock times, numbers with three or more digits or a decimal point, backticked spans
+- every `briefs/*.md` and `mocks/*/*.md`: dates, clock times, numbers with three or more digits or a decimal point, backticked spans
   that look like code (an underscore or a digit), double-quoted spans of two or more words, and two-word proper
   names that occur at least twice (a bank's name);
 - `tools/openapi.json`: the server host, operation ids, property names and string enum values that look like code;
@@ -111,7 +111,7 @@ def from_brief_values(text, src, out):
 
 def candidates(root):
     out = set()
-    for p in sorted((root / "briefs").glob("*.md")):
+    for p in sorted((root / "briefs").glob("*.md")) + sorted((root / "mocks").glob("*/*.md")):
         from_brief(p.read_text(encoding="utf-8"), p.relative_to(root).as_posix(), out)
     api = root / "tools" / "openapi.json"
     if api.exists():
