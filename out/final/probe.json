@@ -1,0 +1,259 @@
+{
+ "initial_node": "init",
+ "system_prompt": "Türkçe konuş.",
+ "test_variables": {
+  "customerNumber": "96158684",
+  "now": "2026-10-12T10:30:00+03:00"
+ },
+ "nodes": {
+  "init": {
+   "name": "init",
+   "node_type": "code",
+   "passthrough": true,
+   "passthrough_default_transition": "load_cards",
+   "on_enter": {
+    "type": "silent"
+   },
+   "pre_actions": [
+    {
+     "type": "function",
+     "function": {
+      "name": "code_exec",
+      "handler": "__function__:code_exec",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "code": {
+         "type": "string",
+         "default": "vars['x']='1'"
+        },
+        "timeout_ms": {
+         "type": "number",
+         "default": 10000
+        }
+       }
+      }
+     }
+    }
+   ],
+   "transitions": [
+    {
+     "target_node": "load_cards",
+     "description": "always",
+     "condition": {
+      "operator": "always"
+     }
+    }
+   ]
+  },
+  "load_cards": {
+   "name": "load_cards",
+   "node_type": "api_request",
+   "passthrough": true,
+   "passthrough_default_transition": "dbg",
+   "on_enter": {
+    "type": "silent"
+   },
+   "pre_actions": [
+    {
+     "type": "function",
+     "config": {
+      "timeoutMs": 15000,
+      "maxRetries": 0
+     },
+     "function": {
+      "name": "cards_list",
+      "handler": "__function__:api_call",
+      "description": "cards_list",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "url": {
+         "type": "string",
+         "default": "https://freya-mock.efe-byci.workers.dev/voice/v1/cards.list"
+        },
+        "method": {
+         "type": "string",
+         "default": "POST"
+        },
+        "headers": {
+         "type": "object",
+         "properties": {
+          "Content-Type": {
+           "type": "string",
+           "default": "application/json"
+          }
+         }
+        },
+        "body": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "customerNo": {
+             "type": "string",
+             "default": "{{customerNumber}}"
+            },
+            "aiFlow": {
+             "type": "string",
+             "default": "CardOps"
+            }
+           }
+          },
+          "call": {
+           "type": "object",
+           "properties": {
+            "lang": {
+             "type": "string",
+             "default": "tr"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   ],
+   "response_mapping": [
+    {
+     "path": "data.data.exitState",
+     "variable": "exit_state"
+    },
+    {
+     "path": "data.result.code",
+     "variable": "res_code"
+    }
+   ],
+   "transitions": [
+    {
+     "target_node": "dbg",
+     "description": "always",
+     "condition": {
+      "operator": "always"
+     }
+    }
+   ]
+  },
+  "dbg": {
+   "name": "dbg",
+   "node_type": "code",
+   "passthrough": true,
+   "passthrough_default_transition": "talk",
+   "on_enter": {
+    "type": "silent"
+   },
+   "pre_actions": [
+    {
+     "type": "function",
+     "function": {
+      "name": "code_exec",
+      "handler": "__function__:code_exec",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "code": {
+         "type": "string",
+         "default": "\ntry:\n    keys = sorted(k for k in vars.keys() if k.startswith('load_cards'))\n    vars['dbg'] = ' | '.join(k + '=' + str(vars.get(k))[:60] for k in keys)[:1500]\nexcept Exception as e:\n    vars['dbg'] = 'ERR ' + str(e)\n"
+        },
+        "timeout_ms": {
+         "type": "number",
+         "default": 10000
+        }
+       }
+      }
+     }
+    }
+   ],
+   "transitions": [
+    {
+     "target_node": "talk",
+     "description": "always",
+     "condition": {
+      "operator": "always"
+     }
+    }
+   ]
+  },
+  "talk": {
+   "name": "talk",
+   "node_type": "conversation",
+   "on_enter": {
+    "type": "tts",
+    "text": "DBG exit={{exit_state}} code={{res_code}} :: {{dbg}}"
+   },
+   "task_message": "Kısa cevap ver. Araç çağırma.",
+   "transitions": []
+  },
+  "bye": {
+   "name": "bye",
+   "node_type": "end_call",
+   "on_enter": {
+    "type": "silent"
+   },
+   "disable_inactivity_monitor": true,
+   "transitions": [],
+   "terminal": {
+    "type": "function",
+    "function": {
+     "name": "agent_transfer",
+     "handler": "__function__:end_call",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "message_mode": {
+        "type": "string",
+        "default": "custom"
+       },
+       "spoken_message": {
+        "type": "string",
+        "default": "Sizi müşteri temsilcimize aktarıyorum."
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "global_nodes": {
+  "g_agent": {
+   "name": "g_agent",
+   "node_type": "end_call",
+   "description": "agent request",
+   "condition": {
+    "operator": "matches_intent",
+    "description": "The caller asks to speak to a human agent / müşteri temsilcisi"
+   },
+   "on_enter": {
+    "type": "silent"
+   },
+   "disable_inactivity_monitor": true,
+   "excluded_nodes": [
+    "bye"
+   ],
+   "transitions": [],
+   "terminal": {
+    "type": "function",
+    "function": {
+     "name": "agent_transfer",
+     "handler": "__function__:end_call",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "message_mode": {
+        "type": "string",
+        "default": "custom"
+       },
+       "spoken_message": {
+        "type": "string",
+        "default": "Sizi müşteri temsilcimize aktarıyorum."
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

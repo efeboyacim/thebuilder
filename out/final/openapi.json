@@ -1,0 +1,2099 @@
+{
+ "openapi": "3.0.3",
+ "info": {
+  "title": "Freya Bank voice statement services",
+  "version": "2026-10-01"
+ },
+ "servers": [
+  {
+   "url": "https://freya-mock.efe-byci.workers.dev/voice/v1"
+  }
+ ],
+ "paths": {
+  "/cards.list": {
+   "post": {
+    "operationId": "cardsList",
+    "summary": "Eligible credit cards of the customer",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "customerNo"
+          ],
+          "properties": {
+           "customerNo": {
+            "type": "string",
+            "description": "string or number"
+           },
+           "aiFlow": {
+            "type": "string",
+            "example": "CardOps"
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "cards": {
+             "type": "array",
+             "items": {
+              "type": "object",
+              "properties": {
+               "cardNumber": {
+                "type": "string"
+               },
+               "cardNumberLast4": {
+                "type": "string"
+               },
+               "productName": {
+                "type": "string"
+               },
+               "status": {
+                "type": "string"
+               },
+               "isMainCard": {
+                "type": "boolean"
+               }
+              }
+             }
+            },
+            "validCardsCount": {
+             "type": "integer"
+            },
+            "exitState": {
+             "type": "string",
+             "enum": [
+              "1_CARD",
+              "MULTI_CARD"
+             ]
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "FB_IVR_CHANNEL_102 WARNING: customer has no valid card",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/cards.balance": {
+   "post": {
+    "operationId": "cardsBalance",
+    "summary": "Statement debt per currency of one card",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "cardNumber"
+          ],
+          "properties": {
+           "cardNumber": {
+            "type": "string",
+            "description": "exactly as cards.list returned it"
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "cardNumber": {
+             "type": "string"
+            },
+            "cardNumberLast4": {
+             "type": "string"
+            },
+            "productName": {
+             "type": "string"
+            },
+            "statementDate": {
+             "type": "string"
+            },
+            "lastPayDate": {
+             "type": "string"
+            },
+            "nextStatementDate": {
+             "type": "string"
+            },
+            "nextLastPayDate": {
+             "type": "string"
+            },
+            "debtTL": {
+             "type": "object",
+             "properties": {
+              "statementPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "transferAmount": {
+               "type": "number"
+              },
+              "statementDebt": {
+               "type": "number"
+              },
+              "minPayment": {
+               "type": "number"
+              },
+              "remainingDebt": {
+               "type": "number"
+              },
+              "remainingMinPayment": {
+               "type": "number"
+              },
+              "currentPeriodExpense": {
+               "type": "number"
+              },
+              "totalDebt": {
+               "type": "number"
+              },
+              "totalDebtPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "remainAutomaticPaymentAmount": {
+               "type": "number"
+              }
+             }
+            },
+            "debtUSD": {
+             "type": "object",
+             "properties": {
+              "statementPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "transferAmount": {
+               "type": "number"
+              },
+              "statementDebt": {
+               "type": "number"
+              },
+              "minPayment": {
+               "type": "number"
+              },
+              "remainingDebt": {
+               "type": "number"
+              },
+              "remainingMinPayment": {
+               "type": "number"
+              },
+              "currentPeriodExpense": {
+               "type": "number"
+              },
+              "totalDebt": {
+               "type": "number"
+              },
+              "totalDebtPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "remainAutomaticPaymentAmount": {
+               "type": "number"
+              }
+             }
+            },
+            "debtEUR": {
+             "type": "object",
+             "properties": {
+              "statementPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "transferAmount": {
+               "type": "number"
+              },
+              "statementDebt": {
+               "type": "number"
+              },
+              "minPayment": {
+               "type": "number"
+              },
+              "remainingDebt": {
+               "type": "number"
+              },
+              "remainingMinPayment": {
+               "type": "number"
+              },
+              "currentPeriodExpense": {
+               "type": "number"
+              },
+              "totalDebt": {
+               "type": "number"
+              },
+              "totalDebtPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "remainAutomaticPaymentAmount": {
+               "type": "number"
+              }
+             }
+            },
+            "debtGBP": {
+             "type": "object",
+             "properties": {
+              "statementPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "transferAmount": {
+               "type": "number"
+              },
+              "statementDebt": {
+               "type": "number"
+              },
+              "minPayment": {
+               "type": "number"
+              },
+              "remainingDebt": {
+               "type": "number"
+              },
+              "remainingMinPayment": {
+               "type": "number"
+              },
+              "currentPeriodExpense": {
+               "type": "number"
+              },
+              "totalDebt": {
+               "type": "number"
+              },
+              "totalDebtPaymentStatus": {
+               "type": "string",
+               "enum": [
+                "HAS_DEBT",
+                "NO_DEBT"
+               ]
+              },
+              "remainAutomaticPaymentAmount": {
+               "type": "number"
+              }
+             }
+            },
+            "statementPaymentStatus": {
+             "type": "string"
+            },
+            "totalDebtPaymentStatus": {
+             "type": "string"
+            },
+            "automaticPaymentFlag": {
+             "type": "string",
+             "enum": [
+              "Y",
+              "N"
+             ]
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "FB_IVR_CHANNEL_120 card not found",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/statement.week.get": {
+   "post": {
+    "operationId": "statementWeekGet",
+    "summary": "Current statement week of a card",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "cardNumber"
+          ],
+          "properties": {
+           "cardNumber": {
+            "type": "string"
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "cardNumber": {
+             "type": "string"
+            },
+            "cardNumberLast4": {
+             "type": "string"
+            },
+            "productName": {
+             "type": "string"
+            },
+            "statementWeek": {
+             "type": "integer"
+            },
+            "statementDay": {
+             "type": "integer"
+            },
+            "statementDate": {
+             "type": "string"
+            },
+            "lastPayDate": {
+             "type": "string"
+            },
+            "nextStatementDate": {
+             "type": "string"
+            },
+            "nextLastPayDate": {
+             "type": "string"
+            },
+            "relationType": {
+             "type": "string",
+             "enum": [
+              "",
+              "M",
+              "C"
+             ]
+            },
+            "relatedCardNumber": {
+             "type": "string"
+            },
+            "relatedCardProductName": {
+             "type": "string"
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "FB_IVR_CHANNEL_121 card not found",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/statement.week.decide": {
+   "post": {
+    "operationId": "statementWeekDecide",
+    "summary": "Preview of the dates for a new week (changes nothing)",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "cardNumber",
+           "newStatementWeek",
+           "statementDay"
+          ],
+          "properties": {
+           "cardNumber": {
+            "type": "string"
+           },
+           "newStatementWeek": {
+            "type": "string",
+            "enum": [
+             "1",
+             "2",
+             "3",
+             "4"
+            ]
+           },
+           "statementDay": {
+            "type": "integer"
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "statementDate": {
+             "type": "string"
+            },
+            "statementDueDate": {
+             "type": "string"
+            },
+            "statementDay": {
+             "type": "integer"
+            },
+            "responseCode": {
+             "type": "integer"
+            },
+            "responseMessage": {
+             "type": "string"
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/statement.week.change": {
+   "post": {
+    "operationId": "statementWeekChange",
+    "summary": "Change the statement week",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "cardNumber",
+           "newStatementWeek",
+           "statementDay"
+          ],
+          "properties": {
+           "cardNumber": {
+            "type": "string"
+           },
+           "newStatementWeek": {
+            "type": "string",
+            "enum": [
+             "1",
+             "2",
+             "3",
+             "4"
+            ]
+           },
+           "statementDay": {
+            "type": "integer"
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "responseCode": {
+             "type": "integer"
+            },
+            "responseMessage": {
+             "type": "string"
+            },
+            "statementWeek": {
+             "type": "string"
+            },
+            "statementDay": {
+             "type": "string"
+            },
+            "exitState": {
+             "type": "string"
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "401": {
+      "description": "token missing/expired",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/contact.email.get": {
+   "post": {
+    "operationId": "contactEmailGet",
+    "summary": "Registered e-mail / phone",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "customerNo",
+           "intAddressInfoType"
+          ],
+          "properties": {
+           "customerNo": {
+            "type": "string"
+           },
+           "intAddressInfoType": {
+            "type": "string",
+            "enum": [
+             "E",
+             "P",
+             "B"
+            ]
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "communicationType": {
+             "type": "string"
+            },
+            "ibanCountryCode": {
+             "type": "string"
+            },
+            "ibanAreaCode": {
+             "type": "string"
+            },
+            "ibanPhoneNum": {
+             "type": "string"
+            },
+            "ibanEmail": {
+             "type": "string"
+            },
+            "ttsEmail": {
+             "type": "string"
+            },
+            "commGramType": {
+             "type": "string"
+            },
+            "exitState": {
+             "type": "string"
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/statement.pdf.send": {
+   "post": {
+    "operationId": "statementPdfSend",
+    "summary": "E-mail the latest statement PDF",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "data"
+        ],
+        "properties": {
+         "data": {
+          "type": "object",
+          "required": [
+           "customerNo",
+           "cardNumber",
+           "currencyType",
+           "statementDate",
+           "emailAddress"
+          ],
+          "properties": {
+           "customerNo": {
+            "type": "string"
+           },
+           "cardNumber": {
+            "type": "string"
+           },
+           "currencyType": {
+            "type": "string",
+            "enum": [
+             "TL",
+             "USD",
+             "EUR",
+             "GBP"
+            ]
+           },
+           "statementDate": {
+            "type": "string",
+            "description": "dd.MM.yyyy from cards.balance"
+           },
+           "emailAddress": {
+            "type": "string"
+           }
+          }
+         },
+         "call": {
+          "type": "object",
+          "properties": {
+           "ani": {
+            "type": "string"
+           },
+           "lang": {
+            "type": "string"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Success (result.returnCode = '1')",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "data": {
+           "type": "object",
+           "properties": {
+            "exitState": {
+             "type": "string",
+             "example": "DONE"
+            }
+           }
+          },
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "INVALID_ARGUMENTS_ERROR: required field missing/empty, or unknown record in test",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "404": {
+      "description": "FB_IVR_CHANNEL_107 no PDF document",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "FBE00099 technical error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "result"
+         ],
+         "properties": {
+          "result": {
+           "type": "object",
+           "properties": {
+            "guid": {
+             "type": "string"
+            },
+            "returnCode": {
+             "type": "string"
+            },
+            "messageText": {
+             "type": "string"
+            },
+            "code": {
+             "type": "string"
+            },
+            "message": {
+             "type": "string"
+            },
+            "type": {
+             "type": "string"
+            },
+            "details": {
+             "type": "object",
+             "properties": {
+              "guid": {
+               "type": "string"
+              },
+              "rootCause": {
+               "type": "string"
+              },
+              "errorOrigin": {
+               "type": "string"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
