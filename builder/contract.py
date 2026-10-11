@@ -74,7 +74,10 @@ def extraction(S):
                                description="What the person says in their LAST message, if it is one of these "
                                            "(when several fit, the first listed): " +
                                            " ".join(e["id"] + ": " + e.get("trigger", "") + "." for e in evs) +
-                                           " none: none of these."))
+                                           " none: none of these. Label one only when the person's own words in the "
+                                           "LAST message clearly state it; a question, an answer to the agent's "
+                                           "offer, or a remark that the amount is high is none unless it states "
+                                           "it. When in doubt: none."))
             fields.append(dict(name=x_var("reply"), type="string", enum=["yes", "no", "none"], description=REPLY_TEXT))
         if "answer" in STAGE_SLOTS[stage]:
             fields.append(dict(name=x_var("answer"), type="string", enum=None, description=(

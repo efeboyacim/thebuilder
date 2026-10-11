@@ -203,3 +203,10 @@ def test_synthetic_nows_cover_weekends_holiday_eves_and_after_hours(spec):
         assert d in days and d - __import__("datetime").timedelta(days=1) in days
     assert {n.weekday() for n in nows} == set(range(7))
     assert any(n.hour >= 21 for n in nows) and any(n.hour < 8 for n in nows)
+
+
+@pytest.mark.parametrize("path", ["opening.template", "negotiation.ladder[0].template", "confirm.item_template"])
+def test_the_write_word_before_a_write_is_caught(spec, api, ids, path):
+    found, text = sp.resolve(spec, path)
+    patched, _ = sp.apply_patches(spec, [{"op": "set", "path": path, "value": text + " This call is recorded."}])
+    assert any(e.startswith(path + ": says 'recorded'") for e in errors(patched, api, ids))

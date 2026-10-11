@@ -182,7 +182,7 @@
   "named_periods": []
  },
  "opening": {
-  "template": "Hello, this is a digital assistant calling from Freya Bank, and this call is recorded. Am I speaking with {{title}} {{last_name}}?",
+  "template": "Hello, this is a digital assistant calling from Freya Bank, and I am recording this call. Am I speaking with {{title}} {{last_name}}?",
   "required_content": [
    "a digital assistant",
    "calling from Freya Bank",

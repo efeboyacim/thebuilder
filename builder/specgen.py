@@ -147,11 +147,16 @@ Rules for the spec:
 12. negotiation.ladder: one step per persuasion attempt the material describes, in order. A step applies to the bands
    it lists (empty = every band); a product gets at most its band's attempts. The first ask is not an attempt.
 13. events: one entry per thing a customer may say that changes the call, in the material's order of precedence
-   (a rule that one comes before another puts it first; suppresses lists what it blocks). A rule that applies before
+   (a rule that one comes before another puts it first, and adds the other event's id to its suppresses; suppresses
+   also lists persuasion when no persuasion attempt may follow it). A rule that applies before
    and after verification with different outcomes is one entry with then and then_before_verification. A request that
    applies only when repeated, with a question from the agent in between, is min_occurrences 2 with
    below_min_template. A yes/no offer (for example a transfer) is template + on_yes + on_no.
 14. side_questions: answers for the questions the material gives a fixed answer to; other for the rest.
+15. Honesty wording: a judge reads the transcript literally. No template spoken before a bank write succeeded (the
+   opening, identity, disclosure, offers, read-back) may use the word the material uses for a successful write (the
+   verb in confirm.recorded_template), not even with another meaning: when the material requires such content (for
+   example about the call itself), keep the meaning with another form of the word, such as its -ing form.
 
 Engine placeholders per template (besides call-variable names):
 {templates}

@@ -447,7 +447,7 @@ def validate(spec, api, brief_text="", rule_ids=None, known_ids=None):
     ctx = _Ctx(spec, api)
     for check in (_check_bindings, _check_codes, _check_situations, _check_templates, _check_expressions,
                   _check_identity, _check_calendar, _check_callback, _check_negotiation, _check_events,
-                  _check_pre_verification, _check_phrases):
+                  _check_pre_verification, _check_honesty, _check_phrases):
         try:
             errors += check(ctx, brief_text)
         except Exception as e:  # noqa: BLE001 - a malformed part is already a schema error; keep validating
@@ -772,6 +772,30 @@ def _check_pre_verification(ctx, _):
             if (path, w) not in seen and occurs(w, plain):
                 seen.add((path, w))
                 errs.append(f"{path}: says {w!r}, which is forbidden before identity is verified")
+    return errs
+
+
+AFTER_WRITE = ("confirm.recorded_template", "confirm.after_recorded_sentence", "confirm.change_after_record_template",
+               "situations[].say", "situations[].farewell")
+
+
+def _check_honesty(ctx, _):
+    """The word that claims a successful write (a participle of confirm.recorded_template) is said nowhere before."""
+    rec = (ctx.spec.get("confirm") or {}).get("recorded_template")
+    if not isinstance(rec, str):
+        return []
+    words = {w for w in re.findall(r"[a-z]{5,}ed", _PLACEHOLDER.sub(" ", rec).lower())}
+    errs = []
+    for pattern in TEMPLATES:
+        if pattern in AFTER_WRITE:
+            continue
+        for path, text in expand(ctx.spec, pattern):
+            if not isinstance(text, str) or text == NS:
+                continue
+            for w in sorted(words):
+                if re.search(r"\b" + w + r"\b", text.lower()):
+                    errs.append(f"{path}: says {w!r} before any write succeeded; a literal reader takes it as a claim "
+                                f"that something was {w} (say it with another word)")
     return errs
 
 
