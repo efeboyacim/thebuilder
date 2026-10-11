@@ -133,10 +133,11 @@ def free_fields():
                          "need not repeat it."),
         dict(name=x_var("free_amount"), type="string", enum=None,
              description="For promise: copy from the AGENT's last message the amount of the payment the agent proposed, "
-                         "as digits. The person agreeing is enough; they need not repeat it."),
+                         "as digits. The person agreeing is enough; when the person states the amount themselves, use theirs."),
         dict(name=x_var("free_date"), type="string", enum=None,
              description="For promise or callback: copy from the AGENT's last message the date the agent proposed, as "
-                         "YYYY-MM-DD (the agent says the year). The person agreeing is enough; they need not repeat it."),
+                         "YYYY-MM-DD (the agent says the year). The person agreeing is enough; when the person states the "
+                         "date themselves, use theirs."),
         dict(name=x_var("free_time"), type="string", enum=None, description="For callback: the time as HH:MM."),
         dict(name=x_var("free_target"), type="string", enum=None,
              description="For close or transfer: the outcome or queue the agent named."),

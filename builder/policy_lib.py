@@ -214,6 +214,9 @@ def _word_table():
 
 
 WORDS = _word_table()
+CODE_LEAD = ("um", "uh", "er", "ok", "okay", "so", "well", "yes", "yeah", "sure", "right", "it", "its", "is", "it's",
+             "my", "the", "our", "postcode", "post", "code", "zip", "number", "that", "this", "would", "be")
+CODE_FILLER = ("postcode", "um", "uh", "er")
 NATO = ("alpha", "alfa", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "juliett",
         "kilo", "lima", "mike", "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uniform",
         "victor", "whiskey", "whisky", "xray", "yankee", "zulu")
@@ -272,8 +275,16 @@ def spoken_numbers(text):
     merged, i = [], 0
     while i < len(out):  # spoken years: 19|88, 20|20, 19|0|5, 1|9|7|5
         a = out[i]
+        single = lambda n: n[2] and not n[1] and 0 <= n[0] <= 9
+        eight = out[i:i + 8]
+        if len(eight) == 8 and all(single(n) for n in eight) and 1900 <= int("".join(str(n[0]) for n in eight[4:])) <= 2099:
+            ds = [n[0] for n in eight]
+            merged += [[ds[0] * 10 + ds[1], False, True], [ds[2] * 10 + ds[3], False, True],
+                       [int("".join(str(d) for d in ds[4:])), False, True]]
+            i += 8
+            continue
         four = out[i:i + 4]
-        if len(four) == 4 and all(n[2] and not n[1] and 0 <= n[0] <= 9 for n in four) and \
+        if len(four) == 4 and all(single(n) for n in four) and not (i and single(out[i - 1])) and \
                 1900 <= int("".join(str(n[0]) for n in four)) <= 2099:
             merged.append([int("".join(str(n[0]) for n in four)), False, True])
             i += 4
@@ -476,6 +487,13 @@ def resolve_day(text, today, weekday_mode="nearest", order="day_month_year"):
 
 # ---------- amounts ----------
 
+def _adjacent_numbers(s):
+    """The number words of a phrase stand together, with no other word between them."""
+    toks = re.findall(r"[a-z]+", s)
+    idx = [i for i, t in enumerate(toks) if t in WORDS]
+    return bool(idx) and idx == list(range(idx[0], idx[-1] + 1))
+
+
 def parse_amount(text, due=None, floor=None):
     """The amount a customer offers: digits ('82.40', '3,100', '90 pounds and 5 pence'), words ('nine hundred and
     twelve forty', 'four hundred point five'), or the minimum / the full amount. None when it names none."""
@@ -502,9 +520,9 @@ def parse_amount(text, due=None, floor=None):
             v += float("0." + str(words[1][0]))
         elif v >= 100 or re.search(r"\b(pounds?|euros?|dollars?|pence|cents?)\b", s):
             v += words[1][0] / 100.0
-        elif 10 <= v < 100 and 10 <= words[1][0] and due is not None and \
+        elif 1 <= v < 100 and 10 <= words[1][0] and due is not None and len(words) == 2 and _adjacent_numbers(s) and \
                 (floor or 0) <= v * 100 + words[1][0] <= float(due):
-            v = v * 100 + words[1][0]  # 'twelve fifty' said for 1250
+            v = v * 100 + words[1][0]  # 'twelve fifty' said for 1250, 'two fifty' for 250
     return v
 
 
@@ -613,18 +631,28 @@ def normalize_answer(q, text, partial=None, today=None):
         years = [x[0] for x in spoken_numbers(text) if x[0] >= 1000 or 30 <= x[0] < 100]
         value = str(_year4(years[-1], today)) if years else ""
     elif kind == "letters_digits":
-        low = re.sub(r"'s\b|\b(my|is|it|its|me)\b", " ", str(text or "").lower())
-        out, rep = [], 1
-        for t in re.findall(r"[a-z]+|\d+", low):
+        low = str(text or "").lower().replace("\u2019", "'")
+        low = re.sub(r"\bdouble[\s-]?u\b", " w ", low)
+        toks = re.findall(r"[a-z]+|\d+", re.sub(r"'s\b", "", low))
+        while toks and toks[0] in CODE_LEAD:  # 'um, my postcode is ...': a leading phrase, never inside the code
+            toks.pop(0)
+        out, rep, i = [], 1, 0
+        while i < len(toks):
+            t = toks[i]
+            i += 1
             if t in ("double", "triple"):
                 rep = 2 if t == "double" else 3
                 continue
+            if t in CODE_FILLER:
+                continue
             if t in NATO:
                 t = t[0]
-            elif t in WORDS and WORDS[t][1] in ("z", "u") and len(t) > 1:
-                t = str(WORDS[t][0])
-            elif len(t) >= 3 and not t.isdigit():
-                continue  # a filler word ('postcode', 'the'): codes say letters one or two at a time
+            elif t in WORDS and WORDS[t][1] in ("z", "u", "t", "d") and len(t) > 1:
+                v = WORDS[t][0]
+                if WORDS[t][1] == "d" and i < len(toks) and toks[i] in WORDS and WORDS[toks[i]][1] == "u":
+                    v += WORDS[toks[i]][0]  # 'twenty one' = 21
+                    i += 1
+                t = str(v)
             out.append(t * rep if len(t) == 1 else t)
             rep = 1
         value = "".join(out).upper()

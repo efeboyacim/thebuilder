@@ -14,37 +14,41 @@ brief material, read in the order given. Options:
 Writes traces/<slot>-<UTC time>.jsonl (env BUILDER_TRACE_DIR moves it) and echoes every trace event to stdout.
 Artifacts (digest, spec, checks) go to out/<slot>/ (env BUILDER_OUT_DIR moves out/).
 """
-import argparse, json, os, platform, subprocess, sys, time, traceback
+import argparse, json, os, platform, re, subprocess, sys, time, traceback
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 if sys.path and Path(sys.path[0] or ".").resolve() == ROOT / "builder":
     sys.path[0] = str(ROOT)  # import as the `builder` package; builder/trace.py must not shadow stdlib `trace`
 
-from builder import compiler, ingest, specgen, toolapi  # noqa: E402
+from builder import compiler, ingest, llm, specgen, toolapi  # noqa: E402
 from builder import spec as sp  # noqa: E402
 from builder.trace import Trace  # noqa: E402
 
 STAGES = ("ingest", "toolapi", "spec", "compile", "freya")
 FALLBACK_SLOT = "build"
 PLATFORM_WAITS = (10, 30, 60)  # seconds before each retry of a platform call that failed transiently
+PLATFORM_RETRY_UNTIL = 1650  # seconds since the build's start: no platform retry after that (30-minute budget)
 
 
 def transient(err):
-    """A platform error worth retrying: a 5xx answer, a timeout or a dropped connection (not a 4xx)."""
-    text = str(err)
+    """A platform error worth retrying: a 5xx or 429 answer, a timeout, a dropped connection or a cut-off body
+    (not a 4xx, not a local file error)."""
+    import http.client, socket, urllib.error
     if isinstance(err, RuntimeError):
-        return any(f"-> {c}" in text for c in ("500", "502", "503", "504", "520", "522", "524"))
-    return isinstance(err, (OSError, TimeoutError))  # urllib's URLError and socket timeouts are OSErrors
+        return re.search(r"-> (5\d\d|429)\b", str(err)) is not None
+    return isinstance(err, (urllib.error.URLError, socket.timeout, TimeoutError, ConnectionError,
+                            http.client.HTTPException, json.JSONDecodeError))
 
 
-def with_retries(trace, action, fn, waits=PLATFORM_WAITS, sleep=time.sleep):
-    """Run a platform call; retry it after transient errors, with the waits given."""
+def with_retries(trace, action, fn, waits=PLATFORM_WAITS, sleep=time.sleep, start=None):
+    """Run a platform call; retry it after transient errors, with the waits given, within the build's budget."""
+    start = llm.START if start is None else start
     for n in range(len(waits) + 1):
         try:
             return fn()
         except Exception as e:
-            if n == len(waits) or not transient(e):
+            if n == len(waits) or not transient(e) or time.time() - start + waits[n] > PLATFORM_RETRY_UNTIL:
                 raise
             trace.warning(f"freya {action}: {str(e)[:200]}; retry {n + 1} in {waits[n]} s")
             sleep(waits[n])
@@ -176,7 +180,10 @@ def stage_freya(ctx):
     saves = 1 if slot in known else 2  # a new workflow gets its event model only with its first update
     for n in range(saves):
         t0 = time.time()
-        st = with_retries(trace, "save", lambda: freya.save_workflow(slot, wf, state_file=str(state_file)))
+        if slot in known or n:  # an update is safe to repeat; a create is not (a 5xx may come after it worked)
+            st = with_retries(trace, "save", lambda: freya.save_workflow(slot, wf, state_file=str(state_file)))
+        else:
+            st = freya.save_workflow(slot, wf, state_file=str(state_file))
         trace.event("freya", action="update" if (slot in known or n) else "create", workflow_id=st["workflow_id"],
                     agent_id=st["agent_id"], version=st.get("version"), published=bool(st.get("version")),
                     seconds=round(time.time() - t0, 1), nodes=s["nodes"], tools=s["tools"])

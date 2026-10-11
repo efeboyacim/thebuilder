@@ -379,7 +379,7 @@ UNFINISHED_WORDS = ("on", "in", "at", "the", "a", "an", "my", "our", "and", "or"
 def unfinished(said):
     """The customer stopped mid-sentence: no closing punctuation and a last word that cannot end a sentence."""
     s = str(said or "").strip().lower()
-    if not s or s == "none" or s[-1] in ".!?":
+    if not s or s == "none" or s[-1] in ".!?" or s[-1].isdigit():
         return False
     if s[-1] in ",-:;" or s.endswith("..."):
         return True
@@ -410,7 +410,7 @@ def on_turn(c, stage, x):
     st = c["st"]
     st["turns"] = st.get("turns", 0) + 1
     if st["turns"] > TURN_LIMIT:
-        return close(c, hangup(c, stage))
+        return close(c, hangup(c, stage[len(FREE):] if stage.startswith(FREE) else stage))
     if stage.startswith(FREE):  # the free node's own fields; a miss is one more free turn
         return turn_free(c, stage[len(FREE):], x)
     filled = any(x[k] for k in ("main", "side_q", "event", "reply", "answer", "day", "time", "amount"))
@@ -420,14 +420,16 @@ def on_turn(c, stage, x):
             return ask(c, stage, st.get("last") or "")
         x["main"] = "unclear"
     st["miss"] = 0
-    if stage in ("negotiate", "confirm") and x["main"] in ("", "unclear") and unfinished(x["said"]) and \
-            not any(x[k] for k in ("side_q", "event", "day", "amount")) and st.get("cont", 0) < 2:
+    if stage in ("identity", "negotiate", "confirm") and x["main"] in ("", "unclear") and unfinished(x["said"]) and \
+            not any(x[k] for k in ("side_q", "event", "day", "amount", "reply", "answer")) and st.get("cont", 0) < 2:
         st["cont"] = st.get("cont", 0) + 1  # the customer stopped mid-sentence: no attempt used
-        last = st.get("last") or ""
+        last, evq = st.get("last") or "", st.get("evq")
         ask(c, stage, CONTINUE)
-        st["last"] = last
+        st["last"], st["evq"] = last, evq
         return None
     st["cont"] = 0
+    if x["main"] not in ("", "unclear") or any(x[k] for k in ("answer", "day", "amount", "reply", "side_q", "event")):
+        st["loops"] = 0  # LOOP_LIMIT counts unclear turns in a row, not over the whole call
     t = termination(c, stage, x)
     if t:
         return close(c, t)
@@ -435,7 +437,8 @@ def on_turn(c, stage, x):
         side_answer(c, stage, x)
     if st.get("pev") and event_reply(c, stage, x):
         return None
-    if x["event"].startswith(FREE) and not explicit_date(x["day"]) and enter_free(c, stage, x["event"]):
+    if x["event"].startswith(FREE) and not (x["main"] == "proposes" and explicit_date(x["day"])) and \
+            enter_free(c, stage, x["event"]):
         return None
     if x["event"] and fire_event(c, stage, x):
         return None
@@ -673,6 +676,8 @@ def event_reply(c, stage, x):
     if pe.get("kind") == "below":
         if no or x["event"] == e["id"]:
             return fire_event(c, stage, dict(x, event=e["id"]))
+        if x["event"] and fire_event(c, stage, x):
+            return True
         if yes and not x["side_q"]:
             target(c, "continue", stage)
             return True
@@ -768,6 +773,9 @@ def turn_free(c, stage, x):
     st["free"] = f
     f["n"] = f.get("n", 0) + 1
     a = x["free_action"]
+    if f["n"] > 2 * FREE_LIMIT:  # a proposal that never passes the gates: back to the standard script
+        st["free"] = None
+        return ask(c, stage, f.get("resume") or st.get("last") or "")
     if a == "promise":
         return free_promise(c, stage, x)
     if a in ("close", "transfer"):
@@ -802,11 +810,19 @@ def free_promise(c, stage, x):
     st = c["st"]
     ref = str(x["free_product"] or "").strip()
     p = next((q for q in st.get("products") or [] if str(q.get("ref")) == ref), None) or \
-        (match_product(c, ref) if ref else (current(c) if st.get("cur") else None))
-    if p is None and not ref:  # the agent proposed it; with one open product there is no doubt which
+        (match_product(c, ref) if ref else None)
+    if p is None and not ref:  # the agent proposed it: one open product, or the one whose amount it named
         left = [q for q in st.get("products") or [] if pstate(c, q).get("status") != "ended"
                 and str(q.get("ref")) not in [str(r) for r in st["recorded"]]]
-        p = left[0] if len(left) == 1 else None
+        if len(left) == 1:
+            p = left[0]
+        else:
+            a0 = parse_amount(x["free_amount"]) if x["free_amount"] else None
+            hit = [q for q in left if a0 is not None and abs(float(q.get("due") or 0) - a0) < 0.005]
+            p = hit[0] if len(hit) == 1 else None
+            if p is None and left:
+                return free_ask(c, stage, "Several products are open: name the product of the payment and ask "
+                                          "the customer to confirm it; do not say it is noted.")
     if p is None or pstate(c, p).get("status") == "ended" or str(p.get("ref")) in [str(r) for r in st["recorded"]]:
         return free_ask(c, stage, "That product cannot take a promise now; use one of the products in the facts.")
     A = c["S"]["negotiation"].get("amounts") or dict()
