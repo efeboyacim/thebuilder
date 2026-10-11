@@ -1,0 +1,90 @@
+{"t": "2026-10-11T13:56:27Z", "ev": "run_start", "argv": ["builder/build.py", "briefs/brief-a.md", "tools/openapi.json", "--spec", "results/22-spec-a-migrated.json", "--slot", "hub-a"], "slot": "hub-a", "inputs": [{"path": "briefs/brief-a.md", "kind": "brief", "bytes": 10174, "sha256": "d57c049c89aec4615f5b939c5a96ee9bd194142d17045bc4036615cfbdf0f1c7", "encoding": "utf-8"}, {"path": "tools/openapi.json", "kind": "tool_api", "bytes": 10557, "sha256": "9a8410b12e5c82b6c6a30e9ed7030574d6f919cafdb1e035cef7bd876b0badb8", "encoding": "utf-8"}], "until": null, "spec": "results/22-spec-a-migrated.json", "builder_commit": "bada23fa0f04", "builder_dirty": false, "python": "3.10.11", "platform": "win32"}
+{"t": "2026-10-11T13:56:27Z", "ev": "stage", "name": "ingest", "ok": true, "seconds": 0.1, "summary": {"briefs": [{"path": "briefs/brief-a.md", "bytes": 10174, "encoding": "utf-8", "headings": 13, "sections": ["Brief A: Freya Bank, early-stage collections, one product", "1. The job", "2. Call variables", "3. Opening and who is on the line", "4. Someone else answers", "5. Identity", "6. Stating the debt", "7. Dates", "8. Amounts", "9. Getting the promise", "10. Confirming and recording", "11. Other things customers say", "12. Closing"]}], "tool_api": {"path": "tools/openapi.json", "openapi": "3.0.3", "operations": 7, "servers": ["https://freya-bank-mock.freyavoice.workers.dev/v1"]}, "cases": null}}
+{"t": "2026-10-11T13:56:27Z", "ev": "stage", "name": "toolapi", "ok": true, "seconds": 0.0, "summary": {"server": "https://freya-bank-mock.freyavoice.workers.dev/v1", "tools": {"verify_identity": {"method": "POST", "path": "/verify_identity", "required": ["customer_id", "field", "answer"], "request_fields": 3, "response_fields": 6, "error_statuses": ["500"]}, "get_account": {"method": "POST", "path": "/get_account", "required": ["customer_id"], "request_fields": 1, "response_fields": 10, "error_statuses": ["500"]}, "create_promise": {"method": "POST", "path": "/create_promise", "required": ["customer_id", "product_id", "amount", "date"], "request_fields": 4, "response_fields": 3, "error_statuses": ["500"]}, "add_note": {"method": "POST", "path": "/add_note", "required": ["customer_id", "product_id", "reason"], "request_fields": 4, "response_fields": 2, "error_statuses": ["500"]}, "schedule_callback": {"method": "POST", "path": "/schedule_callback", "required": ["customer_id", "date", "time"], "request_fields": 3, "response_fields": 2, "error_statuses": ["500"]}, "transfer_to_agent": {"method": "POST", "path": "/transfer_to_agent", "required": ["customer_id", "queue"], "request_fields": 2, "response_fields": 2, "error_statuses": ["500"]}, "close_call": {"method": "POST", "path": "/close_call", "required": ["customer_id", "outcome"], "request_fields": 3, "response_fields": 2, "error_statuses": ["500"]}}}}
+{"t": "2026-10-11T13:56:28Z", "ev": "check", "name": "spec_validate_given", "ok": true, "errors": [], "n_errors": 0, "warnings": []}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: third_party.callback.min_lead_minutes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: third_party.callback.granularity_minutes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: identity.questions[0].digits_count (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: identity.questions[1].numeric_date_order (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: products.bands[0].situation (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: products.bands[1].situation (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: products.unmatched (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: negotiation.first_ask.scope (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: negotiation.first_ask.template_multi (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: negotiation.multi.product_intro_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: negotiation.multi.overflow (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: negotiation.multi.overflow_note_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: negotiation.multi.failed_promise (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: confirm.mode (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: failure_policy.lookup.retries (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: failure_policy.lookup.on_exhausted (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: failure_policy.book_callback.retries (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: failure_policy.book_callback.on_exhausted (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: failure_policy.transfer.retries (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: failure_policy.transfer.on_exhausted (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[0].below_min_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[0].then (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[0].then_before_verification (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[0].several_products (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[1].below_min_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[1].template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[1].on_yes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[1].on_no (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[1].then_before_verification (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[1].several_products (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[2].below_min_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[2].template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[2].on_yes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[2].on_no (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[2].then_before_verification (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[2].several_products (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[3].below_min_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[3].template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[3].on_yes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[3].on_no (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[3].then_before_verification (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[3].several_products (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[4].template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[4].on_yes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[4].on_no (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[4].then_before_verification (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[4].several_products (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[5].below_min_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[5].template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[5].on_yes (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[5].on_no (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: events[5].several_products (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: notes.on_transfer (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "not_specified: notes.text_template (neutral behaviour)"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "hang-up situation in stage confirm is not stated in the brief; the model chose the closest one"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "hang-up situation in stage identity is not stated in the brief; the model chose the closest one"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "hang-up situation in stage negotiate is not stated in the brief; the model chose the closest one"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "hang-up situation in stage open is not stated in the brief; the model chose the closest one"}
+{"t": "2026-10-11T13:56:28Z", "ev": "warning", "text": "hang-up situation in stage third is not stated in the brief; the model chose the closest one"}
+{"t": "2026-10-11T13:56:28Z", "ev": "spec", "given": "results/22-spec-a-migrated.json", "rule_coverage": null, "not_specified": ["third_party.callback.min_lead_minutes", "third_party.callback.granularity_minutes", "identity.questions[0].digits_count", "identity.questions[1].numeric_date_order", "products.bands[0].situation", "products.bands[1].situation", "products.unmatched", "negotiation.first_ask.scope", "negotiation.first_ask.template_multi", "negotiation.multi.product_intro_template", "negotiation.multi.overflow", "negotiation.multi.overflow_note_template", "negotiation.multi.failed_promise", "confirm.mode", "failure_policy.lookup.retries", "failure_policy.lookup.on_exhausted", "failure_policy.book_callback.retries", "failure_policy.book_callback.on_exhausted", "failure_policy.transfer.retries", "failure_policy.transfer.on_exhausted", "events[0].below_min_template", "events[0].then", "events[0].then_before_verification", "events[0].several_products", "events[1].below_min_template", "events[1].template", "events[1].on_yes", "events[1].on_no", "events[1].then_before_verification", "events[1].several_products", "events[2].below_min_template", "events[2].template", "events[2].on_yes", "events[2].on_no", "events[2].then_before_verification", "events[2].several_products", "events[3].below_min_template", "events[3].template", "events[3].on_yes", "events[3].on_no", "events[3].then_before_verification", "events[3].several_products", "events[4].template", "events[4].on_yes", "events[4].on_no", "events[4].then_before_verification", "events[4].several_products", "events[5].below_min_template", "events[5].template", "events[5].on_yes", "events[5].on_no", "events[5].several_products", "notes.on_transfer", "notes.text_template"], "residuals": {"flow": 6, "speech": 3}, "flow_residuals": [{"id": "X1", "stage": "negotiate", "trigger": "the customer names a date or an amount after mentioning hardship", "free_mode": false}, {"id": "X4", "stage": "confirm", "trigger": "the customer asks to change or cancel a recorded promise", "free_mode": false}, {"id": "X5", "stage": "any", "trigger": "any situation where a product ends without a promise", "free_mode": false}, {"id": "X6", "stage": "negotiate", "trigger": "the customer says the product was closed or paid off in the past", "free_mode": false}, {"id": "X7", "stage": "negotiate", "trigger": "the customer proposes a date or an amount", "free_mode": false}, {"id": "X8", "stage": "negotiate", "trigger": "the customer refuses the offered deadline or the offered floor", "free_mode": false}], "hangup_chosen_by_model": ["confirm", "identity", "negotiate", "open", "third"], "situations": 16, "bands": ["early", "late"], "ladder_steps": 2, "events": ["hardship", "dispute", "paid", "restructuring", "human", "not_want_talk"], "side_questions": ["robot", "scam"], "identity_questions": ["date_of_birth", "phone_last4"]}
+{"t": "2026-10-11T13:56:28Z", "ev": "stage", "name": "spec", "ok": true, "seconds": 0.9, "summary": {"out": "C:\\Users\\efeby\\Desktop\\builder\\out\\hub-a", "rules": null, "coverage": null, "repair_rounds": null, "not_specified": 54, "residuals": {"flow": 6, "speech": 3}}}
+{"t": "2026-10-11T13:56:28Z", "ev": "self_test", "name": "graph_lint", "result": "pass", "details": "no unknown target, unreachable node, merged transition, open passthrough, null, const or doubled brace in code"}
+{"t": "2026-10-11T13:56:28Z", "ev": "self_test", "name": "brain_code", "result": "pass", "details": "82518 bytes, compiles, one function, no doubled braces"}
+{"t": "2026-10-11T13:56:28Z", "ev": "stage", "name": "compile", "ok": true, "seconds": 0.3, "summary": {"workflow": "out\\hub-a\\workflow.json", "nodes": 20, "node_types": {"code": 2, "conversation": 12, "api_request": 5, "end_call": 1}, "tools": {"lifecycle": 1, "pre_actions": 5, "code": 2}, "brain_bytes": 82518}}
+{"t": "2026-10-11T13:56:29Z", "ev": "freya", "action": "validate", "ok": true, "seconds": 0.5, "result": ["dryRun", "valid"], "nodes": 20, "tools": {"lifecycle": 1, "pre_actions": 5, "code": 2}}
+{"t": "2026-10-11T13:56:31Z", "ev": "freya", "action": "update", "workflow_id": "2f239a71-e2b3-4a18-8563-c22ecf1a8db4", "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b", "version": 9, "published": true, "seconds": 2.5, "nodes": 20, "tools": {"lifecycle": 1, "pre_actions": 5, "code": 2}}
+{"t": "2026-10-11T13:56:31Z", "ev": "freya", "action": "readback", "workflow_id": "2f239a71-e2b3-4a18-8563-c22ecf1a8db4", "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b", "nodes": 20, "diffs": []}
+{"t": "2026-10-11T13:56:31Z", "ev": "self_test", "name": "readback_diff", "result": "pass", "details": []}
+{"t": "2026-10-11T13:56:32Z", "ev": "freya", "action": "export", "workflow_id": "2f239a71-e2b3-4a18-8563-c22ecf1a8db4", "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b", "path": "submission\\hub-a.workflow.json"}
+{"t": "2026-10-11T13:56:32Z", "ev": "stage", "name": "freya", "ok": true, "seconds": 3.9, "summary": {"workflow_id": "2f239a71-e2b3-4a18-8563-c22ecf1a8db4", "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b", "version": 9, "export": "submission\\hub-a.workflow.json", "readback_diffs": 0}}
+{"t": "2026-10-11T13:56:32Z", "ev": "run_end", "seconds": 5.1, "status": "ok", "stopped_after": null, "error": null, "outputs": {"trace": "traces\\hub-a-20261011-135627.jsonl", "workflow_id": "2f239a71-e2b3-4a18-8563-c22ecf1a8db4", "agent_id": "1a7f5edd-489e-4d79-ac92-7ce7c60d509b", "version": 9, "export": "submission\\hub-a.workflow.json"}}
+
+== build summary ==
+status       ok (5.1 s)
+slot         hub-a
+brief 1      briefs/brief-a.md  10174 bytes, utf-8, 13 headings
+tool API     tools/openapi.json  openapi 3.0.3, 7 operations, server https://freya-bank-mock.freyavoice.workers.dev/v1
+cases        none
+workflow_id  2f239a71-e2b3-4a18-8563-c22ecf1a8db4
+agent_id     1a7f5edd-489e-4d79-ac92-7ce7c60d509b
+version      9
+export       submission\hub-a.workflow.json
+model calls  0
+self-tests   3 (3 pass)
+warnings     59
+trace        traces\hub-a-20261011-135627.jsonl

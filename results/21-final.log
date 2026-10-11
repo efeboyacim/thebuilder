@@ -1,0 +1,62 @@
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+FAIL M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+       - conversation: The conversation failed the success criteria regarding the number of payment attempts. 1. **Personal Loan attempts**: The criteria allowed for only one attempt (late band). However, the agent made at least two: first in Message 10 (asking to conf
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+PASS M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+-- run 1 of 3: 12 / 13 passed, 218 s
+
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+PASS M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+-- run 2 of 3: 13 / 13 passed, 187 s
+
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+FAIL M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+       - conversation: - The first proposal made by the assistant was for payment 'today' (Message 6), whereas the success criteria required the first proposal to be Thursday 19 November (which occurred later in Message 8). - The assistant asked multiple questions (Mes
+-- run 3 of 3: 12 / 13 passed, 208 s
+
+PASS M1-01 3/3
+PASS M1-02 3/3
+PASS M1-03 3/3
+PASS M1-04 3/3
+PASS M1-05 3/3
+PASS M1-06 3/3
+PASS M1-07 3/3
+FAIL M1-08 2/3
+PASS M1-09 3/3
+PASS M1-10 3/3
+PASS M1-11 3/3
+PASS M1-12 3/3
+FAIL M1-13 2/3
+
+11 / 13 passed. Last simulation 455d8995-ff27-44d9-b438-028d8c059395, status completed, 614 s.

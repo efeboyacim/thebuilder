@@ -1,0 +1,377 @@
+{
+ "agent_id": "decee31c-e5b6-424a-b890-f615c4925c23",
+ "cases": "mocks/m1/cases.json",
+ "passed": 5,
+ "total": 9,
+ "final": [
+  {
+   "id": "M1-01",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-02",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-03",
+   "passes": 0,
+   "runs": 2,
+   "pass": false
+  },
+  {
+   "id": "M1-04",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-05",
+   "passes": 1,
+   "runs": 2,
+   "pass": false
+  },
+  {
+   "id": "M1-08",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-11",
+   "passes": 1,
+   "runs": 2,
+   "pass": false
+  },
+  {
+   "id": "M1-12",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-13",
+   "passes": 0,
+   "runs": 2,
+   "pass": false
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "M1-01",
+    "base": "PUB-01",
+    "now": "2026-10-13T10:15",
+    "pass": true,
+    "failed": [],
+    "call_id": "a7dc260a-b022-415b-81e7-ca9b4d20f714",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_34043cea-400"
+   },
+   {
+    "id": "M1-02",
+    "base": "PUB-02",
+    "now": "2026-10-15T16:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "d18a9e4a-a611-4641-8b95-91ebd6b023a1",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "customer_id": "c_79d43fea-236"
+   },
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 540.0, '2026-10-22')]",
+     "conversation: The agent failed to meet the majority of the success criteria. While the full amount of 540 was proposed in [Message 6], the agent never proposed the specific date of Thursday 22 October after the user mentioned being paid on Wednesdays in [Message 7]. Furthermore, no promise was recorded for that date; instead, the system events show the agent called 'close_call' with an outcome of 'no_promise' i"
+    ],
+    "call_id": "cdfd7710-2895-4862-bf3a-865077342689",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_750163f3-e39"
+   },
+   {
+    "id": "M1-04",
+    "base": "PUB-10",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1a0a5d63-357a-4cd1-8b73-aac29ce80283",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_71699de4-9dd"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 1250.0, '2026-10-28')]",
+     "conversation: The agent failed to meet any of the success criteria. After the user proposed a payment date of November 6th in [Message 7], the agent logic immediately moved to close the call, treating the response as a refusal as seen in the system event for 'close_call' (reason: 'refused'). This directly violates the criterion that the user's date should not be counted as a refusal. Furthermore, the agent neve"
+    ],
+    "call_id": "cc993d14-5fa2-4384-ab95-9f9517e86bcc",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_88ba6614-69e"
+   },
+   {
+    "id": "M1-08",
+    "base": "PUB-12",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "7c83c3de-eb39-4e74-943e-fd7a232cba32",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_59b5c0d8-711"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "e762365c-4d08-43f9-9973-feefceaee907",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_288de376-e56"
+   },
+   {
+    "id": "M1-12",
+    "base": "PUB-03",
+    "now": "2026-11-03T12:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "f92d149a-e24e-48f2-9f3a-8c8715405cc2",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_1d6fef3a-88b"
+   },
+   {
+    "id": "M1-13",
+    "base": "PUB-11",
+    "now": "2026-11-14T10:00",
+    "pass": false,
+    "failed": [
+     "conversation: The conversation failed the success criteria because the first payment date proposed by the assistant was 'today' in [Message 6], whereas the criteria required the first proposal to be Thursday 19 November (which occurred later in [Message 8]). The other criteria were satisfied: the assistant stated all three products (credit card, personal loan, and car loan) before the payment question in [Messa"
+    ],
+    "call_id": "566348b3-c0a4-4323-86c0-d8b30a83a21f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_f47fbe5e-43a"
+   }
+  ],
+  [
+   {
+    "id": "M1-01",
+    "base": "PUB-01",
+    "now": "2026-10-13T10:15",
+    "pass": true,
+    "failed": [],
+    "call_id": "10f53e20-a27d-4f52-b70f-81b22530121d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_dd6dabd3-7b9"
+   },
+   {
+    "id": "M1-02",
+    "base": "PUB-02",
+    "now": "2026-10-15T16:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "738b0e7b-61c6-4c6c-8d02-e8f3c1c726d9",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "customer_id": "c_3f61f5a1-df0"
+   },
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "promises [('p1', 540.0, '2026-10-21')], expected [('p1', 540.0, '2026-10-22')]",
+     "conversation: - The agent proposed Thursday, 21 October (later referred to as Wednesday, 21 October) instead of the required date of Thursday, 22 October. - Consequently, the promise was recorded for 21 October in the system, failing the requirement to record it for 22 October."
+    ],
+    "call_id": "9fc6b94a-f75e-4f9e-932c-00b9cdc2e9a0",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_526aa67e-f72"
+   },
+   {
+    "id": "M1-04",
+    "base": "PUB-10",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b381841e-4947-4453-90ee-d9680d5bc4a6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_98b17f15-073"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "336cda07-3a38-4948-b448-f098bed7743e",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_98f56132-599"
+   },
+   {
+    "id": "M1-08",
+    "base": "PUB-12",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1360b3ff-9228-4e69-ba01-063c21b57a26",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_6b7c434b-662"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": false,
+    "failed": [
+     "outcome ('transferred', 'human'), expected ('transferred', 'support')",
+     "transfers [{'queue': 'general'}], expected [{'queue': 'support'}]",
+     "conversation: The conversation did not meet all success criteria. - One sentence of sympathy: Met. In [Message 8], the assistant expressed sympathy with exactly one sentence ('I'm very sorry to hear that.'). - No persuasion attempt: Met. The assistant asked for payment in [Message 6] but did not attempt to persuade the customer after they stated they could not pay in [Message 7]. - Transferred to the support qu"
+    ],
+    "call_id": "67a1bbf3-86a7-47db-871b-00cc10b3df1d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_e9db462c-b71"
+   },
+   {
+    "id": "M1-12",
+    "base": "PUB-03",
+    "now": "2026-11-03T12:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "0c3eb170-34c0-4b1c-8a9f-fed293dd9a0c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_6cb713a1-f99"
+   },
+   {
+    "id": "M1-13",
+    "base": "PUB-11",
+    "now": "2026-11-14T10:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant failed the criterion that the first proposal must be Thursday 19 November. In [Message 6], the assistant first proposed that the customer pay 'today', making 'today' the first proposal of the conversation. The proposal for Thursday, 19 November did not occur until [Message 8]. The other criteria were met: the assistant listed all three products in [Message 6] before asking the first "
+    ],
+    "call_id": "f910a455-cadd-435c-b87a-73fe392114c5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_011064bb-bed"
+   }
+  ]
+ ]
+}

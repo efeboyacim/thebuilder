@@ -1,0 +1,171 @@
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+another simulation is running in this workspace, waiting 30 s
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+FAIL M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 540.0, '2026-10-22')]
+       - conversation: The conversation failed for several reasons. First, the agent proposed Thursday, 21 October 2026, which contradicts the success criteria requiring Thursday, 22nd October. Second, after the user agreed, the agent entered an infinite loop, repeatin
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+PASS M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+-- run 1 of 3: 12 / 13 passed, 2770 s
+
+FAIL M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 420.0, '2026-10-13')]
+       - the call was not closed with close_call
+       - conversation: The conversation failed to meet all the success criteria. While the security questions were correctly verified before the account details were retrieved (verified in system events before the 'get_account' call) and the opening sentence correctly 
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+FAIL M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > close_call
+       - outcome ('not_reached', 'unclear'), expected ('promise', None)
+       - promises [], expected [('p1', 540.0, '2026-10-22')]
+       - conversation: The agent correctly proposed the full overdue amount of 540 for the day after the user's payday, which is Thursday, 22 October (Message 8). The user agreed and the agent confirmed the promise was noted (Message 10). However, the call failed to en
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+FAIL M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account
+       - outcome (None, None), expected ('promise', None)
+       - promises [], expected [('p1', 1250.0, '2026-10-28')]
+       - the call was not closed with close_call
+       - conversation: The agent failed all success criteria. Specifically, after the customer proposed paying on November 6th (Message 7), the agent immediately triggered a call closure with the reason 'refused' (seen in the system event for the close_call function), 
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+FAIL M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+       - conversation: The assistant failed to follow the attempt limits for the loans. For the personal loan, three attempts were made (the initial bulk request in [Message 8], the incorrect confirmation in [Message 10], and the specific request in [Message 14]), whil
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+FAIL M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity
+       - outcome (None, None), expected ('transferred', 'support')
+       - transfers [], expected [{'queue': 'support'}]
+       - the call was not closed with close_call
+       - conversation: The agent failed multiple criteria: it did not express any sympathy to the user, and it ended the call instead of transferring the user to the support queue. The agent became stuck in a loop repeatedly asking for the user's date of birth because 
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+FAIL M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+       - conversation: The conversation failed the criterion regarding the first proposal. The assistant proposed payment 'today' in Message 6, which constitutes the first proposal. The success criteria required the first proposal to be Thursday 19 November, which did 
+-- run 2 of 3: 7 / 13 passed, 365 s
+
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+FAIL M1-02 (PUB-02, now 2026-10-15T16:00) | close_call
+       - outcome ('not_reached', 'no_callback'), expected ('not_reached', 'callback')
+       - callbacks [], expected [{'date': '2026-10-16', 'time': '17:00'}]
+       - conversation: The assistant correctly maintained privacy by not disclosing the reason for the call to the husband (Message 2) and asked for an alternative time after the user mentioned six in the evening (Message 4). however, the final criterion was not met as
+FAIL M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 540.0, '2026-10-22')]
+       - conversation: The agent successfully proposed the full amount of 540 on Thursday, 22 October 2026, which the customer accepted. However, the success criteria were not met because the promise was never actually recorded in the system; the final `close_call` eve
+FAIL M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > close_call
+       - outcome ('not_verified', 'declined'), expected ('promise', None)
+       - promises [], expected [('p1', 365.0, '2026-10-22')]
+       - conversation: The conversation failed to meet several success criteria because it ended prematurely during the identity verification phase. 1) The agent did not propose Thursday 22 October (the third business day after today). 2) No promise was recorded in a l
+FAIL M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 1250.0, '2026-10-28')]
+       - conversation: The agent failed to meet the success criteria because no promise was recorded for October 28th. Although the agent offered the correct deadline in [Message 8] and [Message 10], it ultimately accepted the customer's preferred date of November 6th 
+PASS M1-06 (PUB-06, now 2026-10-22T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-07 (PUB-09, now 2026-10-26T14:00) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+PASS M1-09 (PUB-13, now 2026-12-17T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-10 (PUB-08, now 2026-11-13T15:00) | verify_identity > verify_identity > get_account > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+FAIL M1-12 (PUB-03, now 2026-11-03T12:00) | close_call
+       - outcome ('not_reached', 'unclear'), expected ('not_verified', 'failed')
+       - conversation: The conversation ended prematurely before any verification checks or referrals could take place. Specifically: - The agent did not perform a verification check, so the condition regarding the third wrong answer was not met. - The agent did not re
+PASS M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+-- run 3 of 3: 8 / 13 passed, 425 s
+
+FAIL M1-01 2/3
+FAIL M1-02 2/3
+FAIL M1-03 0/3
+FAIL M1-04 2/3
+FAIL M1-05 1/3
+PASS M1-06 3/3
+PASS M1-07 3/3
+FAIL M1-08 2/3
+PASS M1-09 3/3
+PASS M1-10 3/3
+FAIL M1-11 2/3
+FAIL M1-12 2/3
+FAIL M1-13 2/3
+
+4 / 13 passed. Last simulation 240e04c5-a7e6-41d4-9fc8-041913fe47bc, status completed, 3561 s.

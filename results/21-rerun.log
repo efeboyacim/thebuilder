@@ -1,0 +1,46 @@
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+FAIL M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 540.0, '2026-10-22')]
+       - conversation: The agent failed to meet the majority of the success criteria. While the full amount of 540 was proposed in [Message 6], the agent never proposed the specific date of Thursday 22 October after the user mentioned being paid on Wednesdays in [Messa
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+FAIL M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 1250.0, '2026-10-28')]
+       - conversation: The agent failed to meet any of the success criteria. After the user proposed a payment date of November 6th in [Message 7], the agent logic immediately moved to close the call, treating the response as a refusal as seen in the system event for '
+PASS M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+FAIL M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+       - conversation: The conversation failed the success criteria because the first payment date proposed by the assistant was 'today' in [Message 6], whereas the criteria required the first proposal to be Thursday 19 November (which occurred later in [Message 8]). T
+-- run 1 of 2: 6 / 9 passed, 322 s
+
+PASS M1-01 (PUB-01, now 2026-10-13T10:15) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-02 (PUB-02, now 2026-10-15T16:00) | schedule_callback > close_call
+FAIL M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+       - promises [('p1', 540.0, '2026-10-21')], expected [('p1', 540.0, '2026-10-22')]
+       - conversation: - The agent proposed Thursday, 21 October (later referred to as Wednesday, 21 October) instead of the required date of Thursday, 22 October. - Consequently, the promise was recorded for 21 October in the system, failing the requirement to record 
+PASS M1-04 (PUB-10, now 2026-10-16T11:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-08 (PUB-12, now 2026-10-21T11:00) | verify_identity > verify_identity > verify_identity > get_account > create_promise > add_note > add_note > close_call
+FAIL M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+       - outcome ('transferred', 'human'), expected ('transferred', 'support')
+       - transfers [{'queue': 'general'}], expected [{'queue': 'support'}]
+       - conversation: The conversation did not meet all success criteria. - One sentence of sympathy: Met. In [Message 8], the assistant expressed sympathy with exactly one sentence ('I'm very sorry to hear that.'). - No persuasion attempt: Met. The assistant asked fo
+PASS M1-12 (PUB-03, now 2026-11-03T12:00) | verify_identity > verify_identity > verify_identity > close_call
+FAIL M1-13 (PUB-11, now 2026-11-14T10:00) | verify_identity > verify_identity > get_account > create_promise > create_promise > create_promise > close_call
+       - conversation: The assistant failed the criterion that the first proposal must be Thursday 19 November. In [Message 6], the assistant first proposed that the customer pay 'today', making 'today' the first proposal of the conversation. The proposal for Thursday,
+-- run 2 of 2: 6 / 9 passed, 229 s
+
+PASS M1-01 2/2
+PASS M1-02 2/2
+FAIL M1-03 0/2
+PASS M1-04 2/2
+FAIL M1-05 1/2
+PASS M1-08 2/2
+FAIL M1-11 1/2
+PASS M1-12 2/2
+FAIL M1-13 0/2
+
+5 / 9 passed. Last simulation ca58666a-a2ad-4603-971f-088245fc1704, status completed, 551 s.

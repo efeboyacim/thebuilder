@@ -1,0 +1,131 @@
+{
+ "agent_id": "decee31c-e5b6-424a-b890-f615c4925c23",
+ "cases": "mocks/m1/cases.json",
+ "passed": 2,
+ "total": 3,
+ "final": [
+  {
+   "id": "M1-03",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-05",
+   "passes": 2,
+   "runs": 2,
+   "pass": true
+  },
+  {
+   "id": "M1-11",
+   "passes": 1,
+   "runs": 2,
+   "pass": false
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "d897bcdd-7061-4994-b3ec-243bd47c6e29",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_390c90a6-ad7"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "45ee19dd-9b1c-4266-93f3-caa84bceb34b",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_d3dac11f-ea9"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": false,
+    "failed": [
+     "outcome ('transferred', 'human'), expected ('transferred', 'support')",
+     "transfers [{'queue': 'general'}], expected [{'queue': 'support'}]"
+    ],
+    "call_id": "1a565ffc-2bfa-455e-adb1-ed13fc1c8aff",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_2f525630-bb6"
+   }
+  ],
+  [
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5636f6df-26f3-450f-912f-358cfe7510f3",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_7dbf1678-4d9"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "7f421baa-c342-4875-a48b-0dc7f71d2e85",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_0b82ec11-9de"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "a426d26f-8367-4ac5-88bc-2529d33d56a5",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_056a2c81-300"
+   }
+  ]
+ ]
+}

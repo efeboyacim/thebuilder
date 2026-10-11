@@ -1,0 +1,753 @@
+{
+ "agent_id": "decee31c-e5b6-424a-b890-f615c4925c23",
+ "cases": "mocks/m1/cases.json",
+ "passed": 4,
+ "total": 13,
+ "final": [
+  {
+   "id": "M1-01",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-02",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-03",
+   "passes": 0,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-04",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-05",
+   "passes": 1,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-06",
+   "passes": 3,
+   "runs": 3,
+   "pass": true
+  },
+  {
+   "id": "M1-07",
+   "passes": 3,
+   "runs": 3,
+   "pass": true
+  },
+  {
+   "id": "M1-08",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-09",
+   "passes": 3,
+   "runs": 3,
+   "pass": true
+  },
+  {
+   "id": "M1-10",
+   "passes": 3,
+   "runs": 3,
+   "pass": true
+  },
+  {
+   "id": "M1-11",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-12",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  },
+  {
+   "id": "M1-13",
+   "passes": 2,
+   "runs": 3,
+   "pass": false
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "M1-01",
+    "base": "PUB-01",
+    "now": "2026-10-13T10:15",
+    "pass": true,
+    "failed": [],
+    "call_id": "9b843da1-2085-4286-99df-18a398af9490",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_8835fbfb-6e3"
+   },
+   {
+    "id": "M1-02",
+    "base": "PUB-02",
+    "now": "2026-10-15T16:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "52c1f769-77a7-465e-92fa-c150afb67e52",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "customer_id": "c_5be939d4-fc7"
+   },
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 540.0, '2026-10-22')]",
+     "conversation: The conversation failed for several reasons. First, the agent proposed Thursday, 21 October 2026, which contradicts the success criteria requiring Thursday, 22nd October. Second, after the user agreed, the agent entered an infinite loop, repeating the same confirmation message from Message 10 through Message 80 without concluding the call. Finally, no promise was recorded for 22nd October; the sys"
+    ],
+    "call_id": "e0332e83-4337-4a00-bbbe-83051a2efa58",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_4be5fd0c-e7e"
+   },
+   {
+    "id": "M1-04",
+    "base": "PUB-10",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "90685b52-9a79-416d-bfb6-9aa2d2c52370",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_4a7a495b-f9e"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "06932556-405c-411d-bb71-b7c0687e575c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_8a7f8bbe-86f"
+   },
+   {
+    "id": "M1-06",
+    "base": "PUB-06",
+    "now": "2026-10-22T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "8f6f6267-f293-4120-aca2-47cd433295e0",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_41679ac4-317"
+   },
+   {
+    "id": "M1-07",
+    "base": "PUB-09",
+    "now": "2026-10-26T14:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "d958c1ba-9f93-40fc-8617-d1e3860a78fb",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_1b42773c-d3e"
+   },
+   {
+    "id": "M1-08",
+    "base": "PUB-12",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ffbe9d09-26c4-41d1-ab60-22bb2ff19a2d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_f142dcc0-15e"
+   },
+   {
+    "id": "M1-09",
+    "base": "PUB-13",
+    "now": "2026-12-17T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "5e3a50b8-d913-4e39-9dd0-a7d8e5cd14fa",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_36c1395e-bf1"
+   },
+   {
+    "id": "M1-10",
+    "base": "PUB-08",
+    "now": "2026-11-13T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a3cf4077-bd3c-43c9-9631-5ba81729780f",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_abe8f7b3-08f"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "f9a85556-52e6-4e54-9c39-21cd1d3a4d16",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_0d8ed9c2-0bd"
+   },
+   {
+    "id": "M1-12",
+    "base": "PUB-03",
+    "now": "2026-11-03T12:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "c1e85e43-21e7-4630-a98d-72553fa7cb53",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_cd3f3db1-02c"
+   },
+   {
+    "id": "M1-13",
+    "base": "PUB-11",
+    "now": "2026-11-14T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "598a82f4-d111-4012-a21a-de3582753926",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_b9bff0d2-9f8"
+   }
+  ],
+  [
+   {
+    "id": "M1-01",
+    "base": "PUB-01",
+    "now": "2026-10-13T10:15",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 420.0, '2026-10-13')]",
+     "the call was not closed with close_call",
+     "conversation: The conversation failed to meet all the success criteria. While the security questions were correctly verified before the account details were retrieved (verified in system events before the 'get_account' call) and the opening sentence correctly identified the assistant and the recording notice, the agent never mentioned a confirmation text message. After the user confirmed the payment details in "
+    ],
+    "call_id": "47a5fbe0-0b75-4505-9111-1424c22b50c1",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "customer_id": "c_50abf760-892"
+   },
+   {
+    "id": "M1-02",
+    "base": "PUB-02",
+    "now": "2026-10-15T16:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "0f28f342-c177-4c9b-b4df-ff16ac615c64",
+    "tools": [
+     "schedule_callback",
+     "close_call"
+    ],
+    "customer_id": "c_a8a40d38-62b"
+   },
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_reached', 'unclear'), expected ('promise', None)",
+     "promises [], expected [('p1', 540.0, '2026-10-22')]",
+     "conversation: The agent correctly proposed the full overdue amount of 540 for the day after the user's payday, which is Thursday, 22 October (Message 8). The user agreed and the agent confirmed the promise was noted (Message 10). However, the call failed to end properly. After the initial goodbye at Message 12, the agent entered an excessive repetitive loop with the user, exchanging 'Goodbye' for 70 additional "
+    ],
+    "call_id": "7bd25cca-a8bb-46c4-bcf6-de6111a8356e",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_f845413e-421"
+   },
+   {
+    "id": "M1-04",
+    "base": "PUB-10",
+    "now": "2026-10-16T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "25fab4ef-1219-4c0d-a897-f12acec91529",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_ea82fd9a-bce"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('promise', None)",
+     "promises [], expected [('p1', 1250.0, '2026-10-28')]",
+     "the call was not closed with close_call",
+     "conversation: The agent failed all success criteria. Specifically, after the customer proposed paying on November 6th (Message 7), the agent immediately triggered a call closure with the reason 'refused' (seen in the system event for the close_call function), violating the requirement that the customer's own date not be counted as a refusal. Additionally, the agent never mentioned or offered October 28th as the"
+    ],
+    "call_id": "cdd09124-2f4b-4c81-9bb7-025dc4bbe7df",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account"
+    ],
+    "customer_id": "c_bee7c7aa-4da"
+   },
+   {
+    "id": "M1-06",
+    "base": "PUB-06",
+    "now": "2026-10-22T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "b716a281-bbbb-4a01-8f4e-e65d1afca175",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_930b3478-3b4"
+   },
+   {
+    "id": "M1-07",
+    "base": "PUB-09",
+    "now": "2026-10-26T14:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "6ed88c99-a629-4ae7-9a70-4aca47739a57",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_12d535d1-54a"
+   },
+   {
+    "id": "M1-08",
+    "base": "PUB-12",
+    "now": "2026-10-21T11:00",
+    "pass": false,
+    "failed": [
+     "conversation: The assistant failed to follow the attempt limits for the loans. For the personal loan, three attempts were made (the initial bulk request in [Message 8], the incorrect confirmation in [Message 10], and the specific request in [Message 14]), while only one attempt was permitted. For the car loan, four attempts were made ([Message 8], [Message 10], [Message 16], and [Message 18]) instead of the two"
+    ],
+    "call_id": "888a5c25-98c8-49b1-ae40-e06a821d7621",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_b0f1140f-4a2"
+   },
+   {
+    "id": "M1-09",
+    "base": "PUB-13",
+    "now": "2026-12-17T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "6dfa43b2-9f12-4fa4-b9c4-4e60227170c4",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_6bd51379-4f5"
+   },
+   {
+    "id": "M1-10",
+    "base": "PUB-08",
+    "now": "2026-11-13T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "ffa28693-e636-4f3a-911b-d0326eac075c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_bf82b864-34b"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": false,
+    "failed": [
+     "outcome (None, None), expected ('transferred', 'support')",
+     "transfers [], expected [{'queue': 'support'}]",
+     "the call was not closed with close_call",
+     "conversation: The agent failed multiple criteria: it did not express any sympathy to the user, and it ended the call instead of transferring the user to the support queue. The agent became stuck in a loop repeatedly asking for the user's date of birth because the identity verification API was failing, eventually concluding the call without resolving the user's needs or following the required protocol."
+    ],
+    "call_id": "43aff1dd-e54e-4822-bce2-cfe9ea6eb1c8",
+    "tools": [
+     "verify_identity"
+    ],
+    "customer_id": "c_e351ac26-b2b"
+   },
+   {
+    "id": "M1-12",
+    "base": "PUB-03",
+    "now": "2026-11-03T12:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "9fc2e801-fb7d-4c80-8ead-71635c577c08",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_9adaf779-079"
+   },
+   {
+    "id": "M1-13",
+    "base": "PUB-11",
+    "now": "2026-11-14T10:00",
+    "pass": false,
+    "failed": [
+     "conversation: The conversation failed the criterion regarding the first proposal. The assistant proposed payment 'today' in Message 6, which constitutes the first proposal. The success criteria required the first proposal to be Thursday 19 November, which did not occur until Message 8. The other criteria were met: the assistant listed the three products (credit card, personal loan, and car loan) in Message 6 be"
+    ],
+    "call_id": "f4fcaeb9-26fd-4527-9d07-0f2f2ebd0421",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_43a24f6e-5b8"
+   }
+  ],
+  [
+   {
+    "id": "M1-01",
+    "base": "PUB-01",
+    "now": "2026-10-13T10:15",
+    "pass": true,
+    "failed": [],
+    "call_id": "db438ddc-5212-4509-b6c0-22d8de8ff657",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_7e2a383c-18d"
+   },
+   {
+    "id": "M1-02",
+    "base": "PUB-02",
+    "now": "2026-10-15T16:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_reached', 'no_callback'), expected ('not_reached', 'callback')",
+     "callbacks [], expected [{'date': '2026-10-16', 'time': '17:00'}]",
+     "conversation: The assistant correctly maintained privacy by not disclosing the reason for the call to the husband (Message 2) and asked for an alternative time after the user mentioned six in the evening (Message 4). however, the final criterion was not met as no callback was booked for tomorrow at 17:00. Although the user suggested this time in Message 5, the call ended (customer-ended-call) without the agent "
+    ],
+    "call_id": "9da55a91-f544-491f-ac41-d379e22c104c",
+    "tools": [
+     "close_call"
+    ],
+    "customer_id": "c_a67d86ab-ba9"
+   },
+   {
+    "id": "M1-03",
+    "base": "PUB-07",
+    "now": "2026-10-14T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 540.0, '2026-10-22')]",
+     "conversation: The agent successfully proposed the full amount of 540 on Thursday, 22 October 2026, which the customer accepted. However, the success criteria were not met because the promise was never actually recorded in the system; the final `close_call` event shows an outcome of 'no_promise' and there was no functional call to record it. Furthermore, the agent failed to end the call properly, entering a repe"
+    ],
+    "call_id": "69faa708-35a4-45ce-8acf-554313066a68",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_c03477df-187"
+   },
+   {
+    "id": "M1-04",
+    "base": "PUB-10",
+    "now": "2026-10-16T11:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_verified', 'declined'), expected ('promise', None)",
+     "promises [], expected [('p1', 365.0, '2026-10-22')]",
+     "conversation: The conversation failed to meet several success criteria because it ended prematurely during the identity verification phase. 1) The agent did not propose Thursday 22 October (the third business day after today). 2) No promise was recorded in a ledger, and no retry logic occurred. 3) The conversation ended after the user provided the last four digits of their phone number, and a 'close_call' funct"
+    ],
+    "call_id": "9ee8b041-d7e3-4f8d-a87e-1cbeac469337",
+    "tools": [
+     "verify_identity",
+     "close_call"
+    ],
+    "customer_id": "c_0490db8b-0f6"
+   },
+   {
+    "id": "M1-05",
+    "base": "PUB-04",
+    "now": "2026-10-20T10:00",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 1250.0, '2026-10-28')]",
+     "conversation: The agent failed to meet the success criteria because no promise was recorded for October 28th. Although the agent offered the correct deadline in [Message 8] and [Message 10], it ultimately accepted the customer's preferred date of November 6th in [Message 12]. Furthermore, the system events show that the call was closed with an outcome of 'no_promise' and a reason of 'refused', which directly co"
+    ],
+    "call_id": "fb9601db-1f29-4b64-a1b1-be20a4eedf60",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "close_call"
+    ],
+    "customer_id": "c_fa648735-fda"
+   },
+   {
+    "id": "M1-06",
+    "base": "PUB-06",
+    "now": "2026-10-22T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "02ce15c0-dc63-4e23-a188-a185fb082963",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_6479e7d5-4ee"
+   },
+   {
+    "id": "M1-07",
+    "base": "PUB-09",
+    "now": "2026-10-26T14:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "a60cbf93-8e7c-453d-8017-8e7bcca107f3",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_25b5655b-07a"
+   },
+   {
+    "id": "M1-08",
+    "base": "PUB-12",
+    "now": "2026-10-21T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "2284a41f-9664-476f-8aea-d8a9e0ad2c2a",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_68b29a95-7f8"
+   },
+   {
+    "id": "M1-09",
+    "base": "PUB-13",
+    "now": "2026-12-17T11:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "243f677b-b150-4b38-befe-17a2261ffa9d",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_81538f9c-5ca"
+   },
+   {
+    "id": "M1-10",
+    "base": "PUB-08",
+    "now": "2026-11-13T15:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "1da6477f-f69a-47ef-b6d3-62c4ef42d409",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_d6a25dde-1f8"
+   },
+   {
+    "id": "M1-11",
+    "base": "PUB-05",
+    "now": "2026-11-09T09:30",
+    "pass": true,
+    "failed": [],
+    "call_id": "ab225e6f-247e-4a01-8ae7-2fa2b3904d4c",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "transfer_to_agent",
+     "close_call"
+    ],
+    "customer_id": "c_31a5d2fc-00e"
+   },
+   {
+    "id": "M1-12",
+    "base": "PUB-03",
+    "now": "2026-11-03T12:00",
+    "pass": false,
+    "failed": [
+     "outcome ('not_reached', 'unclear'), expected ('not_verified', 'failed')",
+     "conversation: The conversation ended prematurely before any verification checks or referrals could take place. Specifically: - The agent did not perform a verification check, so the condition regarding the third wrong answer was not met. - The agent did not refer the user to a branch or the Kestrel app as required. - System events show the agent called 'close_call' immediately after the user confirmed their ide"
+    ],
+    "call_id": "910f4a9d-b131-46c9-bb5c-be961e450806",
+    "tools": [
+     "close_call"
+    ],
+    "customer_id": "c_854585e6-0a9"
+   },
+   {
+    "id": "M1-13",
+    "base": "PUB-11",
+    "now": "2026-11-14T10:00",
+    "pass": true,
+    "failed": [],
+    "call_id": "141905fa-b436-4340-a0bf-9a9aaa9fb5f0",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_7b4667a1-9d4"
+   }
+  ]
+ ]
+}

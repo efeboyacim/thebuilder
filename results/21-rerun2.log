@@ -1,0 +1,17 @@
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+FAIL M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+       - outcome ('transferred', 'human'), expected ('transferred', 'support')
+       - transfers [{'queue': 'general'}], expected [{'queue': 'support'}]
+-- run 1 of 2: 2 / 3 passed, 115 s
+
+PASS M1-03 (PUB-07, now 2026-10-14T11:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-05 (PUB-04, now 2026-10-20T10:00) | verify_identity > verify_identity > get_account > create_promise > close_call
+PASS M1-11 (PUB-05, now 2026-11-09T09:30) | verify_identity > verify_identity > get_account > transfer_to_agent > close_call
+-- run 2 of 2: 3 / 3 passed, 270 s
+
+PASS M1-03 2/2
+PASS M1-05 2/2
+FAIL M1-11 1/2
+
+2 / 3 passed. Last simulation 4a638172-d9e8-4489-bb5d-2d44c570999e, status completed, 384 s.
