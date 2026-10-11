@@ -1,0 +1,4 @@
+events: 1 item(s) differ: (('confirm', 'identity', 'negotiate', 'open'), 2, False, False, 'not_specified', 'not_specified', "('no_promise', 'refused', None, 'refused')", "('not_verified', 'declined', None, None)", 'end_call') vs (('confirm', 'identity', 'negotiate', 'open'), 2, False, True, 'not_specified', 'not_specified', "('no_promise', 'refused', None, 'refused')", "('not_verified', 'declined', None, None)", 'end_call')
+forbidden_codes: ['legal_hold', 'write_off'] vs []
+free_mode_rules: [('negotiate', 'The customer says on which weekday they are paid')] vs [('negotiate', 'The customer says on which weekday they are paid.')]
+3 difference(s)

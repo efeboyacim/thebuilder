@@ -447,7 +447,7 @@
               "min_occurrences": {"type": "integer", "minimum": 1, "description": "How many times the customer must say it before it applies (a rule that needs it said twice = 2)."},
               "suppresses": {"type": "array", "items": {"type": "string"},
                              "description": "Ids of events that no longer apply once this one did, and persuasion when no persuasion attempt may follow it (a refusal then ends the call with on_no)."},
-              "below_min_template": {"$ref": "#/$defs/optional_text", "description": "Said, as the whole reply, when it was said fewer than min_occurrences times (for example a question whether the agent can help first); not_specified: the message is handled as usual."},
+              "below_min_template": {"$ref": "#/$defs/optional_text", "description": "Said, as the whole reply, when it was said fewer than min_occurrences times, only when the material says what to say then (for example a question whether the agent can help first); not_specified otherwise: the message is then handled as usual."},
               "template": {"$ref": "#/$defs/optional_text", "description": "Said when it applies. When it ends with a yes/no question, on_yes and on_no say what follows."},
               "on_yes": {"$ref": "#/$defs/target"},
               "on_no": {"$ref": "#/$defs/target", "description": "Also used when the customer refuses a payment after this event suppressed persuasion."},

@@ -1,0 +1,1743 @@
+{
+ "spec_version": "0",
+ "call_variables": [
+  {
+   "name": "customer_id",
+   "meaning": "The customer's id, sent with every tool call."
+  },
+  {
+   "name": "first_name",
+   "meaning": "First name of the person the call is for."
+  },
+  {
+   "name": "last_name",
+   "meaning": "Last name of the person the call is for."
+  },
+  {
+   "name": "title",
+   "meaning": "The customer's title; the customer is addressed as title and last name."
+  },
+  {
+   "name": "now",
+   "meaning": "The date and time of the call; every date and time rule is measured from it."
+  }
+ ],
+ "bindings": {
+  "call_vars": {
+   "customer_key": "customer_id",
+   "clock": "now",
+   "given_name": "first_name",
+   "family_name": "last_name",
+   "honorific": "title"
+  },
+  "tools": {
+   "verify": "verify_identity",
+   "lookup": "get_account",
+   "record_promise": "create_promise",
+   "record_note": "add_note",
+   "book_callback": "schedule_callback",
+   "transfer": "transfer_to_agent",
+   "close": "close_call"
+  },
+  "request": {
+   "verify": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    },
+    "field": {
+     "source": "engine",
+     "value": "question"
+    },
+    "answer": {
+     "source": "engine",
+     "value": "answer"
+    }
+   },
+   "lookup": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    }
+   },
+   "record_promise": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    },
+    "product_id": {
+     "source": "engine",
+     "value": "product_ref"
+    },
+    "amount": {
+     "source": "engine",
+     "value": "amount",
+     "convert": "number_2dp"
+    },
+    "date": {
+     "source": "engine",
+     "value": "date",
+     "convert": "date_iso"
+    }
+   },
+   "record_note": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    },
+    "product_id": {
+     "source": "engine",
+     "value": "product_ref"
+    },
+    "reason": {
+     "source": "engine",
+     "value": "note_reason"
+    },
+    "text": {
+     "source": "engine",
+     "value": "note_text"
+    }
+   },
+   "book_callback": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    },
+    "date": {
+     "source": "engine",
+     "value": "date",
+     "convert": "date_iso"
+    },
+    "time": {
+     "source": "engine",
+     "value": "time",
+     "convert": "time_hhmm"
+    }
+   },
+   "transfer": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    },
+    "queue": {
+     "source": "engine",
+     "value": "queue"
+    }
+   },
+   "close": {
+    "customer_id": {
+     "source": "call_var",
+     "value": "customer_key"
+    },
+    "outcome": {
+     "source": "engine",
+     "value": "outcome"
+    },
+    "reason": {
+     "source": "engine",
+     "value": "reason"
+    }
+   }
+  },
+  "response": {
+   "verify": {
+    "ok": "ok",
+    "error": "error",
+    "verified": "verified",
+    "fully_verified": "all_verified",
+    "attempts_left": "wrong_answers_left",
+    "hint": "hint"
+   },
+   "lookup": {
+    "ok": "ok",
+    "error": "error",
+    "products": "products",
+    "item": {
+     "ref": "product_id",
+     "kind": "type",
+     "due_amount": "past_due",
+     "days_overdue": "days_late"
+    }
+   },
+   "record_promise": {
+    "ok": "ok",
+    "error": "error",
+    "promise_ref": "promise_id"
+   },
+   "record_note": {
+    "ok": "ok",
+    "error": "error"
+   },
+   "book_callback": {
+    "ok": "ok",
+    "error": "error"
+   },
+   "transfer": {
+    "ok": "ok",
+    "error": "error"
+   },
+   "close": {
+    "ok": "ok",
+    "error": "error"
+   }
+  }
+ },
+ "calendar": {
+  "business_weekdays": [
+   "mon",
+   "tue",
+   "wed",
+   "thu",
+   "fri"
+  ],
+  "holidays": [
+   "2026-10-19",
+   "2026-10-30",
+   "2026-11-02",
+   "2026-11-16",
+   "2026-12-24",
+   "2026-12-25",
+   "2026-12-31",
+   "2027-01-01"
+  ],
+  "weekday_semantics": "nearest",
+  "named_periods": [],
+  "refs": [
+   "R9",
+   "R29",
+   "R30",
+   "R62"
+  ]
+ },
+ "opening": {
+  "template": "Hello, this is Kestrel Bank's automated assistant, and we are recording this conversation for quality purposes. Could I speak to {{title}} {{last_name}}, please?",
+  "required_content": [
+   "this is Kestrel Bank's automated assistant",
+   "the conversation is being kept on tape for quality purposes",
+   "Could I speak to {title} {last_name}, please?"
+  ],
+  "forbidden_before_verification": [
+   "arrears",
+   "debt",
+   "recoveries",
+   "payment",
+   "amount",
+   "credit card",
+   "personal loan",
+   "car loan"
+  ],
+  "confirmation": {
+   "counts_as_yes": [
+    "yes",
+    "speaking",
+    "that's me",
+    "the person's own name"
+   ],
+   "does_not_count": [
+    "hello?",
+    "what's this about?"
+   ],
+   "max_asks": 2,
+   "question_then_reask_counts": true,
+   "reask_template": "Could I speak to {{title}} {{last_name}}, please?",
+   "on_unclear": "not_reached_unclear",
+   "refs": [
+    "R11",
+    "R12"
+   ]
+  },
+  "refs": [
+   "R1",
+   "R10",
+   "R11"
+  ]
+ },
+ "third_party": {
+  "may_answer_identity": false,
+  "ask_reachable_template": "When will {{title}} {{last_name}} be available?",
+  "deflect_template": "I'm sorry, I can only speak with {{title}} {{last_name}}. When will {{title}} {{last_name}} be available?",
+  "callback": {
+   "enabled": true,
+   "day_rule": "d == today or (d > today and d <= add_business_days(today, 2) and is_business_day(d))",
+   "windows": [
+    {
+     "start": "09:00",
+     "end": "17:30"
+    }
+   ],
+   "start_inclusive": true,
+   "end_inclusive": true,
+   "after_now": true,
+   "min_lead_minutes": 30,
+   "granularity_minutes": "not_specified",
+   "retry_asks": 1,
+   "ask_time_template": "At what time on that day could we call back?",
+   "invalid_template": "I'm sorry, we can only call back today or on one of the next two business days, between 9 am and 5:30 pm, and at least 30 minutes from now. What other time would suit?",
+   "on_booked": "not_reached_callback",
+   "on_invalid_exhausted": "not_reached_no_callback",
+   "refs": [
+    "R15",
+    "R66"
+   ]
+  },
+  "on_no_answer": "not_reached_no_callback",
+  "terminations": [
+   {
+    "id": "wrong_number",
+    "trigger": "Wrong number, or nobody of that name lives here",
+    "stages": [
+     "open",
+     "third",
+     "identity"
+    ],
+    "situation": "not_reached_wrong_number",
+    "refs": [
+     "R16"
+    ]
+   },
+   {
+    "id": "deceased",
+    "trigger": "The customer has passed away",
+    "stages": [
+     "open",
+     "third",
+     "identity"
+    ],
+    "situation": "not_reached_deceased",
+    "refs": [
+     "R17"
+    ]
+   }
+  ],
+  "refs": [
+   "R13",
+   "R18"
+  ]
+ },
+ "identity": {
+  "questions": [
+   {
+    "field": "date_of_birth",
+    "ask_template": "Before we go on, I need to ask you two security questions. What is your date of birth?",
+    "reask_template": "Could you tell me your date of birth again, please?",
+    "answer_type": "date",
+    "digits_count": "not_specified",
+    "api_format": "YYYY-MM-DD",
+    "complete_pattern": "\\d{4}-\\d{2}-\\d{2}",
+    "numeric_date_order": "day_month_year",
+    "refs": [
+     "R19"
+    ]
+   },
+   {
+    "field": "phone_last4",
+    "ask_template": "Thank you. What are the last four digits of the phone number we have on file for you?",
+    "reask_template": "Could you tell me the last four digits of your phone number again, please?",
+    "answer_type": "digits",
+    "digits_count": 4,
+    "api_format": "four digits",
+    "complete_pattern": "\\d{4}",
+    "numeric_date_order": "not_specified",
+    "refs": [
+     "R19"
+    ]
+   }
+  ],
+  "one_at_a_time": true,
+  "limits": {
+   "total_wrong": 3,
+   "per_question_wrong": "not_specified",
+   "on_wrong": "repeat_same",
+   "refs": [
+    "R20"
+   ]
+  },
+  "hints": [
+   {
+    "value": "day_month_swapped",
+    "question": "date_of_birth",
+    "say_template": "Could you say your date of birth again, with the month as a word, please?",
+    "counts_as_wrong": false,
+    "refs": [
+     "R21"
+    ]
+   }
+  ],
+  "decline": {
+   "explain_template": "These questions protect your account, so I need to ask them before we can go on.",
+   "max_refusals": 2,
+   "purpose_question": "counts_as_refusal",
+   "on_declined": "not_verified_declined",
+   "refs": [
+    "R22"
+   ]
+  },
+  "on_failed": "not_verified_failed",
+  "refs": [
+   "R19",
+   "R20"
+  ]
+ },
+ "disclosure": {
+  "intro_template": "Thank you, {{title}} {{last_name}}. I am calling from the Kestrel Bank recoveries team about overdue payments.",
+  "product_template": "On your {{product_name}}, {{due_amount}} is overdue, and it is {{days_overdue}} days overdue.",
+  "product_names": [
+   {
+    "kind": "credit_card",
+    "name_template": "credit card ending {{card_last4}}",
+    "refs": [
+     "R23"
+    ]
+   },
+   {
+    "kind": "personal_loan",
+    "name_template": "personal loan",
+    "refs": [
+     "R23"
+    ]
+   },
+   {
+    "kind": "car_loan",
+    "name_template": "car loan",
+    "refs": [
+     "R23"
+    ]
+   }
+  ],
+  "refs": [
+   "R23"
+  ]
+ },
+ "products": {
+  "bands": [
+   {
+    "id": "early",
+    "selector": "days_overdue >= 1 and days_overdue <= 10",
+    "deadline": "roll(add_calendar_days(today, 14), 'prev')",
+    "attempts": 2,
+    "action": "negotiate",
+    "situation": "not_specified",
+    "refs": [
+     "R25",
+     "R28",
+     "R64"
+    ]
+   },
+   {
+    "id": "late",
+    "selector": "days_overdue >= 11 and days_overdue <= 45",
+    "deadline": "roll(add_calendar_days(today, 8), 'prev')",
+    "attempts": 1,
+    "action": "negotiate",
+    "situation": "not_specified",
+    "refs": [
+     "R25",
+     "R28",
+     "R63"
+    ]
+   }
+  ],
+  "floor": "minimum_payment if kind == 'credit_card' else instalment_amount",
+  "unmatched": "not_specified",
+  "refs": [
+   "R7",
+   "R25",
+   "R29",
+   "R35"
+  ]
+ },
+ "negotiation": {
+  "first_ask": {
+   "amount": "due_amount",
+   "date": "today",
+   "scope": "all_products",
+   "template": "Can you pay the full amount today?",
+   "template_multi": "Can you pay all {{product_count}} of them in full today, {{total_amount}} in total?",
+   "refs": [
+    "R34",
+    "R39"
+   ]
+  },
+  "non_business_day": {
+   "policy": "prev",
+   "template": "{{named_date}} is not a business day, so the closest day I can offer is {{date}}. Can you pay {{amount}} on {{date}}?",
+   "refs": [
+    "R31"
+   ]
+  },
+  "after_deadline": {
+   "policy": "offer_deadline",
+   "template": "The latest possible day is {{deadline}}. Can you pay {{amount}} on {{date}}?",
+   "refs": [
+    "R33"
+   ]
+  },
+  "vague": {
+   "re_asks": 1,
+   "template": "Which exact day would that be?",
+   "then": "propose_deadline",
+   "propose_template": "Then I can offer {{date}}, the latest possible day. Can you pay {{amount}} on {{date}}?",
+   "refs": [
+    "R32"
+   ]
+  },
+  "ask_date_template": "That day is not possible, I'm afraid. Which other day would work for you?",
+  "ladder": [
+   {
+    "step": 1,
+    "bands": [],
+    "amount": "floor if said_too_much else due_amount",
+    "date": "add_business_days(today, 3)",
+    "template": "Could you pay {{amount}} on {{date}}?",
+    "refs": [
+     "R41",
+     "R42"
+    ]
+   },
+   {
+    "step": 2,
+    "bands": [
+     "early"
+    ],
+    "amount": "floor",
+    "date": "deadline",
+    "template": "Could you pay {{amount}} on {{date}}? The remaining balance would stay overdue.",
+    "refs": [
+     "R65"
+    ]
+   }
+  ],
+  "non_answer_is_refusal": true,
+  "dedupe_refused_offers": true,
+  "on_exhausted": "no_promise_refused",
+  "amounts": {
+   "accept_range": "floor_to_due",
+   "too_much": {
+    "policy": "offer_floor",
+    "template": "I can offer you a lower amount of {{amount}} on {{date}}; the remaining balance stays overdue. Can you pay {{amount}} on {{date}}?",
+    "refs": [
+     "R36"
+    ]
+   },
+   "below_floor": {
+    "policy": "refusal",
+    "template": "I'm sorry, I cannot take a promise of {{named_amount}}: it is below the lowest amount the bank can accept.",
+    "refs": [
+     "R38"
+    ]
+   },
+   "floor_offers": 1,
+   "same_amount_template": "Could you pay that same amount on {{date}} instead?",
+   "refs": [
+    "R34",
+    "R36",
+    "R37",
+    "R40"
+   ]
+  },
+  "multi": {
+   "product_intro_template": "Let's look at your {{product_name}}, with {{due_amount}} overdue.",
+   "overflow": "own_deadline",
+   "overflow_note_template": "the latest possible day for your {{product_name}} is {{deadline}}, so that one is on {{date}}",
+   "failed_promise": "note_and_continue",
+   "refs": [
+    "R39",
+    "R46",
+    "R67"
+   ]
+  },
+  "refs": [
+   "R34",
+   "R39",
+   "R40",
+   "R41",
+   "R43"
+  ]
+ },
+ "confirm": {
+  "mode": "all_at_once",
+  "readback_template": "So, to sum up: {{items}}. {{question}}",
+  "item_template": "{{amount}} for your {{product_name}} on {{date}}",
+  "question": "Is that correct?",
+  "needs_clear_yes": true,
+  "on_change": "recheck_and_read_back",
+  "recording_template": "Thank you. One moment while I put that in.",
+  "recorded_template": "Your promise to pay {{amount}} on {{date}} for your {{product_name}} is recorded.",
+  "after_recorded_sentence": "A confirmation will follow by text message.",
+  "change_after_record_template": "not_specified",
+  "on_recorded": "promise_recorded",
+  "refs": [
+   "R45",
+   "R47",
+   "R48",
+   "R49",
+   "R51"
+  ]
+ },
+ "failure_policy": {
+  "lookup": {
+   "retries": "not_specified",
+   "on_exhausted": "not_specified",
+   "refs": []
+  },
+  "record_promise": {
+   "retries": 2,
+   "on_exhausted": "no_promise_service_error",
+   "refs": [
+    "R67"
+   ]
+  },
+  "book_callback": {
+   "retries": "not_specified",
+   "on_exhausted": "not_specified",
+   "refs": []
+  },
+  "transfer": {
+   "retries": "not_specified",
+   "on_exhausted": "not_specified",
+   "refs": []
+  },
+  "refs": [
+   "R67"
+  ]
+ },
+ "events": [
+  {
+   "id": "hardship",
+   "trigger": "The customer mentions illness, a bereavement or losing their job",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [
+    "restructuring",
+    "persuasion"
+   ],
+   "below_min_template": "not_specified",
+   "template": "I am very sorry to hear that. Would you like me to put you through to our welfare team?",
+   "on_yes": "transferred_support",
+   "on_no": "no_promise_hardship",
+   "then": "not_specified",
+   "then_before_verification": "not_specified",
+   "several_products": "end_call",
+   "refs": [
+    "R44"
+   ]
+  },
+  {
+   "id": "restructuring",
+   "trigger": "A request for a new repayment plan or smaller instalments",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "I will put you through to a colleague who can talk to you about that.",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "transferred_restructuring",
+   "then_before_verification": "not_specified",
+   "several_products": "end_call",
+   "refs": [
+    "R52"
+   ]
+  },
+  {
+   "id": "paid",
+   "trigger": "I have already paid",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "Thank you for letting me know. A payment can take up to one business day to show.",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "paid",
+   "then_before_verification": "not_specified",
+   "several_products": "note_and_continue",
+   "refs": [
+    "R53"
+   ]
+  },
+  {
+   "id": "dispute",
+   "trigger": "That is not my account, I never had this, or a claim that the product was closed or settled long ago",
+   "stages": [
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "I understand, I will make a note of that.",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "no_promise_dispute",
+   "then_before_verification": "not_specified",
+   "several_products": "note_and_continue",
+   "refs": [
+    "R54"
+   ]
+  },
+  {
+   "id": "human",
+   "trigger": "A request to speak to a person",
+   "stages": [
+    "open",
+    "identity",
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 1,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "Of course, I will put you through to a colleague now.",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "transferred_human",
+   "then_before_verification": "not_specified",
+   "several_products": "end_call",
+   "refs": [
+    "R68"
+   ]
+  },
+  {
+   "id": "not_talk",
+   "trigger": "The customer says they do not want to talk",
+   "stages": [
+    "open",
+    "identity",
+    "negotiate",
+    "confirm"
+   ],
+   "min_occurrences": 2,
+   "suppresses": [],
+   "below_min_template": "not_specified",
+   "template": "not_specified",
+   "on_yes": "not_specified",
+   "on_no": "not_specified",
+   "then": "no_promise_refused",
+   "then_before_verification": "not_verified_declined",
+   "several_products": "end_call",
+   "refs": [
+    "R56"
+   ]
+  }
+ ],
+ "side_questions": {
+  "answers": [
+   {
+    "id": "scam",
+    "trigger": "Is this a scam?",
+    "template": "You can check this call by ringing the number on the back of your Kestrel Bank card.",
+    "refs": [
+     "R2"
+    ]
+   },
+   {
+    "id": "ai",
+    "trigger": "Am I talking to a machine, a robot or an AI?",
+    "template": "Yes, I am Kestrel Bank's automated assistant.",
+    "refs": [
+     "R3"
+    ]
+   }
+  ],
+  "other": {
+   "policy": "answer_from_facts",
+   "no_info_template": "I'm sorry, I don't have that information.",
+   "refs": [
+    "R57"
+   ]
+  },
+  "refs": [
+   "R2",
+   "R3",
+   "R57"
+  ]
+ },
+ "notes": {
+  "enabled": true,
+  "on_transfer": "drop",
+  "text_template": "No promise for the {{product_name}}: {{note_reason}}.",
+  "refs": [
+   "R58"
+  ]
+ },
+ "situations": [
+  {
+   "id": "promise_recorded",
+   "when": "At least one promise was recorded and the call was not transferred.",
+   "outcome": "promise",
+   "reason": "",
+   "queue": "",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time, {{title}} {{last_name}}. Goodbye.",
+   "refs": [
+    "R60",
+    "R61",
+    "R70"
+   ]
+  },
+  {
+   "id": "paid",
+   "when": "The customer says a product is already paid; the call closes paid when every product is paid.",
+   "outcome": "paid",
+   "reason": "",
+   "queue": "",
+   "note_reason": "paid",
+   "say": "",
+   "farewell": "Thank you for your time, {{title}} {{last_name}}. Goodbye.",
+   "refs": [
+    "R53",
+    "R60",
+    "R61",
+    "R71"
+   ]
+  },
+  {
+   "id": "transferred_restructuring",
+   "when": "The customer asks for a new repayment plan or smaller instalments.",
+   "outcome": "transferred",
+   "reason": "restructuring",
+   "queue": "restructuring",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R52",
+    "R61",
+    "R76"
+   ]
+  },
+  {
+   "id": "transferred_human",
+   "when": "The customer asks to speak to a person.",
+   "outcome": "transferred",
+   "reason": "human",
+   "queue": "general",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R68",
+    "R61",
+    "R76"
+   ]
+  },
+  {
+   "id": "transferred_support",
+   "when": "Hardship: the customer accepts being put through to the welfare team.",
+   "outcome": "transferred",
+   "reason": "support",
+   "queue": "support",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R44",
+    "R61",
+    "R76"
+   ]
+  },
+  {
+   "id": "no_promise_refused",
+   "when": "A product has no persuasion attempts left, or the customer said twice after verification that they do not want to talk.",
+   "outcome": "no_promise",
+   "reason": "refused",
+   "queue": "",
+   "note_reason": "refused",
+   "say": "",
+   "farewell": "Thank you for your time, {{title}} {{last_name}}. Goodbye.",
+   "refs": [
+    "R43",
+    "R56",
+    "R61",
+    "R77"
+   ]
+  },
+  {
+   "id": "no_promise_hardship",
+   "when": "Hardship: the customer declines being put through to the welfare team.",
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "queue": "",
+   "note_reason": "hardship",
+   "say": "",
+   "farewell": "Thank you for your time, {{title}} {{last_name}}. Take care. Goodbye.",
+   "refs": [
+    "R44",
+    "R61",
+    "R77"
+   ]
+  },
+  {
+   "id": "no_promise_dispute",
+   "when": "The customer disputes the product.",
+   "outcome": "no_promise",
+   "reason": "dispute",
+   "queue": "",
+   "note_reason": "dispute",
+   "say": "",
+   "farewell": "Thank you for your time, {{title}} {{last_name}}. Goodbye.",
+   "refs": [
+    "R54",
+    "R61",
+    "R77"
+   ]
+  },
+  {
+   "id": "no_promise_service_error",
+   "when": "create_promise kept failing after two more tries.",
+   "outcome": "no_promise",
+   "reason": "service_error",
+   "queue": "",
+   "note_reason": "service_error",
+   "say": "I'm sorry, because of a technical problem I could not record your promise.",
+   "farewell": "Thank you for your time, {{title}} {{last_name}}. Goodbye.",
+   "refs": [
+    "R67",
+    "R61",
+    "R77"
+   ]
+  },
+  {
+   "id": "not_verified_failed",
+   "when": "Three wrong security answers in total.",
+   "outcome": "not_verified",
+   "reason": "failed",
+   "queue": "",
+   "note_reason": "",
+   "say": "I'm sorry, I could not confirm your identity. Please visit a branch or use the Kestrel app.",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R20",
+    "R61",
+    "R78"
+   ]
+  },
+  {
+   "id": "not_verified_declined",
+   "when": "A second refusal to answer the security questions, or the person said twice before verification that they do not want to talk.",
+   "outcome": "not_verified",
+   "reason": "declined",
+   "queue": "",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R22",
+    "R56",
+    "R61",
+    "R78"
+   ]
+  },
+  {
+   "id": "not_reached_callback",
+   "when": "A third party answered and a valid callback was booked.",
+   "outcome": "not_reached",
+   "reason": "callback",
+   "queue": "",
+   "note_reason": "",
+   "say": "We will call back on {{callback_date}} at {{callback_time}}.",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R66",
+    "R61",
+    "R79"
+   ]
+  },
+  {
+   "id": "not_reached_no_callback",
+   "when": "No valid callback time after the second answer, or no usable answer about when the customer can be reached.",
+   "outcome": "not_reached",
+   "reason": "no_callback",
+   "queue": "",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R15",
+    "R61",
+    "R79"
+   ]
+  },
+  {
+   "id": "not_reached_wrong_number",
+   "when": "Wrong number, or nobody of that name lives here.",
+   "outcome": "not_reached",
+   "reason": "wrong_number",
+   "queue": "",
+   "note_reason": "",
+   "say": "I'm sorry to have bothered you.",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R16",
+    "R61",
+    "R79"
+   ]
+  },
+  {
+   "id": "not_reached_deceased",
+   "when": "The agent is told the customer has passed away.",
+   "outcome": "not_reached",
+   "reason": "deceased",
+   "queue": "",
+   "note_reason": "",
+   "say": "My condolences.",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R17",
+    "R61",
+    "R79"
+   ]
+  },
+  {
+   "id": "not_reached_unclear",
+   "when": "The person is still not confirmed after the second ask.",
+   "outcome": "not_reached",
+   "reason": "unclear",
+   "queue": "",
+   "note_reason": "",
+   "say": "",
+   "farewell": "Thank you for your time. Goodbye.",
+   "refs": [
+    "R12",
+    "R61",
+    "R79"
+   ]
+  }
+ ],
+ "closing": {
+  "outcome_table": [
+   {
+    "outcome": "promise",
+    "reasons": []
+   },
+   {
+    "outcome": "paid",
+    "reasons": []
+   },
+   {
+    "outcome": "transferred",
+    "reasons": [
+     "restructuring",
+     "human",
+     "support"
+    ]
+   },
+   {
+    "outcome": "no_promise",
+    "reasons": [
+     "refused",
+     "hardship",
+     "dispute",
+     "service_error"
+    ]
+   },
+   {
+    "outcome": "not_verified",
+    "reasons": [
+     "failed",
+     "declined"
+    ]
+   },
+   {
+    "outcome": "not_reached",
+    "reasons": [
+     "callback",
+     "no_callback",
+     "wrong_number",
+     "deceased",
+     "unclear"
+    ]
+   }
+  ],
+  "transfer_overrides_promise": true,
+  "hangup": {
+   "open": {
+    "situation": "not_reached_unclear",
+    "stated_in_brief": false
+   },
+   "third": {
+    "situation": "not_reached_no_callback",
+    "stated_in_brief": false
+   },
+   "identity": {
+    "situation": "not_verified_declined",
+    "stated_in_brief": false
+   },
+   "negotiate": {
+    "situation": "no_promise_refused",
+    "stated_in_brief": false
+   },
+   "confirm": {
+    "situation": "no_promise_refused",
+    "stated_in_brief": false
+   }
+  },
+  "aggregation": {
+   "skip_note_reasons": [
+    "paid"
+   ],
+   "refs": [
+    "R60"
+   ]
+  },
+  "refs": [
+   "R59",
+   "R60",
+   "R61",
+   "R69",
+   "R70",
+   "R71",
+   "R72",
+   "R73",
+   "R74",
+   "R75",
+   "R76",
+   "R77",
+   "R78",
+   "R79"
+  ]
+ },
+ "phrases": [
+  {
+   "text": "Could I speak to {title} {last_name}, please?",
+   "used_in": [
+    "opening.template",
+    "opening.confirmation.reask_template"
+   ],
+   "refs": [
+    "R11"
+   ]
+  },
+  {
+   "text": "You can check this call by ringing the number on the back of your Kestrel Bank card.",
+   "used_in": [
+    "side_questions.answers[scam].template"
+   ],
+   "refs": [
+    "R2"
+   ]
+  },
+  {
+   "text": "Yes, I am Kestrel Bank's automated assistant.",
+   "used_in": [
+    "side_questions.answers[ai].template"
+   ],
+   "refs": [
+    "R3"
+   ]
+  },
+  {
+   "text": "My condolences.",
+   "used_in": [
+    "situations[not_reached_deceased].say"
+   ],
+   "refs": [
+    "R17"
+   ]
+  },
+  {
+   "text": "Can you pay the full amount today?",
+   "used_in": [
+    "negotiation.first_ask.template"
+   ],
+   "refs": [
+    "R39"
+   ]
+  },
+  {
+   "text": "Is that correct?",
+   "used_in": [
+    "confirm.question"
+   ],
+   "refs": [
+    "R45"
+   ]
+  },
+  {
+   "text": "A confirmation will follow by text message.",
+   "used_in": [
+    "confirm.after_recorded_sentence"
+   ],
+   "refs": [
+    "R51"
+   ]
+  }
+ ],
+ "residual_rules": [
+  {
+   "id": "X1",
+   "text": "Payday: if the customer says on which weekday they are paid (for example 'I get paid on Thursdays'), the first persuasion attempt for every product proposes, instead of the third business day after today, the first business day strictly after the next occurrence of that weekday strictly after today. The amount of attempt 1 is unchanged. That date must still be a valid promise date (today or later, a business day, on or before the product's deadline); if it is after the product's deadline, attempt 1 proposes the deadline instead.",
+   "stage": "negotiate",
+   "class": "flow",
+   "trigger": "The customer says on which weekday they are paid",
+   "free_mode": true,
+   "refs": [
+    "R4",
+    "R5"
+   ]
+  },
+  {
+   "id": "X2",
+   "text": "The agent never offers a discount (including a 10% discount for paying in full this week), a waiver, a payment plan or anything the policy does not mention.",
+   "stage": "any",
+   "class": "speech",
+   "trigger": "",
+   "free_mode": false,
+   "refs": [
+    "R6"
+   ]
+  },
+  {
+   "id": "X3",
+   "text": "On a transfer to restructuring, promises already recorded stay recorded; promises agreed but not yet recorded are not recorded, and the agent describes no plan.",
+   "stage": "negotiate",
+   "class": "flow",
+   "trigger": "The customer asks for a new repayment plan or smaller instalments",
+   "free_mode": false,
+   "refs": [
+    "R52"
+   ]
+  },
+  {
+   "id": "X4",
+   "text": "The agent never invents figures, dates or reasons; for a question the tools cannot answer it says it does not have that information. It does not argue with a customer who disputes a product.",
+   "stage": "any",
+   "class": "speech",
+   "trigger": "",
+   "free_mode": false,
+   "refs": [
+    "R54",
+    "R57"
+   ]
+  }
+ ],
+ "rule_index": [
+  {
+   "rule": "R1",
+   "paths": [
+    "opening.template",
+    "opening.required_content"
+   ]
+  },
+  {
+   "rule": "R2",
+   "paths": [
+    "side_questions.answers[scam]"
+   ]
+  },
+  {
+   "rule": "R3",
+   "paths": [
+    "side_questions.answers[ai]"
+   ]
+  },
+  {
+   "rule": "R4",
+   "paths": [
+    "residual:X1"
+   ]
+  },
+  {
+   "rule": "R5",
+   "paths": [
+    "residual:X1"
+   ]
+  },
+  {
+   "rule": "R6",
+   "paths": [
+    "residual:X2"
+   ]
+  },
+  {
+   "rule": "R7",
+   "paths": [
+    "products.bands"
+   ]
+  },
+  {
+   "rule": "R8",
+   "paths": [
+    "call_variables",
+    "bindings.call_vars"
+   ]
+  },
+  {
+   "rule": "R9",
+   "paths": [
+    "bindings.call_vars",
+    "calendar"
+   ]
+  },
+  {
+   "rule": "R10",
+   "paths": [
+    "opening.forbidden_before_verification"
+   ]
+  },
+  {
+   "rule": "R11",
+   "paths": [
+    "opening.template",
+    "opening.confirmation.reask_template"
+   ]
+  },
+  {
+   "rule": "R12",
+   "paths": [
+    "opening.confirmation",
+    "situations[not_reached_unclear]"
+   ]
+  },
+  {
+   "rule": "R13",
+   "paths": [
+    "third_party.ask_reachable_template",
+    "third_party.deflect_template"
+   ]
+  },
+  {
+   "rule": "R15",
+   "paths": [
+    "third_party.callback.retry_asks",
+    "third_party.callback.on_invalid_exhausted",
+    "situations[not_reached_no_callback]"
+   ]
+  },
+  {
+   "rule": "R16",
+   "paths": [
+    "third_party.terminations[wrong_number]",
+    "situations[not_reached_wrong_number]"
+   ]
+  },
+  {
+   "rule": "R17",
+   "paths": [
+    "third_party.terminations[deceased]",
+    "situations[not_reached_deceased]"
+   ]
+  },
+  {
+   "rule": "R18",
+   "paths": [
+    "third_party.may_answer_identity",
+    "third_party.deflect_template"
+   ]
+  },
+  {
+   "rule": "R19",
+   "paths": [
+    "identity.questions[0]",
+    "identity.questions[1]",
+    "identity.one_at_a_time"
+   ]
+  },
+  {
+   "rule": "R20",
+   "paths": [
+    "identity.limits",
+    "identity.on_failed",
+    "situations[not_verified_failed]"
+   ]
+  },
+  {
+   "rule": "R21",
+   "paths": [
+    "identity.hints[0]"
+   ]
+  },
+  {
+   "rule": "R22",
+   "paths": [
+    "identity.decline",
+    "situations[not_verified_declined]"
+   ]
+  },
+  {
+   "rule": "R23",
+   "paths": [
+    "disclosure",
+    "bindings.response.lookup"
+   ]
+  },
+  {
+   "rule": "R25",
+   "paths": [
+    "products.bands"
+   ]
+  },
+  {
+   "rule": "R28",
+   "paths": [
+    "products.bands[early].deadline",
+    "products.bands[late].deadline"
+   ]
+  },
+  {
+   "rule": "R29",
+   "paths": [
+    "calendar",
+    "products.bands"
+   ]
+  },
+  {
+   "rule": "R30",
+   "paths": [
+    "calendar.weekday_semantics"
+   ]
+  },
+  {
+   "rule": "R31",
+   "paths": [
+    "negotiation.non_business_day"
+   ]
+  },
+  {
+   "rule": "R32",
+   "paths": [
+    "negotiation.vague"
+   ]
+  },
+  {
+   "rule": "R33",
+   "paths": [
+    "negotiation.after_deadline"
+   ]
+  },
+  {
+   "rule": "R34",
+   "paths": [
+    "negotiation.first_ask.amount",
+    "negotiation.amounts"
+   ]
+  },
+  {
+   "rule": "R35",
+   "paths": [
+    "products.floor"
+   ]
+  },
+  {
+   "rule": "R36",
+   "paths": [
+    "negotiation.amounts.too_much",
+    "negotiation.amounts.floor_offers"
+   ]
+  },
+  {
+   "rule": "R37",
+   "paths": [
+    "negotiation.amounts.accept_range"
+   ]
+  },
+  {
+   "rule": "R38",
+   "paths": [
+    "negotiation.amounts.below_floor"
+   ]
+  },
+  {
+   "rule": "R39",
+   "paths": [
+    "negotiation.first_ask",
+    "negotiation.multi.product_intro_template"
+   ]
+  },
+  {
+   "rule": "R40",
+   "paths": [
+    "negotiation.amounts.accept_range",
+    "negotiation.non_answer_is_refusal"
+   ]
+  },
+  {
+   "rule": "R41",
+   "paths": [
+    "negotiation.ladder",
+    "products.bands",
+    "negotiation.non_answer_is_refusal"
+   ]
+  },
+  {
+   "rule": "R42",
+   "paths": [
+    "negotiation.ladder[0]"
+   ]
+  },
+  {
+   "rule": "R43",
+   "paths": [
+    "negotiation.dedupe_refused_offers",
+    "negotiation.on_exhausted",
+    "situations[no_promise_refused]"
+   ]
+  },
+  {
+   "rule": "R44",
+   "paths": [
+    "events[hardship]",
+    "situations[transferred_support]",
+    "situations[no_promise_hardship]"
+   ]
+  },
+  {
+   "rule": "R45",
+   "paths": [
+    "confirm.mode",
+    "confirm.readback_template",
+    "confirm.item_template",
+    "confirm.question"
+   ]
+  },
+  {
+   "rule": "R46",
+   "paths": [
+    "negotiation.multi.overflow",
+    "negotiation.multi.overflow_note_template"
+   ]
+  },
+  {
+   "rule": "R47",
+   "paths": [
+    "confirm.needs_clear_yes"
+   ]
+  },
+  {
+   "rule": "R48",
+   "paths": [
+    "confirm.on_change"
+   ]
+  },
+  {
+   "rule": "R49",
+   "paths": [
+    "confirm.recorded_template",
+    "confirm.recording_template"
+   ]
+  },
+  {
+   "rule": "R51",
+   "paths": [
+    "confirm.after_recorded_sentence"
+   ]
+  },
+  {
+   "rule": "R52",
+   "paths": [
+    "events[restructuring]",
+    "situations[transferred_restructuring]",
+    "residual:X3"
+   ]
+  },
+  {
+   "rule": "R53",
+   "paths": [
+    "events[paid]",
+    "situations[paid]"
+   ]
+  },
+  {
+   "rule": "R54",
+   "paths": [
+    "events[dispute]",
+    "situations[no_promise_dispute]",
+    "residual:X4"
+   ]
+  },
+  {
+   "rule": "R56",
+   "paths": [
+    "events[not_talk]"
+   ]
+  },
+  {
+   "rule": "R57",
+   "paths": [
+    "side_questions.other",
+    "residual:X4"
+   ]
+  },
+  {
+   "rule": "R58",
+   "paths": [
+    "notes",
+    "bindings.request.record_note"
+   ]
+  },
+  {
+   "rule": "R59",
+   "paths": [
+    "bindings.tools.close",
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R60",
+   "paths": [
+    "closing.aggregation",
+    "closing.transfer_overrides_promise",
+    "confirm.on_recorded"
+   ]
+  },
+  {
+   "rule": "R61",
+   "paths": [
+    "situations"
+   ]
+  },
+  {
+   "rule": "R62",
+   "paths": [
+    "calendar.holidays",
+    "calendar.business_weekdays"
+   ]
+  },
+  {
+   "rule": "R63",
+   "paths": [
+    "products.bands[late]"
+   ]
+  },
+  {
+   "rule": "R64",
+   "paths": [
+    "products.bands[early]"
+   ]
+  },
+  {
+   "rule": "R65",
+   "paths": [
+    "negotiation.ladder[1]"
+   ]
+  },
+  {
+   "rule": "R66",
+   "paths": [
+    "third_party.callback",
+    "situations[not_reached_callback]"
+   ]
+  },
+  {
+   "rule": "R67",
+   "paths": [
+    "failure_policy.record_promise",
+    "negotiation.multi.failed_promise",
+    "situations[no_promise_service_error]"
+   ]
+  },
+  {
+   "rule": "R68",
+   "paths": [
+    "events[human]",
+    "situations[transferred_human]"
+   ]
+  },
+  {
+   "rule": "R69",
+   "paths": [
+    "closing.outcome_table",
+    "forbidden_codes"
+   ]
+  },
+  {
+   "rule": "R70",
+   "paths": [
+    "situations[promise_recorded]",
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R71",
+   "paths": [
+    "situations[paid]",
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R72",
+   "paths": [
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R73",
+   "paths": [
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R74",
+   "paths": [
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R75",
+   "paths": [
+    "closing.outcome_table"
+   ]
+  },
+  {
+   "rule": "R76",
+   "paths": [
+    "situations[transferred_restructuring]",
+    "situations[transferred_human]",
+    "situations[transferred_support]"
+   ]
+  },
+  {
+   "rule": "R77",
+   "paths": [
+    "situations[no_promise_refused]",
+    "situations[no_promise_hardship]",
+    "situations[no_promise_dispute]",
+    "situations[no_promise_service_error]"
+   ]
+  },
+  {
+   "rule": "R78",
+   "paths": [
+    "situations[not_verified_failed]",
+    "situations[not_verified_declined]"
+   ]
+  },
+  {
+   "rule": "R79",
+   "paths": [
+    "situations[not_reached_callback]",
+    "situations[not_reached_no_callback]",
+    "situations[not_reached_wrong_number]",
+    "situations[not_reached_deceased]",
+    "situations[not_reached_unclear]"
+   ]
+  },
+  {
+   "rule": "R80",
+   "paths": [
+    "forbidden_codes"
+   ]
+  },
+  {
+   "rule": "R81",
+   "paths": [
+    "forbidden_codes"
+   ]
+  }
+ ],
+ "forbidden_codes": [
+  "legal_hold",
+  "write_off"
+ ]
+}

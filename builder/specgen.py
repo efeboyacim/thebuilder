@@ -136,6 +136,11 @@ Rules for the spec:
    free_mode is true only for a flow rule that none of those sections carries, typically one that depends on
    something only the customer can say; its trigger is what the customer says, in one stage. At run time a model
    applies it and code checks every action. A rule that restates what a section already does has free_mode false.
+   The engine already does these everywhere, so a rule saying only this is never free_mode: a date or an amount the
+   customer offers is handled by the date and amount sections at any point (also after an event or during a
+   transfer offer); a day shifted to the previous business day that would fall before today moves to the next
+   business day; a promise is recorded only after a clear yes to the read-back; recorded promises stay recorded;
+   every date is checked against today, the calendar and the deadline.
 7. rule_index: every digest rule with status binding appears exactly once, with the spec paths that carry it and/or
    residual:<id>. Paths are dotted, list items by [index] or [id] (situations[some_id], identity.questions[0]).
 8. refs: the ids of the digest rules a part comes from.

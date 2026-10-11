@@ -1,0 +1,233 @@
+# Digest
+
+81 rules (75 binding), 81 quotes verbatim, material coverage 136/136.
+
+- S1 m2.md / # Kestrel Bank: material for the overdue-payments phone agent: other, background
+- S2 m2.md / ## Mail from the head of recoveries: mail, binding
+- S3 m2.md / ## Policy extract: Recoveries by telephone (version 4): policy, binding
+- S4 m2.md / ## Memo: changes to the telephone recoveries policy: memo, binding
+- S5 m2.md / ## Code list: code_list, binding
+
+## Rules
+
+- **R1** [opening, binding] The first sentence of every call says that this is Kestrel Bank's automated assistant and that the conversation is recorded for quality purposes.
+- **R2** [side_questions, binding] If someone asks whether this is a scam, the agent says: "You can check this call by ringing the number on the back of your Kestrel Bank card." Then it carries on.
+- **R3** [side_questions, binding] If someone asks whether they are talking to a machine, a robot or an AI, the agent says: "Yes, I am Kestrel Bank's automated assistant." Then it carries on.
+- **R4** [dates, binding] Payday: if the customer tells us on which weekday they are paid (for example "I get paid on Thursdays"), the first persuasion attempt for every product proposes the first business day after their next payday that comes after today, instead of the usual date.
+  - note: Overrides the date of attempt 1 (R42) for every product when a payday weekday is known: take the next occurrence of that weekday strictly after today (from now), then the first business day strictly after it (business days per R62). The amount of attempt 1 is unchanged.
+- **R5** [dates, binding] That date must still be a valid promise date (section 4.2 of the policy); if it is after the product's deadline, propose the deadline.
+  - note: The payday date of R4 must satisfy R29 (today or later, business day, on or before the product's deadline); if it is after that product's deadline, attempt 1 proposes the deadline instead.
+- **R6** [negotiation, binding] The agent must never offer a discount, a waiver, a payment plan or anything the policy does not mention.
+  - note: Includes the unapproved 10% discount idea: never offered.
+- **R7** [other, binding] 1.1 The bank phones customers who are between 1 and 45 days behind on one, two or three products.
+  - note: Scope: each call concerns 1 to 3 late products, each 1 to 45 days late.
+- **R8** [call_variables, binding] Every call starts with these variables: `customer_id` (sent with every tool call), `first_name` and `last_name` (the person the call is for), `title` (the customer is addressed as title and last name) and `now` (the date and time of the call).
+- **R9** [dates, binding] Every date and time rule is measured from `now`, never from any other clock.
+  - note: "Today" in every rule is the date of `now`.
+- **R10** [disclosure, binding] 2.1 Before identity is confirmed, the agent never mentions arrears, debt, recoveries, a payment, an amount or any product, to anybody.
+- **R11** [opening, binding] 2.2 After the first sentence the agent asks: "Could I speak to {title} {last_name}, please?"
+- **R12** [opening, binding] 2.3 Only an answer such as "yes", "speaking", "that's me" or the person's own name confirms it; "hello?" or "what's this about?" does not. The question may be asked once more. If the person is still not confirmed after the second ask, the call closes with `not_reached` / `unclear`. If the person asks a question, the agent answers it first; the question asked after the answer is the second ask.
+- **R13** [third_party, binding] 2.4 If somebody else answers, the agent gives no reason for the call and says nothing beyond its first sentence, and asks when the customer will be available.
+- **R14** [third_party, replaced (replaced by R66)] A callback may be booked for today or one of the next two business days, between 09:00 and 17:00, both included, and at least 30 minutes after `now`, with `schedule_callback`; the call then closes with `not_reached` / `callback`.
+  - note: Upper time limit changed from 17:00 to 17:30 by the memo (R66).
+- **R15** [third_party, binding] 2.5 If the time offered is outside these limits, the agent asks once for a different time. If the second answer is also outside them, nothing is booked and the call closes with `not_reached` / `no_callback`.
+  - note: "These limits" are the callback limits of R66: today or one of the next two business days, 09:00 to 17:30 inclusive, at least 30 minutes after now.
+- **R16** [opening, binding] 2.6 "Wrong number" or "nobody of that name lives here": close with `not_reached` / `wrong_number`.
+- **R17** [opening, binding] If the agent is told that the customer has passed away, it says "My condolences." and closes with `not_reached` / `deceased` without asking anything else.
+- **R18** [third_party, binding] 2.7 A person who is not the customer may not answer the security questions and must not learn anything about the accounts, even if they offer to pay.
+- **R19** [identity, binding] 3.1 The agent asks the date of birth first, then the last four digits of the phone number on file, one at a time, and sends each answer to `verify_identity`. A date of birth goes to the tool as `YYYY-MM-DD`; a date said only in numbers is day first, then month, then year.
+  - note: verify_identity field values: date_of_birth, then phone_last4 (four digits).
+- **R20** [identity, binding] 3.2 A wrong answer may be tried again. After three wrong answers in total, whatever the question, the check has failed: the agent tells the customer to visit a branch or use the Kestrel app, says nothing about the accounts, and closes with `not_verified` / `failed`.
+- **R21** [identity, binding] 3.3 If `verify_identity` returns the hint `day_month_swapped`, the agent asks the customer to say the month as a word. That attempt is not counted as wrong.
+- **R22** [identity, binding] 3.4 If the customer will not answer, the agent explains once that the questions protect the account. A second refusal closes the call with `not_verified` / `declined`. A question about why the bank is calling, asked instead of an answer, counts as a refusal.
+- **R23** [disclosure, binding] 3.5 When both answers are correct the agent calls `get_account`. It returns one to three products, each with its own amount overdue (`past_due`), days overdue (`days_late`) and floor. The agent says it is calling from the Kestrel Bank recoveries team about overdue payments, then one sentence per product with the product in words ("credit card ending 4821", "personal loan", "car loan"), the amount overdue and the number of days overdue. Every product is stated before the agent asks for anything.
+  - note: Floor defined in R35. Product types: credit_card (with card_last4), personal_loan, car_loan.
+- **R24** [calendar, replaced (replaced by R62)] 4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01.
+  - note: Holiday list changed by the memo (R62).
+- **R25** [dates, binding] 4.2 Every product has a band and a deadline from its own `days_late`.
+- **R26** [dates, replaced (replaced by R64)] Products 1 to 10 days late are in the early band: deadline 14 calendar days after today, one persuasion attempt.
+  - note: Number of attempts changed to two by the memo (R64); deadline unchanged.
+- **R27** [dates, replaced (replaced by R63)] Products 11 to 45 days late are in the late band: deadline 10 calendar days after today, one persuasion attempt.
+  - note: Deadline changed to 8 calendar days by the memo (R63); still one attempt.
+- **R28** [dates, binding] If a deadline falls on a day that is not a business day, the deadline is the business day before it.
+  - note: Business days per R62.
+- **R29** [dates, binding] A promised date must be today or later, a business day, and on or before the product's deadline.
+- **R30** [dates, binding] 4.3 "This Friday", "next Friday" and "Friday" all mean the first Friday after today; the same goes for every other weekday.
+  - note: A named weekday is always its first occurrence strictly after today.
+- **R31** [dates, binding] 4.4 If the customer names a weekend day or a bank holiday that is not after the deadline, the agent offers the business day before it; if that day would be before today, it offers the business day after it instead.
+- **R32** [dates, binding] 4.5 If the customer gives no exact day ("next month", "soon", "when I can"), the agent asks once for the exact day; if there is still no day, it proposes the deadline.
+- **R33** [dates, binding] 4.6 If the customer names a day after the deadline, the agent says that the latest possible day is the deadline and offers it. A refusal of the deadline is a flat refusal (5.4).
+  - note: A flat refusal uses one persuasion attempt (R41).
+- **R34** [amounts, binding] 5.1 The agent always starts with the full overdue amount and never asks the customer how much they can pay: every amount comes from the agent.
+  - note: Full amount = past_due.
+- **R35** [amounts, binding] The floor is `minimum_payment` for a credit card and `instalment_amount` for a personal loan or a car loan.
+- **R36** [amounts, binding] 5.2 If the customer says the full amount is too much, the agent offers the floor once and says that the remaining balance stays overdue. Refusing the floor is a flat refusal.
+- **R37** [amounts, binding] An amount the customer offers between the floor and the full amount, both included, is accepted.
+- **R38** [amounts, binding] An amount below the floor cannot be recorded: the agent says so and treats it as a flat refusal, without offering the floor.
+- **R39** [negotiation, binding] 5.3 The agent first asks whether the customer can pay everything today ("Can you pay the full amount today?", or for several products whether they can pay all of them today). If not, it takes the products one at a time, in the order `get_account` returned them, without asking about today again; each product starts at attempt 1.
+- **R40** [negotiation, binding] A date or an amount the customer offers is never a refusal.
+- **R41** [negotiation, binding] 5.4 Persuasion attempts are counted per product. A flat refusal, or no answer at all, uses one attempt.
+  - note: Early band: two attempts (R64); late band: one attempt (R63).
+- **R42** [negotiation, binding] Attempt 1: the full amount (or the floor, if the customer already said the full amount is too much) on the third business day after today.
+  - note: If the customer named a payday weekday, the date is the payday date of R4/R5 instead.
+- **R43** [negotiation, binding] When a product has no attempts left, the agent does not repeat an offer that was refused; that product is refused.
+  - note: A refused product gets add_note reason refused (R58).
+- **R44** [events, binding] 5.5 If the customer mentions illness, a bereavement or losing their job, the agent says one sentence of sympathy, makes no persuasion attempt, and offers to put them through to the welfare team. Yes: `transfer_to_agent` with queue `support`, close `transferred` / `support`. No: close `no_promise` / `hardship`. This rule comes before 5.4 and 7.1. If the customer still offers a date or an amount, it is recorded as usual.
+  - note: Takes precedence over persuasion (R41-R43, R65) and restructuring (R52).
+- **R45** [confirmation, binding] 6.1 The agent reads every agreed promise back together (product, amount, date) and asks "Is that correct?".
+- **R46** [confirmation, binding] If one date was named for all products and it is after one product's deadline, that product takes its own deadline, and the read-back says so.
+- **R47** [recording, binding] Only after a clear yes does the agent call `create_promise`, once per product.
+- **R48** [confirmation, binding] If the customer changes a date or an amount at this point, the agent checks it again under sections 4 and 5 and reads back again.
+- **R49** [recording, binding] 6.2 The agent tells the customer that a promise is recorded only after `create_promise` returned `ok: true`.
+- **R50** [recording, replaced (replaced by R67)] If it fails, the agent tries once more. If it still fails, the agent keeps the promises that were recorded and treats that product as `service_error`; with one product, it tells the customer it could not record the promise and closes `no_promise` / `service_error`.
+  - note: Retry count changed to up to two more times by the memo (R67).
+- **R51** [recording, binding] 6.3 After at least one recorded promise the agent says: "A confirmation will follow by text message."
+- **R52** [events, binding] 7.1 A request for a new repayment plan or smaller instalments: the agent describes no plan, calls `transfer_to_agent` with queue `restructuring` and closes `transferred` / `restructuring`. Promises already recorded stay recorded; promises agreed but not yet recorded are not recorded.
+- **R53** [events, binding] 7.2 "I have already paid": the agent says that a payment can take up to one business day to show, records no promise for that product and continues with the others. If every product is paid, the call closes `paid`.
+  - note: The product gets add_note reason paid (R58).
+- **R54** [events, binding] 7.3 "That is not my account", "I never had this", or a claim that the product was closed or settled long ago: the agent does not argue, records no promise for that product and continues with the others.
+  - note: The product gets add_note reason dispute (R58).
+- **R55** [events, replaced (replaced by R68)] 7.4 A request to speak to a person: the agent asks once whether it can help instead. If the customer insists, it calls `transfer_to_agent` with queue `general` and closes `transferred` / `human`. This applies before and after identity is confirmed.
+  - note: Memo (R68) removes the 'asks once whether it can help' step.
+- **R56** [events, binding] 7.5 If the customer says twice that they do not want to talk: before identity is confirmed, close `not_verified` / `declined`; after it, the remaining products are refused.
+- **R57** [side_questions, binding] 7.6 A question the tools cannot answer: the agent says it does not have that information and never invents figures, dates or reasons.
+- **R58** [notes, binding] 8.1 Every product that ends without a promise gets `add_note` with its `product_id` and a reason from the code list. This applies with one product too. On a transfer, no notes are added at all.
+  - note: Note reasons: refused, hardship, dispute, paid, service_error (never write_off).
+- **R59** [closing, binding] 8.2 Every call ends with exactly one `close_call`, the last tool call, with an outcome and, where the code list gives one, a reason.
+- **R60** [closing, binding] With no promise recorded: if every product is paid, the outcome is `paid`; otherwise `no_promise` with the reason of the first product, in `get_account` order, whose note is not `paid`. `promise` applies when at least one promise was recorded, unless the call was transferred.
+  - note: A transferred call closes transferred with its reason (restructuring, human or support) even if promises were recorded.
+- **R61** [closing, binding] Before `close_call` the agent thanks the customer and says goodbye.
+- **R62** [calendar, binding] 1. Section 4.1: 2026-11-11 is no longer a bank holiday. Add 2026-10-30, 2026-12-24 and 2026-12-31 to the list.
+  - note: Replaces R24. Business days are Monday to Friday except 2026-10-19, 2026-10-30, 2026-11-02, 2026-11-16, 2026-12-24, 2026-12-25, 2026-12-31, 2027-01-01. 2026-11-11 is a business day.
+- **R63** [dates, binding] 2. Section 4.2: the late-band deadline is 8 calendar days after today, not 10.
+  - note: Replaces R27: products 11 to 45 days late are in the late band: deadline 8 calendar days after today (rolled back to the previous business day per R28), one persuasion attempt.
+- **R64** [negotiation, binding] Early-band products get two persuasion attempts instead of one; the late band keeps one.
+  - note: Replaces R26: products 1 to 10 days late are in the early band: deadline 14 calendar days after today (rolled back per R28), two persuasion attempts.
+- **R65** [negotiation, binding] 3. Section 5.4: attempt 2, early band only: the floor on the deadline.
+  - note: Adds to 5.4 (R41-R43): after attempt 1 is used, an early-band product gets attempt 2 = the floor (R35) on the product's deadline. Late-band products have no attempt 2.
+- **R66** [third_party, binding] 4. Section 2.4: callbacks may be booked until 17:30 instead of 17:00.
+  - note: Replaces R14: a callback may be booked for today or one of the next two business days, between 09:00 and 17:30, both included, and at least 30 minutes after now, with schedule_callback; the call then closes not_reached / callback.
+- **R67** [recording, binding] 5. Section 6.2: after a failed `create_promise`, try again up to two more times instead of once.
+  - note: Replaces R50: if create_promise fails, retry up to two more times (three tries in total). If it still fails, keep recorded promises and treat that product as service_error (add_note); with one product, tell the customer the promise could not be recorded and close no_promise / service_error.
+- **R68** [events, binding] 6. Section 7.4: transfer a request to speak to a person straight away, without first asking whether the agent can help.
+  - note: Replaces R55: on a request to speak to a person, immediately call transfer_to_agent with queue general and close transferred / human. Applies before and after identity is confirmed.
+- **R69** [other, binding] Code | Kind | Meaning | Used by the phone agent
+  - note: Header of the code table: each row gives a code, its kind (outcome, reason, queue, note reason), its meaning and whether the phone agent may use it.
+- **R70** [closing, binding] `promise` | outcome | at least one promise recorded | yes
+- **R71** [closing, binding] `paid` | outcome, note reason | every product already paid; a product already paid | yes
+  - note: As outcome: every product already paid. As note reason: that product already paid.
+- **R72** [closing, binding] `transferred` | outcome | the call was handed to a colleague | yes
+- **R73** [closing, binding] `no_promise` | outcome | no promise recorded | yes
+- **R74** [closing, binding] `not_verified` | outcome | identity not confirmed | yes
+- **R75** [closing, binding] `not_reached` | outcome | the customer was not reached | yes
+- **R76** [closing, binding] `restructuring`, `human`, `support` | reason for `transferred`; queue | why the call was handed over; the queue | yes
+  - note: Reasons for outcome transferred. Queues: restructuring and support; reason human uses queue general.
+- **R77** [closing, binding] `refused`, `hardship`, `dispute`, `service_error` | reason for `no_promise`; note reason | why there is no promise | yes
+- **R78** [closing, binding] `failed`, `declined` | reason for `not_verified` | security check failed or refused | yes
+- **R79** [closing, binding] `callback`, `no_callback`, `wrong_number`, `deceased`, `unclear` | reason for `not_reached` | why the customer was not reached | yes
+- **R80** [closing, binding] `legal_hold` | outcome | the account is frozen by the legal team | no, back office only
+  - note: The agent must never use legal_hold.
+- **R81** [notes, binding] `write_off` | note reason | the debt is written off | no, back office only
+  - note: The agent must never use write_off.
+
+## Amendments
+
+- {"target": "R24 (policy 4.1 bank holidays)", "by": "R62 (memo item 1)", "before": "4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01.", "after": "1. Section 4.1: 2026-11-11 is no longer a bank holiday. Add 2026-10-30, 2026-12-24 and 2026-12-31 to the list.", "effective_from": ""}
+- {"target": "R27 (policy 4.2 late band)", "by": "R63 (memo item 2)", "before": "Products 11 to 45 days late are in the late band: deadline 10 calendar days after today, one persuasion attempt.", "after": "2. Section 4.2: the late-band deadline is 8 calendar days after today, not 10.", "effective_from": ""}
+- {"target": "R26 (policy 4.2 early band)", "by": "R64 (memo item 2)", "before": "Products 1 to 10 days late are in the early band: deadline 14 calendar days after today, one persuasion attempt.", "after": "Early-band products get two persuasion attempts instead of one; the late band keeps one.", "effective_from": ""}
+- {"target": "Policy 5.4 persuasion steps (R41-R43)", "by": "R65 (memo item 3)", "before": "", "after": "3. Section 5.4: attempt 2, early band only: the floor on the deadline.", "effective_from": ""}
+- {"target": "R14 (policy 2.4 callback window)", "by": "R66 (memo item 4)", "before": "A callback may be booked for today or one of the next two business days, between 09:00 and 17:00, both included, and at least 30 minutes after `now`, with `schedule_callback`; the call then closes with `not_reached` / `callback`.", "after": "4. Section 2.4: callbacks may be booked until 17:30 instead of 17:00.", "effective_from": ""}
+- {"target": "R50 (policy 6.2 create_promise retry)", "by": "R67 (memo item 5)", "before": "If it fails, the agent tries once more. If it still fails, the agent keeps the promises that were recorded and treats that product as `service_error`; with one product, it tells the customer it could not record the promise and closes `no_promise` / `service_error`.", "after": "5. Section 6.2: after a failed `create_promise`, try again up to two more times instead of once.", "effective_from": ""}
+- {"target": "R55 (policy 7.4 request for a person)", "by": "R68 (memo item 6)", "before": "7.4 A request to speak to a person: the agent asks once whether it can help instead. If the customer insists, it calls `transfer_to_agent` with queue `general` and closes `transferred` / `human`. This applies before and after identity is confirmed.", "after": "6. Section 7.4: transfer a request to speak to a person straight away, without first asking whether the agent can help.", "effective_from": ""}
+
+## Holidays
+
+- {"date": "2026-10-19", "name": "bank holiday", "quote": "4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01."}
+- {"date": "2026-10-30", "name": "bank holiday (added by memo)", "quote": "Add 2026-10-30, 2026-12-24 and 2026-12-31 to the list."}
+- {"date": "2026-11-02", "name": "bank holiday", "quote": "4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01."}
+- {"date": "2026-11-16", "name": "bank holiday", "quote": "4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01."}
+- {"date": "2026-12-24", "name": "bank holiday (added by memo)", "quote": "Add 2026-10-30, 2026-12-24 and 2026-12-31 to the list."}
+- {"date": "2026-12-25", "name": "bank holiday", "quote": "4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01."}
+- {"date": "2026-12-31", "name": "bank holiday (added by memo)", "quote": "Add 2026-10-30, 2026-12-24 and 2026-12-31 to the list."}
+- {"date": "2027-01-01", "name": "bank holiday", "quote": "4.1 Business days are Monday to Friday except these bank holidays: 2026-10-19, 2026-11-02, 2026-11-11, 2026-11-16, 2026-12-25, 2027-01-01."}
+
+## Codes
+
+- {"code": "promise", "meaning": "at least one promise recorded (and the call was not transferred)", "used_for": "outcome", "back_office_only": false}
+- {"code": "paid", "meaning": "every product already paid", "used_for": "outcome", "back_office_only": false}
+- {"code": "paid", "meaning": "a product already paid", "used_for": "note_reason", "back_office_only": false}
+- {"code": "transferred", "meaning": "the call was handed to a colleague", "used_for": "outcome", "back_office_only": false}
+- {"code": "no_promise", "meaning": "no promise recorded", "used_for": "outcome", "back_office_only": false}
+- {"code": "not_verified", "meaning": "identity not confirmed", "used_for": "outcome", "back_office_only": false}
+- {"code": "not_reached", "meaning": "the customer was not reached", "used_for": "outcome", "back_office_only": false}
+- {"code": "legal_hold", "meaning": "the account is frozen by the legal team", "used_for": "outcome", "back_office_only": true}
+- {"code": "restructuring", "meaning": "reason for transferred: request for a new repayment plan or smaller instalments", "used_for": "reason", "back_office_only": false}
+- {"code": "restructuring", "meaning": "queue for repayment-plan / smaller-instalment requests", "used_for": "queue", "back_office_only": false}
+- {"code": "human", "meaning": "reason for transferred: customer asked to speak to a person", "used_for": "reason", "back_office_only": false}
+- {"code": "support", "meaning": "reason for transferred: hardship case put through to the welfare team", "used_for": "reason", "back_office_only": false}
+- {"code": "support", "meaning": "welfare team queue (hardship)", "used_for": "queue", "back_office_only": false}
+- {"code": "general", "meaning": "queue for a request to speak to a person", "used_for": "queue", "back_office_only": false}
+- {"code": "refused", "meaning": "reason for no_promise: customer refused / no attempts left", "used_for": "reason", "back_office_only": false}
+- {"code": "refused", "meaning": "note reason: product refused", "used_for": "note_reason", "back_office_only": false}
+- {"code": "hardship", "meaning": "reason for no_promise: hardship, transfer to welfare declined", "used_for": "reason", "back_office_only": false}
+- {"code": "hardship", "meaning": "note reason: hardship", "used_for": "note_reason", "back_office_only": false}
+- {"code": "dispute", "meaning": "reason for no_promise: customer disputes the product", "used_for": "reason", "back_office_only": false}
+- {"code": "dispute", "meaning": "note reason: product disputed", "used_for": "note_reason", "back_office_only": false}
+- {"code": "service_error", "meaning": "reason for no_promise: create_promise kept failing", "used_for": "reason", "back_office_only": false}
+- {"code": "service_error", "meaning": "note reason: promise could not be recorded", "used_for": "note_reason", "back_office_only": false}
+- {"code": "write_off", "meaning": "the debt is written off", "used_for": "note_reason", "back_office_only": true}
+- {"code": "failed", "meaning": "reason for not_verified: three wrong security answers", "used_for": "reason", "back_office_only": false}
+- {"code": "declined", "meaning": "reason for not_verified: security check refused twice, or did not want to talk twice before identity confirmed", "used_for": "reason", "back_office_only": false}
+- {"code": "callback", "meaning": "reason for not_reached: callback booked", "used_for": "reason", "back_office_only": false}
+- {"code": "no_callback", "meaning": "reason for not_reached: no valid callback time after two asks", "used_for": "reason", "back_office_only": false}
+- {"code": "wrong_number", "meaning": "reason for not_reached: wrong number / nobody of that name", "used_for": "reason", "back_office_only": false}
+- {"code": "deceased", "meaning": "reason for not_reached: customer has passed away", "used_for": "reason", "back_office_only": false}
+- {"code": "unclear", "meaning": "reason for not_reached: person not confirmed after the second ask", "used_for": "reason", "back_office_only": false}
+- {"code": "day_month_swapped", "meaning": "verify_identity hint: day and month may be swapped; ask the month as a word, attempt not counted wrong", "used_for": "hint", "back_office_only": false}
+- {"code": "date_of_birth", "meaning": "security question: date of birth as YYYY-MM-DD (asked first)", "used_for": "question", "back_office_only": false}
+- {"code": "phone_last4", "meaning": "security question: last four digits of the phone number on file (asked second)", "used_for": "question", "back_office_only": false}
+- {"code": "credit_card", "meaning": "product kind; floor = minimum_payment; said as 'credit card ending <card_last4>'", "used_for": "product_kind", "back_office_only": false}
+- {"code": "personal_loan", "meaning": "product kind; floor = instalment_amount; said as 'personal loan'", "used_for": "product_kind", "back_office_only": false}
+- {"code": "car_loan", "meaning": "product kind; floor = instalment_amount; said as 'car loan'", "used_for": "product_kind", "back_office_only": false}
+- {"code": "verify_identity", "meaning": "check one security answer", "used_for": "tool", "back_office_only": false}
+- {"code": "get_account", "meaning": "fetch the late products after both questions are passed", "used_for": "tool", "back_office_only": false}
+- {"code": "create_promise", "meaning": "record a payment promise, one per product", "used_for": "tool", "back_office_only": false}
+- {"code": "add_note", "meaning": "record why a product ended without a promise", "used_for": "tool", "back_office_only": false}
+- {"code": "schedule_callback", "meaning": "book a callback (date, HH:MM)", "used_for": "tool", "back_office_only": false}
+- {"code": "transfer_to_agent", "meaning": "hand the call to a person in a queue", "used_for": "tool", "back_office_only": false}
+- {"code": "close_call", "meaning": "end the call; always the last tool call", "used_for": "tool", "back_office_only": false}
+
+## Skipped
+
+- {"quote": "# Kestrel Bank: material for the overdue-payments phone agent", "why": "Title"}
+- {"quote": "Kestrel Bank is fictional. Every customer, debt and payment here is synthetic.", "why": "Background disclaimer"}
+- {"quote": "## Mail from the head of recoveries", "why": "Heading"}
+- {"quote": "From: Priya Albescu, Head of Recoveries, Kestrel Bank", "why": "Mail header"}
+- {"quote": "To: the voice-agent vendor", "why": "Mail header"}
+- {"quote": "Subject: What the phone agent must do (policy extract, memo and codes attached below)", "why": "Mail header"}
+- {"quote": "Hello,", "why": "Greeting"}
+- {"quote": "as agreed, below you will find the extract of our recoveries policy that applies to the phone agent, the memo from last week that changes some of it, and our list of outcome codes.", "why": "Introduction describing the material"}
+- {"quote": "Where the memo and the policy disagree, the memo wins: it is the newer text.", "why": "Precedence instruction; applied through the amendments and replaced statuses"}
+- {"quote": "A few things that are not in the policy yet and that the agent must also do:", "why": "Introduction to the list of mail rules"}
+- {"quote": "Some colleagues asked whether the agent could offer a 10% discount to customers who pay in full this week.", "why": "Unapproved idea the mail says to ignore"}
+- {"quote": "Legal has not approved this; please ignore the idea for now.", "why": "Instruction to ignore the discount idea; covered by R6"}
+- {"quote": "Please also ignore section 9 of the extract: it is about letters sent by post and does not concern the phone agent.", "why": "Meta instruction; section 9 excluded"}
+- {"quote": "Thanks,", "why": "Sign-off"}
+- {"quote": "Priya", "why": "Signature"}
+- {"quote": "## Policy extract: Recoveries by telephone (version 4)", "why": "Heading"}
+- {"quote": "### 1. Scope", "why": "Heading"}
+- {"quote": "### 2. Reaching the right person", "why": "Heading"}
+- {"quote": "### 3. Security check", "why": "Heading"}
+- {"quote": "### 4. Dates", "why": "Heading"}
+- {"quote": "### 5. Amounts and persuasion", "why": "Heading"}
+- {"quote": "### 6. Confirming and recording", "why": "Heading"}
+- {"quote": "### 7. Requests and claims", "why": "Heading"}
+- {"quote": "### 8. Notes and closing", "why": "Heading"}
+- {"quote": "### 9. Letters", "why": "Heading of ignored section (postal letters, not the phone agent)"}
+- {"quote": "9.1 After a missed promise, a reminder letter is sent within five working days.", "why": "Section 9 ignored per the mail: postal letters, not the phone agent"}
+- {"quote": "9.2 A second letter follows after fourteen days and mentions the possibility of a default notice.", "why": "Section 9 ignored per the mail: postal letters, not the phone agent"}
+- {"quote": "## Memo: changes to the telephone recoveries policy", "why": "Heading"}
+- {"quote": "From: Recoveries Policy Committee", "why": "Memo header"}
+- {"quote": "Effective: immediately, for every call from now on.", "why": "Memo effective immediately with no date; memo rules apply to every call, effective_from left empty"}
+- {"quote": "This memo amends the policy extract (version 4). Every other rule stays as it is.", "why": "Meta statement; unamended policy rules stay binding"}
+- {"quote": "## Code list", "why": "Heading"}
