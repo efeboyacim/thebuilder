@@ -757,6 +757,10 @@ def free_promise(c, stage, x):
     ref = str(x["free_product"] or "").strip()
     p = next((q for q in st.get("products") or [] if str(q.get("ref")) == ref), None) or \
         (match_product(c, ref) if ref else (current(c) if st.get("cur") else None))
+    if p is None and not ref:  # the agent proposed it; with one open product there is no doubt which
+        left = [q for q in st.get("products") or [] if pstate(c, q).get("status") != "ended"
+                and str(q.get("ref")) not in [str(r) for r in st["recorded"]]]
+        p = left[0] if len(left) == 1 else None
     if p is None or pstate(c, p).get("status") == "ended" or str(p.get("ref")) in [str(r) for r in st["recorded"]]:
         return free_ask(c, stage, "That product cannot take a promise now; use one of the products in the facts.")
     A = c["S"]["negotiation"].get("amounts") or dict()
@@ -769,7 +773,8 @@ def free_promise(c, stage, x):
     if a < lo - 0.005:
         why = "The amount " + say_money(a) + " is below the lowest amount that can be recorded, " + say_money(lo) + "."
     elif d is None:
-        why = "No exact date was agreed."
+        return free_ask(c, stage, "The customer agreed, but the bank needs the exact payment back: do not say it is "
+                                  "noted; ask the customer to say the amount and the date of the payment once more.")
     elif d < c["today"] or not is_business_day(c["cal"], d):
         why = say_date(d, c["today"]) + " is not a business day from today on."
     elif end is not None and d > end:

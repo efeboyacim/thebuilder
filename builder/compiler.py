@@ -22,14 +22,17 @@ SYSTEM_PROMPT = ("You are the bank's phone agent. In every turn, say exactly the
 TALK_TASK = "Say exactly this text, word for word, and nothing else: {{say_next}}. No tool call is allowed."
 TWIN_STAGES = ("open", "identity", "negotiate", "confirm")
 FREE_TASK = (
+    "The bank's system says (follow it first, if it is not empty): {{free_feedback}} "
     "A rule of the bank applies here that the standard script does not cover: {{free_rule}} "
-    "Facts: {{free_facts}} {{free_feedback}} "
+    "Facts: {{free_facts}} "
     "First say exactly this text, if it is not empty: {{say_next}} "
     "Then apply the rule to this customer using only the rule and the facts, in one or two short sentences. When you "
     "propose a payment, name the product, the amount and the date with its weekday, day, month and year, and ask "
-    "whether the customer agrees. Never offer any reduction, waiver, plan, term or option the rule and the facts do "
-    "not give; never ask how much the customer can pay; never say that anything is recorded or booked. No tool call "
-    "is allowed.")
+    "whether the customer agrees. Never propose a date after the product's latest promise date or on a day that is "
+    "not a business day, nor an amount below its lowest amount; when the rule or the customer points past the latest "
+    "promise date, propose the latest promise date instead. Never offer any reduction, waiver, plan, term or option "
+    "the rule and the facts do not give; never ask how much the customer can pay; never say that anything is "
+    "recorded, noted, booked, set up or arranged: the system confirms that itself. No tool call is allowed.")
 TWIN_TASK = (
     "The customer just asked: {{side_question}} "
     "Facts you may use (they may be empty): {{facts}} "

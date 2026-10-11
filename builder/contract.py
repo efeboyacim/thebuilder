@@ -128,11 +128,15 @@ def free_fields():
                          "ends that way), done (the special rule no longer applies, or the person wants to go back), "
                          "continue (still being discussed), none."),
         dict(name=x_var("free_product"), type="string", enum=None,
-             description="For promise: the product of that payment as the agent named it (its id such as p1, or its name)."),
+             description="For promise: copy from the AGENT's last message the product of the payment the agent proposed "
+                         "(its id such as p1, or its name). The person agreeing ('yes', 'I confirm') is enough; they "
+                         "need not repeat it."),
         dict(name=x_var("free_amount"), type="string", enum=None,
-             description="For promise: the amount of that payment as the agent named it."),
+             description="For promise: copy from the AGENT's last message the amount of the payment the agent proposed, "
+                         "as digits. The person agreeing is enough; they need not repeat it."),
         dict(name=x_var("free_date"), type="string", enum=None,
-             description="For promise or callback: the date the agent named, as YYYY-MM-DD (the agent says the year)."),
+             description="For promise or callback: copy from the AGENT's last message the date the agent proposed, as "
+                         "YYYY-MM-DD (the agent says the year). The person agreeing is enough; they need not repeat it."),
         dict(name=x_var("free_time"), type="string", enum=None, description="For callback: the time as HH:MM."),
         dict(name=x_var("free_target"), type="string", enum=None,
              description="For close or transfer: the outcome or queue the agent named."),
