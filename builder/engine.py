@@ -652,8 +652,8 @@ def event_reply(c, stage, x):
             target(c, "continue", stage)
             return True
         return False
-    if x["event"] and x["event"] != e["id"] and fire_event(c, stage, x):
-        return True
+    if x["event"] and x["event"] != e["id"] and not yes and fire_event(c, stage, x):
+        return True  # a yes answers the event's own question ('yes, put me through' is not a new event)
     if yes:
         t = e.get("on_yes")
         if not verified(c) and e.get("then_before_verification") not in (None, "", NS):
