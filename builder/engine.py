@@ -410,7 +410,7 @@ def on_turn(c, stage, x):
         side_answer(c, stage, x)
     if st.get("pev") and event_reply(c, stage, x):
         return None
-    if x["event"].startswith(FREE) and enter_free(c, stage, x["event"]):
+    if x["event"].startswith(FREE) and not explicit_date(x["day"]) and enter_free(c, stage, x["event"]):
         return None
     if x["event"] and fire_event(c, stage, x):
         return None
@@ -675,6 +675,13 @@ def event_reply(c, stage, x):
 
 # ---------- free mode: flow rules no section carries ----------
 
+def explicit_date(text):
+    """A day said with a month or a number: the standard flow handles such a proposal by the spec's own date rules."""
+    low = str(text or "").lower()
+    months = r"\b(" + "|".join(MONTH_WORDS) + r"|jan|feb|mar|apr|jun|jul|aug|sept?|oct|nov|dec)\b"
+    return low not in ("", "none") and bool(re.search(r"\d", low) or re.search(months, low))
+
+
 def enter_free(c, stage, fid):
     """A flow rule only a model can apply: the free node talks, code checks every action it brings back."""
     r = next((r for r in free_rules(c["S"], stage) if r.get("id") == fid), None)
@@ -703,6 +710,20 @@ def free_facts(c):
     hol = sorted(h for h in cal["hol"] if today.isoformat() <= h <= (today + 120 * DAY).isoformat())
     out = ["Today is " + say_date(today) + ".", "Business days: " + days + ", except the holidays " +
            (", ".join(say_date(datetime.date.fromisoformat(h)) for h in hol) or "none") + "."]
+    nxt = []  # date arithmetic done here, so the model only picks
+    for k in range(1, 8):
+        d = today + k * DAY
+        b = d + DAY
+        while not is_business_day(cal, b):
+            b += DAY
+        nxt.append(say_date(d) + " (the first business day after it: " + say_date(b) + ")")
+    out.append("The next day of each weekday after today: " + "; ".join(nxt) + ".")
+    bd, d = [], today
+    while len(bd) < 10:
+        d += DAY
+        if is_business_day(cal, d):
+            bd.append(say_date(d))
+    out.append("The next ten business days after today, in order: " + ", ".join(bd) + ".")
     for p in st.get("products") or []:
         s = pstate(c, p)
         line = "Product " + str(p.get("ref")) + " (" + product_name(c, p) + "): overdue " + say_money(p.get("due") or 0) \
