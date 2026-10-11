@@ -122,6 +122,9 @@ Never cut: M1 (16), M2's spec diff (20), M3 (24), the styles run (22).
 
 - 2026-10-11 (user): Claude takes the decisions and approvals that were the user's (M1 review, D-Z) and must finish before Sun 17:00 UTC within the remaining usage limit.
 
+- 2026-10-11 10:55 UTC (D-Z, decided by Claude on the user's delegation): our builder is the run command, `python3 builder/build.py {brief_path} {tool_api_path}`. Evidence: Brief A 10/10 and Brief B 3/3 at 3 reps from LLM-built specs, a valid M1 build in 339 s with the payday rule as its only free-mode residual, M2 = M1 by spec diff; Plan Z: Brief A 7/10, M1 8/13. Our M1 rehearsal could not run (platform 504 on the simulation), so 21 stays open for its score.
+- 2026-10-11: The user's usage limit is nearly spent: 22, 23, 24 and 26's fresh-clone run are not done; 25 is partly done (best-so-far spec, retry deadline). Freeze tag `freeze-1`; runbook `docs/runbook.md`.
+
 ## Done
 
 - [x] 01 Setup check. Commit e67f939. Verified: `python tools/run_cases.py d59d3574-e7fa-48ce-bd5d-9433ebd57421 --brief A --out results/01-base.json` → "0 / 10 passed" (simulation ad16b001-5a51-4cad-9b23-a5083d93d3e6, 126 s, median slowest turn 3 s) and a new line in `results/log.jsonl`. Slot `scratch` = workflow c2a4ce00-4eb6-435f-acec-926102431e6e, agent d59d3574-e7fa-48ce-bd5d-9433ebd57421. Session variables: customer_id, first_name, last_name, now, title. Workspace: 2 workflows (pre-existing base agent + scratch), no limit reported. `FREYA_BANK_TEAM_KEY` regenerated (the old one had 13 chars; the mock requires 16+).

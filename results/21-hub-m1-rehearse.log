@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\Users\efeby\Desktop\builder\tools\rehearse.py", line 119, in <module>
+    main()
+  File "C:\Users\efeby\Desktop\builder\tools\rehearse.py", line 99, in main
+    rows, sim_id, status, took = run_once(a.agent_id, cases, ids)
+  File "C:\Users\efeby\Desktop\builder\tools\rehearse.py", line 62, in run_once
+    sim_id, it_id, status = freya.run_simulation(agent_id, f"rehearse {time.strftime('%H:%M:%S')}",
+  File "C:\Users\efeby\Desktop\builder\freya.py", line 103, in run_simulation
+    s = api("GET", f"/api/v2/simulations/{sim_id}"); s = s.get("simulation") or s
+  File "C:\Users\efeby\Desktop\builder\freya.py", line 19, in api
+    raise RuntimeError(f"{method} {path} -> {e.code}: {e.read().decode()[:1500]}") from None
+RuntimeError: GET /api/v2/simulations/94203aa5-67cc-46fa-a837-f18a7bcac068 -> 504: error code: 504
+

@@ -104,7 +104,14 @@ def stage_spec(ctx):
             raise sp.SpecError(f"{args.spec}: {len(report.errors)} validation error(s); first: {report.errors[0]}")
         summary = {"given": args.spec, **report.info}
     else:
-        spec, report, summary = specgen.run(ctx, out_dir)
+        try:
+            spec, report, summary = specgen.run(ctx, out_dir)
+        except specgen.SpecGenError as e:  # best so far: only indexing, quoting or wording errors left
+            if e.spec is None or not e.report or not all(specgen.soft(x) for x in e.report.errors):
+                raise
+            for x in e.report.errors:
+                trace.warning(f"spec kept with a soft error: {x}")
+            spec, report, summary = e.spec, e.report, e.summary
     for path in report.info.get("not_specified") or []:
         trace.warning(f"not_specified: {path} (neutral behaviour)")
     for stage in report.info.get("hangup_chosen_by_model") or []:

@@ -231,7 +231,18 @@ Context, as given to the spec writer:
 
 
 class SpecGenError(Exception):
-    pass
+    def __init__(self, message, spec=None, report=None, summary=None):
+        super().__init__(message)
+        self.spec, self.report, self.summary = spec, report, summary
+
+
+SOFT = ("rule_index", "refs:", "phrases[")
+SOFT_TEXT = ("before any write succeeded", "forbidden before identity is verified", "does not occur in the brief")
+
+
+def soft(error):
+    """An error that leaves a working agent: indexing, quoting and wording checks."""
+    return error.startswith(SOFT) or any(t in error for t in SOFT_TEXT)
 
 
 # ---------- material and digest ----------
@@ -470,7 +481,7 @@ def run(ctx, out_dir):
     summary = spec_summary(digest, dchecks, report, rounds)
     if report.errors:
         raise SpecGenError(f"the spec still has {len(report.errors)} error(s) after {rounds} repair round(s); "
-                           f"first: {report.errors[0]}")
+                           f"first: {report.errors[0]}", spec, report, summary)
     return spec, report, summary
 
 

@@ -16,6 +16,8 @@ RETRIES = 2
 BACKOFF = (5, 20)  # seconds before retry 1 and 2
 MAX_TOKENS = 32000
 TIMEOUT = 900  # seconds per attempt
+START = time.time()  # the build's start: no retry after RETRY_UNTIL seconds, so a build stays within 30 minutes
+RETRY_UNTIL = 1200
 SDK_SYSTEM_ARG_MAX = 4000  # longer system prompts go through a file: Windows caps the command line
 
 
@@ -193,7 +195,7 @@ class LLM:
             except Exception as e:  # noqa: BLE001 - every failure is traced, then retried or raised
                 last = e if isinstance(e, LLMError) else LLMError(f"{type(e).__name__}: {e}")
                 self._event(purpose, t0, attempt, ok=False, error=str(last)[:300])
-                if not last.retryable or attempt > RETRIES:
+                if not last.retryable or attempt > RETRIES or time.time() - START > RETRY_UNTIL:
                     break
                 self.sleep(BACKOFF[min(attempt, len(BACKOFF)) - 1])
                 continue
