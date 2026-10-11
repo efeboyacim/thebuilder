@@ -241,3 +241,11 @@ def test_a_correction_at_a_read_back_of_several(spec, api, code):
         dict(stage="negotiate", main="refuses"), dict(stage="confirm", main="yes")]
     r = play(spec, api, code, "PUB-12", acts)
     passes(r, "PUB-12")
+
+
+def test_all_on_the_day_the_agent_proposed(spec, api, code):
+    acts = verified("PUB-11") + [dict(stage="negotiate", main="refuses"),
+                                 dict(stage="negotiate", main="accepts", scope="all", day="that day",
+                                      said="I will pay all three on that day."),
+                                 dict(stage="confirm", main="yes")]
+    passes(play(spec, api, code, "PUB-11", acts), "PUB-11")

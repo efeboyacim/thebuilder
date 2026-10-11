@@ -1026,7 +1026,10 @@ def turn_negotiate(c, x):
     if multi(c) and (x["day"] or x["main"] == "accepts") and (x["scope"] == "all" or (
             x["main"] == "accepts" and o.get("kind") == "first") or (not x["scope"] and not x["product"] and re.search(
             r"\b(all|both|every|everything|each)\b", x["said"].lower()))):
-        return propose_all(c, customer_day(c, x["day"]) if x["day"] else None, bool(x["day"]))
+        d = customer_day(c, x["day"]) if x["day"] else None
+        if d is None and x["day"] and o.get("date") and (x["main"] == "accepts" or points_back(x["day"])):
+            d = datetime.date.fromisoformat(o["date"])  # 'all of them on that day': the day on the table
+        return propose_all(c, d, bool(x["day"]) and d is None)
     if x["amount"]:
         a = parse_amount(x["amount"], p.get("due"), p.get("floor"))
         if a is not None:
