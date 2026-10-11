@@ -1,0 +1,14 @@
+PASS PUB-11 medium Multi-product  | verify > verify > get_account > promise > promise > promise > close_call
+FAIL PUB-12 hard   Multi-product  | verify > verify > verify > get_account > add_note > add_note > add_note > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-15')]
+       - notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]
+       - conversation: The conversation failed several success criteria: - Exactly one promise on the credit card: No promise was recorded for the credit card (product p1). Although the user expressed intent to pay in [Message 25], the agent failed to secure confirmati
+FAIL PUB-13 hard   Multi-product  | verify > verify > get_account > promise > add_note > close_call
+       - promises [('p2', 900.0, '2026-10-23')], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]
+       - notes [('p1', 'refused')], expected []
+       - conversation: The conversation failed to meet multiple success criteria. First, the credit card was not recorded for 30 October; instead, a system note was added marking it as 'refused' (System Event: add_note). Second, the assistant's read-back in [Message 26
+
+slowest agent turn per call: median 7 s, worst 11 s. Failed calls where the customer hung up: 0.
+
+1 / 3 passed (bank records and conversation checks). Last simulation b64f04a1-df8f-4821-a6f4-9b1cae2a5908, status completed, 125 s.

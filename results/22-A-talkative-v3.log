@@ -1,0 +1,20 @@
+PASS PUB-01 easy   Happy path     | verify > verify > get_account > promise > close_call
+PASS PUB-02 medium Third party    | schedule_callback > close_call
+PASS PUB-03 medium Identity       | verify > verify > verify > close_call
+FAIL PUB-04 medium Dates          | verify > verify > get_account > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 1250.0, '2026-10-23')]
+PASS PUB-05 medium Hardship       | verify > verify > get_account > close_call
+PASS PUB-06 hard   Amounts        | verify > verify > get_account > promise > close_call
+PASS PUB-07 hard   Dates          | verify > verify > get_account > promise > close_call
+PASS PUB-08 medium Already paid   | verify > verify > get_account > close_call
+PASS PUB-09 medium Restructuring  | verify > verify > get_account > transfer_to_agent > close_call
+FAIL PUB-10 hard   Tool failure   | verify > verify > get_account > promise > close_call > promise
+       - outcome ('no_promise', 'service_error'), expected ('promise', None)
+       - promises [], expected [('p1', 365.0, '2026-10-16')]
+       - the call was not closed with close_call
+       - conversation: The call failed to meet the success criteria because no promise was successfully recorded in the ledger. While the agent attempted a retry for the 'create_promise' function, the system events show that the API returned a 'service unavailable' err
+
+slowest agent turn per call: median 8 s, worst 13 s. Failed calls where the customer hung up: 0.
+
+8 / 10 passed (bank records and conversation checks). Last simulation 3749feec-84b2-4cc7-97b0-0d5ab292e08f, status completed, 178 s.

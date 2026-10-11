@@ -1,0 +1,176 @@
+{
+ "agent_id": "bf97e129-500c-4768-bec8-81c18bbb9c2a",
+ "simulation_id": "b64f04a1-df8f-4821-a6f4-9b1cae2a5908",
+ "iteration_id": "69dff652-a51b-4a37-9b14-b21b101563d7",
+ "seconds": 125,
+ "passed": 1,
+ "total": 3,
+ "runs": 1,
+ "final": [
+  {
+   "id": "PUB-11",
+   "family": "Multi-product",
+   "passes": 1,
+   "runs": 1,
+   "pass": true
+  },
+  {
+   "id": "PUB-12",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  },
+  {
+   "id": "PUB-13",
+   "family": "Multi-product",
+   "passes": 0,
+   "runs": 1,
+   "pass": false
+  }
+ ],
+ "rows": [
+  {
+   "id": "PUB-11",
+   "level": "medium",
+   "family": "Multi-product",
+   "pass": true,
+   "failed": [],
+   "call_id": "6e298c07-893b-48fa-936d-ec06e5c112b6",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "create_promise",
+    "create_promise",
+    "close_call"
+   ],
+   "customer_id": "c_f98ffb57-48b",
+   "slowest_turn_s": 11.1,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-12",
+   "level": "hard",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "outcome ('no_promise', 'refused'), expected ('promise', None)",
+    "promises [], expected [('p1', 510.0, '2026-10-15')]",
+    "notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]",
+    "conversation: The conversation failed several success criteria: - Exactly one promise on the credit card: No promise was recorded for the credit card (product p1). Although the user expressed intent to pay in [Message 25], the agent failed to secure confirmation during the summary ([Message 32], [Message 40]) and instead logged a 'refused' note for this product. - One 'refused' note for each of the other two pr"
+   ],
+   "call_id": "937bd4ee-e2f7-4ef4-a164-d1db8b817086",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "add_note",
+    "add_note",
+    "add_note",
+    "close_call"
+   ],
+   "customer_id": "c_027d8390-346",
+   "slowest_turn_s": 7.4,
+   "ended": "assistant-ended-call"
+  },
+  {
+   "id": "PUB-13",
+   "level": "hard",
+   "family": "Multi-product",
+   "pass": false,
+   "failed": [
+    "promises [('p2', 900.0, '2026-10-23')], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]",
+    "notes [('p1', 'refused')], expected []",
+    "conversation: The conversation failed to meet multiple success criteria. First, the credit card was not recorded for 30 October; instead, a system note was added marking it as 'refused' (System Event: add_note). Second, the assistant's read-back in [Message 26] only mentioned the personal loan and its date (23 October), failing to mention both dates as required. While the loan was recorded on its deadline of 23"
+   ],
+   "call_id": "ec083791-0a74-4df8-9b60-fa258c1fccb6",
+   "tools": [
+    "verify_identity",
+    "verify_identity",
+    "get_account",
+    "create_promise",
+    "add_note",
+    "close_call"
+   ],
+   "customer_id": "c_e52025dd-bf8",
+   "slowest_turn_s": 6.5,
+   "ended": "assistant-ended-call"
+  }
+ ],
+ "all_rows": [
+  [
+   {
+    "id": "PUB-11",
+    "level": "medium",
+    "family": "Multi-product",
+    "pass": true,
+    "failed": [],
+    "call_id": "6e298c07-893b-48fa-936d-ec06e5c112b6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "create_promise",
+     "create_promise",
+     "close_call"
+    ],
+    "customer_id": "c_f98ffb57-48b",
+    "slowest_turn_s": 11.1,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-12",
+    "level": "hard",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "outcome ('no_promise', 'refused'), expected ('promise', None)",
+     "promises [], expected [('p1', 510.0, '2026-10-15')]",
+     "notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]",
+     "conversation: The conversation failed several success criteria: - Exactly one promise on the credit card: No promise was recorded for the credit card (product p1). Although the user expressed intent to pay in [Message 25], the agent failed to secure confirmation during the summary ([Message 32], [Message 40]) and instead logged a 'refused' note for this product. - One 'refused' note for each of the other two pr"
+    ],
+    "call_id": "937bd4ee-e2f7-4ef4-a164-d1db8b817086",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "add_note",
+     "add_note",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_027d8390-346",
+    "slowest_turn_s": 7.4,
+    "ended": "assistant-ended-call"
+   },
+   {
+    "id": "PUB-13",
+    "level": "hard",
+    "family": "Multi-product",
+    "pass": false,
+    "failed": [
+     "promises [('p2', 900.0, '2026-10-23')], expected [('p1', 300.0, '2026-10-30'), ('p2', 900.0, '2026-10-23')]",
+     "notes [('p1', 'refused')], expected []",
+     "conversation: The conversation failed to meet multiple success criteria. First, the credit card was not recorded for 30 October; instead, a system note was added marking it as 'refused' (System Event: add_note). Second, the assistant's read-back in [Message 26] only mentioned the personal loan and its date (23 October), failing to mention both dates as required. While the loan was recorded on its deadline of 23"
+    ],
+    "call_id": "ec083791-0a74-4df8-9b60-fa258c1fccb6",
+    "tools": [
+     "verify_identity",
+     "verify_identity",
+     "get_account",
+     "create_promise",
+     "add_note",
+     "close_call"
+    ],
+    "customer_id": "c_e52025dd-bf8",
+    "slowest_turn_s": 6.5,
+    "ended": "assistant-ended-call"
+   }
+  ]
+ ]
+}
