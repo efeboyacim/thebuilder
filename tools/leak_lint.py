@@ -40,6 +40,9 @@ def from_brief(text, src, out):
     for m in TIME.finditer(text):
         out.add(("time", m.group(0), src))
     for m in NUMBER.finditer(text):
+        before = text[max(0, m.start() - 12):m.start()].lower()
+        if "." in m.group(1) and (re.search(r"(^|\n)[#\s]*$", before) or re.search(r"(section|sections|§)\s*$", before)):
+            continue  # a paragraph or section number of the material, not a value
         out.add(("number", m.group(1), src))
     for m in BACKTICK.finditer(text):
         span = m.group(1).strip()
