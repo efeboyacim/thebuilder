@@ -3,6 +3,7 @@
 
     python3 builder/build.py <brief_path> <tool_api_path>
     python3 builder/build.py <base brief> <later brief> <tool_api_path>   # a brief that builds on another
+    python3 builder/build.py <case_folder> <mock_url>                      # a client case folder + our service mock
 
 Input files are classified by content: the tool API is the JSON object with an `openapi` key; every other file is
 brief material, read in the order given. Options:
@@ -21,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if sys.path and Path(sys.path[0] or ".").resolve() == ROOT / "builder":
     sys.path[0] = str(ROOT)  # import as the `builder` package; builder/trace.py must not shadow stdlib `trace`
 
-from builder import compiler, ingest, llm, specgen, toolapi  # noqa: E402
+from builder import agentic, compiler, ingest, llm, specgen, toolapi  # noqa: E402
 from builder import spec as sp  # noqa: E402
 from builder.trace import Trace  # noqa: E402
 
@@ -253,9 +254,39 @@ def print_summary(trace, slot, inputs, status, done, error, outputs=None):
     print("\n".join(out), flush=True)
 
 
+def main_case(args, trace_dir, environ):
+    """Case mode: a case folder and the URL of the client's service mock (see builder/agentic.py)."""
+    case_dir, mock_url = args.inputs
+    slot = fallback_slot(args.slot, environ) if (args.slot or environ.get("BUILDER_SLOT")) else \
+        fallback_slot("case-" + os.path.basename(os.path.normpath(case_dir)), environ)
+    trace = Trace()
+    trace.open(display_path(str(trace_dir or environ.get("BUILDER_TRACE_DIR") or ROOT / "traces")), slot)
+    commit, dirty = git_state()
+    files = sorted(os.path.relpath(os.path.join(d, f), case_dir).replace("\\", "/")
+                   for d, _, fs in os.walk(case_dir) for f in fs)
+    trace.event("run_start", t=trace.start, argv=sys.argv[:1] + list(args.inputs), slot=slot, mode="case",
+                case_dir=display_path(case_dir), mock_url=mock_url, case_files=files, builder_commit=commit,
+                builder_dirty=dirty, python=platform.python_version(), platform=sys.platform)
+    print(f"case mode: {len(files)} files in {display_path(case_dir)}, mock {mock_url}, slot {slot}", flush=True)
+    error, outputs, t0 = None, {"trace": trace.path}, time.time()
+    try:
+        res = agentic.run(case_dir, mock_url, slot, trace, environ.get("BUILDER_OUT_DIR") or str(ROOT / "out"))
+        outputs.update(res)
+        trace.event("stage", name="case_build", ok=True, seconds=round(time.time() - t0, 1), summary=res)
+        status = "ok"
+    except Exception as e:  # noqa: BLE001 - every failure ends in a run_end event
+        error, status = f"{type(e).__name__}: {e}", "error"
+        trace.event("error", text=error, traceback=traceback.format_exc()[-2000:])
+    trace.close(status, error=error, outputs=outputs)
+    print_summary(trace, slot, None, status, "case_build" if status == "ok" else None, error, outputs)
+    return 1 if status == "error" else 0
+
+
 def main(argv=None, trace_dir=None, environ=None):
     environ = os.environ if environ is None else environ
     args = parse_args(argv)
+    if agentic.is_case_mode(args.inputs):
+        return main_case(args, trace_dir, environ)
     trace = Trace()
     inputs, error, done = None, None, None
     t0 = time.time()
