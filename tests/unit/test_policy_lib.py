@@ -161,3 +161,14 @@ def test_parse_now_and_spoken_formats():
     ("twenty-third February nineteen eighty nine", "1989-02-23"), ("19/10/1983", "1983-10-19")])
 def test_day_words_never_merge_with_the_year_across_the_month(text, want):
     assert pl.iso_date(pl.date_parts(text)) == want
+
+
+def test_parse_amount_decimal_comma_and_spoken_hundreds():
+    from builder.policy_lib import parse_amount
+    assert parse_amount("463,51", 1250, 300) == 463.51
+    assert parse_amount("1.250,00", 1250, 300) == 1250.0
+    assert parse_amount("1.250", 1250, 300) == 1250.0
+    assert parse_amount("3,100", 5000, 300) == 3100.0
+    assert parse_amount("twelve fifty", 1250, 300) == 1250.0
+    assert parse_amount("twelve fifty", 900, 300) == 12.0  # not within floor..due: left alone
+    assert parse_amount("twelve fifty euros", 1250, 300) == 12.5

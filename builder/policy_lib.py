@@ -475,6 +475,9 @@ def parse_amount(text, due=None, floor=None):
         return float(floor)
     if re.search(r"\b(full|whole|everything|all of it|entire|the lot)\b", s) and due is not None:
         return float(due)
+    s = re.sub(r"\b(\d{1,3}(?:\.\d{3})+),(\d{1,2})\b", lambda m: m.group(1).replace(".", "") + "." + m.group(2), s)
+    s = re.sub(r"\b(\d{1,3}(?:\.\d{3})+)\b(?![.,]\d)", lambda m: m.group(1).replace(".", ""), s)  # 1.250 = 1250
+    s = re.sub(r"\b(\d+),(\d{1,2})\b(?![\d,])", r"\1.\2", s)  # a decimal comma: 463,51
     nums = re.findall(r"\d[\d,]*(?:\.\d+)?", s)
     if nums:
         v = float(nums[0].replace(",", ""))
@@ -490,6 +493,9 @@ def parse_amount(text, due=None, floor=None):
             v += float("0." + str(words[1][0]))
         elif v >= 100 or re.search(r"\b(pounds?|euros?|dollars?|pence|cents?)\b", s):
             v += words[1][0] / 100.0
+        elif 10 <= v < 100 and 10 <= words[1][0] and due is not None and \
+                (floor or 0) <= v * 100 + words[1][0] <= float(due):
+            v = v * 100 + words[1][0]  # 'twelve fifty' said for 1250
     return v
 
 
