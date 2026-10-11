@@ -27,6 +27,27 @@ from builder.trace import Trace  # noqa: E402
 
 STAGES = ("ingest", "toolapi", "spec", "compile", "freya")
 FALLBACK_SLOT = "build"
+PLATFORM_WAITS = (10, 30, 60)  # seconds before each retry of a platform call that failed transiently
+
+
+def transient(err):
+    """A platform error worth retrying: a 5xx answer, a timeout or a dropped connection (not a 4xx)."""
+    text = str(err)
+    if isinstance(err, RuntimeError):
+        return any(f"-> {c}" in text for c in ("500", "502", "503", "504", "520", "522", "524"))
+    return isinstance(err, (OSError, TimeoutError))  # urllib's URLError and socket timeouts are OSErrors
+
+
+def with_retries(trace, action, fn, waits=PLATFORM_WAITS, sleep=time.sleep):
+    """Run a platform call; retry it after transient errors, with the waits given."""
+    for n in range(len(waits) + 1):
+        try:
+            return fn()
+        except Exception as e:
+            if n == len(waits) or not transient(e):
+                raise
+            trace.warning(f"freya {action}: {str(e)[:200]}; retry {n + 1} in {waits[n]} s")
+            sleep(waits[n])
 
 
 class StageNotReady(Exception):
@@ -147,7 +168,7 @@ def stage_freya(ctx):
     import freya
     s = compiler.summary(wf)
     t0 = time.time()
-    v = freya.validate_workflow(f"{slot} dry run", wf)
+    v = with_retries(trace, "validate", lambda: freya.validate_workflow(f"{slot} dry run", wf))
     trace.event("freya", action="validate", ok=True, seconds=round(time.time() - t0, 1),
                 result=sorted(v) if isinstance(v, dict) else str(v)[:200], nodes=s["nodes"], tools=s["tools"])
     state_file = ROOT / ".freya-agents.json"
@@ -155,18 +176,19 @@ def stage_freya(ctx):
     saves = 1 if slot in known else 2  # a new workflow gets its event model only with its first update
     for n in range(saves):
         t0 = time.time()
-        st = freya.save_workflow(slot, wf, state_file=str(state_file))
+        st = with_retries(trace, "save", lambda: freya.save_workflow(slot, wf, state_file=str(state_file)))
         trace.event("freya", action="update" if (slot in known or n) else "create", workflow_id=st["workflow_id"],
                     agent_id=st["agent_id"], version=st.get("version"), published=bool(st.get("version")),
                     seconds=round(time.time() - t0, 1), nodes=s["nodes"], tools=s["tools"])
-    got = freya.api("GET", f"/api/v2/workflow/{st['workflow_id']}", workspaceId=freya.workspace_id())["workflow"]
+    got = with_retries(trace, "readback", lambda: freya.api("GET", f"/api/v2/workflow/{st['workflow_id']}",
+                                                          workspaceId=freya.workspace_id())["workflow"])
     diffs = compiler.readback_diff(wf, got.get("workflow") or {})
     trace.event("freya", action="readback", workflow_id=st["workflow_id"], agent_id=st["agent_id"],
                 nodes=len((got.get("workflow") or {}).get("nodes") or {}), diffs=diffs)
     trace.event("self_test", name="readback_diff", result="pass" if not diffs else "fail", details=diffs[:20])
     sub = ROOT / "submission"
     sub.mkdir(exist_ok=True)
-    path = freya.export_workflow(st["workflow_id"], str(sub / f"{slot}.workflow.json"))
+    path = with_retries(trace, "export", lambda: freya.export_workflow(st["workflow_id"], str(sub / f"{slot}.workflow.json")))
     trace.event("freya", action="export", workflow_id=st["workflow_id"], agent_id=st["agent_id"],
                 path=display_path(path))
     ctx["outputs"].update(workflow_id=st["workflow_id"], agent_id=st["agent_id"], version=st.get("version"),

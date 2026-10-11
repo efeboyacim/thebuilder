@@ -135,3 +135,39 @@ def test_unusable_tool_api_fails_the_toolapi_stage(tmp_path, monkeypatch):
     (stage,) = [e for e in ev if e["ev"] == "stage" and e["name"] == "toolapi"]
     assert code == 1 and stage["ok"] is False and "no operations" in stage["error"]
     assert ev[-1]["status"] == "error" and ev[-1]["error"].startswith("ToolAPIError")
+
+
+class _Warn:
+    def __init__(self):
+        self.lines = []
+
+    def warning(self, text, **fields):
+        self.lines.append(text)
+
+
+def test_platform_retries_transient_errors_only():
+    calls, slept, tr = [], [], _Warn()
+
+    def flaky():
+        calls.append(1)
+        if len(calls) < 3:
+            raise RuntimeError("POST /api/v2/workflow -> 504: error code: 504")
+        return "ok"
+    assert build.with_retries(tr, "validate", flaky, waits=(1, 2, 3), sleep=slept.append) == "ok"
+    assert len(calls) == 3 and slept == [1, 2] and len(tr.lines) == 2
+
+    def bad_request():
+        raise RuntimeError("POST /api/v2/workflow -> 400: invalid node")
+    try:
+        build.with_retries(tr, "validate", bad_request, waits=(1,), sleep=slept.append)
+        assert False
+    except RuntimeError as e:
+        assert "400" in str(e) and slept == [1, 2]
+
+    def down():
+        raise TimeoutError("timed out")
+    try:
+        build.with_retries(tr, "save", down, waits=(1, 1), sleep=slept.append)
+        assert False
+    except TimeoutError:
+        assert slept == [1, 2, 1, 1]
