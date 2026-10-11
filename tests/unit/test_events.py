@@ -269,3 +269,15 @@ def test_compiled_llm_twins(spec, api):
     assert twin["on_enter"]["type"] == "llm" and "{{facts}}" in twin["task_message"]
     assert "I am sorry, I do not have that information." in twin["task_message"]
     assert "talk_third_llm" not in wf["nodes"] and compiler.lint(wf) == []
+
+
+def test_hardship_yes_with_human_event_still_goes_to_support(spec, api, code):
+    acts = verified("PUB-05") + [dict(stage="negotiate", event="hardship", said="I lost my job last month."),
+                                 dict(stage="negotiate", reply="yes", event="human", said="Yes, please put me through.")]
+    expect(play(spec, api, code, "PUB-05", acts), "transferred", "support", transfers=[{"queue": "support"}])
+
+
+def test_explicit_date():
+    assert engine.explicit_date("the sixth of November") and engine.explicit_date("6/11")
+    assert not engine.explicit_date("Wednesdays") and not engine.explicit_date("none")
+    assert not engine.explicit_date("maybe friday")

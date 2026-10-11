@@ -131,3 +131,15 @@ def test_free_mode_needs_a_flow_rule_in_one_stage(spec, api, change, msg):
     s = copy.deepcopy(spec)
     s["residual_rules"][-1].update(change)
     assert any(msg in e for e in sp.validate(s, api).errors)
+
+
+def test_a_bare_yes_asks_back_and_one_open_product_is_implied(spec, api, code):
+    acts = verified("PUB-07") + [
+        PAID_ON_WEDNESDAYS,
+        free(free_action="promise", said="Yes, I confirm."),
+        free(free_action="promise", free_amount="540", free_date="2026-10-22", said="540 on Thursday the 22nd."),
+        dict(stage="confirm", main="yes")]
+    r = play(spec, api, code, "PUB-07", acts)
+    expect(r, "promise", promises=[promise("p1", 540.0, "2026-10-22")])
+    said = [t["text"] for t in r.transcript if t["who"] == "agent" and t["node"] == "free_negotiate"]
+    assert "say the amount and the date" in said[1]
