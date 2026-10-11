@@ -100,7 +100,10 @@ def run_simulation(agent_id, name, variables_by_persona, max_seconds=420, concur
     sim_id = (sim.get("simulation") or sim)["id"]
     while True:
         time.sleep(10)
-        s = api("GET", f"/api/v2/simulations/{sim_id}"); s = s.get("simulation") or s
+        try: s = api("GET", f"/api/v2/simulations/{sim_id}"); s = s.get("simulation") or s
+        except (RuntimeError, OSError) as e:  # a 5xx or timeout while polling: keep waiting
+            if isinstance(e, RuntimeError) and " -> 5" not in str(e): raise
+            print(f"poll failed ({str(e)[:80]}), retrying", flush=True); continue
         if s.get("status") in ("completed", "failed", "paused"): break
     its = api("GET", f"/api/v2/simulations/{sim_id}/iterations"); its = its.get("iterations") or its.get("items") or its
     return sim_id, its[0]["id"], s.get("status")
