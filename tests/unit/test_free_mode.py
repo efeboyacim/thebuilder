@@ -143,3 +143,13 @@ def test_a_bare_yes_asks_back_and_one_open_product_is_implied(spec, api, code):
     expect(r, "promise", promises=[promise("p1", 540.0, "2026-10-22")])
     said = [t["text"] for t in r.transcript if t["who"] == "agent" and t["node"] == "free_negotiate"]
     assert "say the amount and the date" in said[1]
+
+
+def test_every_enum_slot_is_reset_to_a_member_of_its_enum(spec):
+    for fields in contract.extraction(spec).values():
+        for f in fields:
+            slot = f["name"][len("x_"):]
+            if f.get("enum"):
+                assert slot in engine.ENUM_SLOTS and "none" in f["enum"], f["name"]
+            else:
+                assert slot not in engine.ENUM_SLOTS, f["name"]

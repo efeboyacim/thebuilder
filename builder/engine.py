@@ -27,6 +27,7 @@ LOOP_LIMIT = 3
 TURN_LIMIT = 40
 LLM = "_llm"
 FREE = "free_"
+ENUM_SLOTS = ("main", "side_q", "event", "reply", "scope", "free_action")  # extraction enums that include "none"
 FREE_LIMIT = 4
 
 
@@ -131,8 +132,8 @@ def flush(c):
     out["final_outcome"] = sit.get("outcome") or ""
     out["final_reason"] = sit.get("reason") or "-"
     out["say_fallback"] = st.get("last") or render(S["opening"]["confirmation"]["reask_template"], values(c))
-    for slot in SLOTS:
-        out[x_var(slot)] = ""
+    for slot in SLOTS:  # an enum slot rejects "" (the old value would stay), so it gets its "none"
+        out[x_var(slot)] = "none" if slot in ENUM_SLOTS else ""
     out["facts"] = facts_text(c)
     out["brain_stage"] = st.get("stage") or ""
     out["brain_error"] = ""
@@ -370,6 +371,22 @@ def read_turn(c):
     return x
 
 
+UNFINISHED_WORDS = ("on", "in", "at", "the", "a", "an", "my", "our", "and", "or", "but", "because", "to", "of", "for",
+                    "by", "will", "can", "could", "would", "is", "are", "i", "we", "pay", "until", "about", "around",
+                    "so", "then", "with", "from", "it", "that", "this", "be", "have", "get", "maybe", "like", "if")
+
+
+def unfinished(said):
+    """The customer stopped mid-sentence: no closing punctuation and a last word that cannot end a sentence."""
+    s = str(said or "").strip().lower()
+    if not s or s == "none" or s[-1] in ".!?":
+        return False
+    if s[-1] in ",-:;" or s.endswith("..."):
+        return True
+    words = re.findall(r"[a-z']+", s)
+    return bool(words) and words[-1] in UNFINISHED_WORDS
+
+
 def fallback_main(c, stage, x):
     """Regex fallbacks on what the customer said when extraction gave nothing."""
     said = " " + x["said"].lower() + " "
@@ -403,6 +420,14 @@ def on_turn(c, stage, x):
             return ask(c, stage, st.get("last") or "")
         x["main"] = "unclear"
     st["miss"] = 0
+    if stage in ("negotiate", "confirm") and x["main"] in ("", "unclear") and unfinished(x["said"]) and \
+            not any(x[k] for k in ("side_q", "event", "day", "amount")) and st.get("cont", 0) < 2:
+        st["cont"] = st.get("cont", 0) + 1  # the customer stopped mid-sentence: no attempt used
+        last = st.get("last") or ""
+        ask(c, stage, CONTINUE)
+        st["last"] = last
+        return None
+    st["cont"] = 0
     t = termination(c, stage, x)
     if t:
         return close(c, t)
