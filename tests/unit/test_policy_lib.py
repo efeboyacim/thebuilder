@@ -172,3 +172,15 @@ def test_parse_amount_decimal_comma_and_spoken_hundreds():
     assert parse_amount("twelve fifty", 1250, 300) == 1250.0
     assert parse_amount("twelve fifty", 900, 300) == 12.0  # not within floor..due: left alone
     assert parse_amount("twelve fifty euros", 1250, 300) == 12.5
+
+
+def test_years_said_digit_by_digit_and_spelled_codes():
+    from builder.policy_lib import normalize_answer, spoken_numbers
+    today = dt.date(2026, 10, 14)
+    q = {"answer_type": "date", "numeric_date_order": "day_month_year"}
+    assert normalize_answer(q, "the fifth of December one nine seven five", None, today)[:2] == ("1975-12-05", True)
+    assert [n[0] for n in spoken_numbers("one nine seven five")] == [1975]
+    assert [n[0] for n in spoken_numbers("four four seven one")] == [4, 4, 7, 1]  # not a year
+    code = {"answer_type": "letters_digits"}
+    for said in ("sierra whiskey one alpha one alpha alpha", "my postcode is SW1A 1AA", "S W one A one double A"):
+        assert normalize_answer(code, said, None, today)[0] == "SW1A1AA", said

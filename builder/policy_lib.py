@@ -214,6 +214,9 @@ def _word_table():
 
 
 WORDS = _word_table()
+NATO = ("alpha", "alfa", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "juliett",
+        "kilo", "lima", "mike", "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uniform",
+        "victor", "whiskey", "whisky", "xray", "yankee", "zulu")
 
 
 def _tokens(text):
@@ -267,8 +270,14 @@ def spoken_numbers(text):
         else:
             g.extend([0, val, base, kind[0] == "o"])
     merged, i = [], 0
-    while i < len(out):  # spoken years: 19|88, 20|20, 19|0|5
+    while i < len(out):  # spoken years: 19|88, 20|20, 19|0|5, 1|9|7|5
         a = out[i]
+        four = out[i:i + 4]
+        if len(four) == 4 and all(n[2] and not n[1] and 0 <= n[0] <= 9 for n in four) and \
+                1900 <= int("".join(str(n[0]) for n in four)) <= 2099:
+            merged.append([int("".join(str(n[0]) for n in four)), False, True])
+            i += 4
+            continue
         if a[2] and not a[1] and a[0] in (19, 20) and i + 1 < len(out) and out[i + 1][2] and not out[i + 1][1]:
             b = out[i + 1]
             if 10 <= b[0] <= 99:
@@ -604,10 +613,21 @@ def normalize_answer(q, text, partial=None, today=None):
         years = [x[0] for x in spoken_numbers(text) if x[0] >= 1000 or 30 <= x[0] < 100]
         value = str(_year4(years[-1], today)) if years else ""
     elif kind == "letters_digits":
-        toks = re.findall(r"[a-z]+|\d+|[^\sa-z\d]", str(text or "").lower())
-        value = "".join(str(WORDS[t][0]) if t in WORDS and WORDS[t][1] in ("z", "u") and len(t) > 1 else t
-                        for t in toks)
-        value = re.sub(r"[^A-Za-z0-9]", "", value).upper()
+        low = re.sub(r"'s\b|\b(my|is|it|its|me)\b", " ", str(text or "").lower())
+        out, rep = [], 1
+        for t in re.findall(r"[a-z]+|\d+", low):
+            if t in ("double", "triple"):
+                rep = 2 if t == "double" else 3
+                continue
+            if t in NATO:
+                t = t[0]
+            elif t in WORDS and WORDS[t][1] in ("z", "u") and len(t) > 1:
+                t = str(WORDS[t][0])
+            elif len(t) >= 3 and not t.isdigit():
+                continue  # a filler word ('postcode', 'the'): codes say letters one or two at a time
+            out.append(t * rep if len(t) == 1 else t)
+            rep = 1
+        value = "".join(out).upper()
     else:
         value = re.sub(r"\s+", " ", str(text or "")).strip()
     complete = bool(value) and (re.fullmatch(pattern, value) is not None if pattern else True)
