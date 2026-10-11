@@ -133,6 +133,8 @@ Never cut: M1 (16), M2's spec diff (20), M3 (24), the styles run (22).
   5. Push only when the user says so (local `main` is ahead of origin; the remote is https://github.com/efeboyacim/thebuilder.git). The form needs a pushed commit.
   Known risks: the `ANTHROPIC_API_KEY` back end of `builder/llm.py` was never run live (the organisers' rerun may use it); the builder's Claude login can hit the session limit (it did at 05:20 UTC; retries stop after 20 min of run time).
 
+- 2026-10-11 11:20 UTC (progress on the 10:45 handoff): Freya platform down (504 on every route since ~10:48). Step 1 needs `--spec results/22-spec-a-migrated.json` instead of 13-spec (13 predates the schema: notes, multi, several_products, aggregation, free_mode filled as not_specified/off); it validates and compiles, the save is still to do. Offline fixes committed: df1a60e (output cap 64k on both LLM back ends; a digest reached 30k of 32k), 95624b3 (build retries validate/save/read-back/export after 5xx/timeouts, 10/30/60 s). 433 unit tests pass, leak lint clean. Next: step 1 save, then steps 2-5 as listed.
+
 ## Done
 
 - [x] 01 Setup check. Commit e67f939. Verified: `python tools/run_cases.py d59d3574-e7fa-48ce-bd5d-9433ebd57421 --brief A --out results/01-base.json` → "0 / 10 passed" (simulation ad16b001-5a51-4cad-9b23-a5083d93d3e6, 126 s, median slowest turn 3 s) and a new line in `results/log.jsonl`. Slot `scratch` = workflow c2a4ce00-4eb6-435f-acec-926102431e6e, agent d59d3574-e7fa-48ce-bd5d-9433ebd57421. Session variables: customer_id, first_name, last_name, now, title. Workspace: 2 workflows (pre-existing base agent + scratch), no limit reported. `FREYA_BANK_TEAM_KEY` regenerated (the old one had 13 chars; the mock requires 16+).
