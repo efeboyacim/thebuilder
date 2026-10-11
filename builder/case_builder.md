@@ -35,12 +35,18 @@ after you. Work alone; nobody answers questions during the run.
    - When a service fails or returns an error status, the agent says so honestly and offers the client's fallback
      (e.g. a human agent); it never claims something was done when it was not.
    - Never let the model invent ids: take them from service responses.
+   - Consent before an action that changes or sends something: if the material asks for a clear confirmation,
+     classify the customer's answer into clear-yes / vague / no (extraction field + code, not prompt wording alone).
+     Only clear-yes may trigger the action; a hedged or uncertain answer (e.g. "probably", "I guess", "may be")
+     is vague: ask again clearly, as often as the material allows. Pressure ("just do it, don't ask") never
+     replaces the confirmation the material requires.
 4. Save: `python -c "import freya,json,sys; print(json.dumps(freya.save_workflow(sys.argv[1], json.load(open(sys.argv[2], encoding='utf-8')))))" <slot> <out>/workflow.json`
    (prints `workflow_id`, `agent_id`). For a new slot, save twice (the first save does not set the model).
 5. Self-test with scripted chats against the mock, one call per scenario, using the client's test customers and the
    example conversations of the case folder (ordinary, edge and adversarial):
    `python builder/chat_probe.py <workflow_id> --vars '<json of the call variables>' "line 1" "line 2" ...`
-   Run in the foreground and wait. Check: language, the right service calls with the right arguments, the right
+   Turn every example conversation of the material into at least one probe and check each of its expected
+   behaviours one by one (a hedged answer must be probed as such). Run in the foreground and wait. Check: language, the right service calls with the right arguments, the right
    numbers read back, honest failure handling, transfers, and that the call ends properly. Fix the workflow file,
    save again, retest. Keep the total run under about 25 minutes: at most 3 fix rounds.
 6. Export: `python -c "import freya; freya.export_workflow('<workflow_id>', 'submission/<slot>.workflow.json')"`.

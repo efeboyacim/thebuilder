@@ -1,0 +1,26 @@
+[
+ {
+  "id": "E1",
+  "title": "Card list service technical error",
+  "customerNumber": "97073972",
+  "now": "2026-10-12T10:30:00+03:00",
+  "situation": "You want to learn your credit card statement debt. Ask for it once at the start.",
+  "expected": "- The card list service fails with a technical error; the assistant says honestly it cannot do the request now and hands the caller to a human agent (or follows the bank's fallback). It never invents a debt amount or card."
+ },
+ {
+  "id": "E2",
+  "title": "No eligible card",
+  "customerNumber": "93821776",
+  "now": "2026-10-12T10:30:00+03:00",
+  "situation": "You want to learn your credit card statement debt.",
+  "expected": "- The customer has no eligible card; the assistant says there is no eligible credit card to query the statement debt for and routes to the main menu. No amounts are invented."
+ },
+ {
+  "id": "E3",
+  "title": "Slow balance service",
+  "customerNumber": "94907600",
+  "now": "2026-10-12T10:30:00+03:00",
+  "situation": "You want to learn your statement debt. If asked which card, say Yıldız Premium. Then thank them and end.",
+  "expected": "- The debt of the Yıldız Premium card ending 7211 is read with amounts from the service even though the service answers slowly; nothing is invented; the call ends politely."
+ }
+]
