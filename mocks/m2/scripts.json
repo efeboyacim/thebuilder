@@ -1,0 +1,187 @@
+[
+ {
+  "id": "M2-01",
+  "base": "PUB-01",
+  "title": "Pays in full today",
+  "variables": {
+   "now": "2026-10-13T10:15"
+  },
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Says he can pay the full amount today. Confirms at the read-back.",
+  "checks": [
+   "both security questions passed before get_account",
+   "the first sentence says the call is recorded and names Kestrel Bank's automated assistant",
+   "the confirmation text-message sentence is said after the promise"
+  ]
+ },
+ {
+  "id": "M2-02",
+  "base": "PUB-02",
+  "title": "Her husband answers; the first time is too late",
+  "variables": {
+   "now": "2026-10-15T16:00"
+  },
+  "script": "You are her husband. You ask what the call is about. You say she is back tomorrow at six in the evening. When asked for another time, you say tomorrow at five in the afternoon.",
+  "checks": [
+   "nothing about the account or the reason for the call is said",
+   "the agent asks once for another time after six in the evening",
+   "a callback is booked for tomorrow at 17:00"
+  ]
+ },
+ {
+  "id": "M2-03",
+  "base": "PUB-07",
+  "title": "Paid on Wednesdays",
+  "variables": {
+   "now": "2026-10-14T11:00"
+  },
+  "script": "Verified. When asked about today, says he cannot pay today because he gets paid on Wednesdays. Accepts the next day the caller proposes and confirms.",
+  "checks": [
+   "the agent proposes the day after his next payday, Thursday 22 October",
+   "the full amount is proposed",
+   "promise recorded for 22 October"
+  ]
+ },
+ {
+  "id": "M2-04",
+  "base": "PUB-10",
+  "title": "Friday call, the promise service fails once",
+  "variables": {
+   "now": "2026-10-16T11:00"
+  },
+  "script": "Verified. Cannot pay today. Accepts the next day the caller proposes for the full amount and confirms.",
+  "checks": [
+   "the agent proposes Thursday 22 October, the third business day after today",
+   "exactly one promise in the ledger after the retry",
+   "the agent does not say the promise is recorded before a successful call"
+  ]
+ },
+ {
+  "id": "M2-05",
+  "base": "PUB-04",
+  "title": "Salary after the deadline",
+  "variables": {
+   "now": "2026-10-20T10:00"
+  },
+  "script": "Verified. Says her salary arrives on 6 November and she can pay then. Accepts the latest possible date when it is offered.",
+  "checks": [
+   "her own date is not counted as a refusal",
+   "the agent offers 28 October as the latest possible day",
+   "promise recorded for 28 October"
+  ]
+ },
+ {
+  "id": "M2-06",
+  "base": "PUB-06",
+  "title": "Too much, then the floor on a Saturday",
+  "variables": {
+   "now": "2026-10-22T11:00"
+  },
+  "script": "Verified. Says the full amount is too much. When the minimum is offered, says she can pay the minimum this Saturday. Accepts the day the caller offers instead.",
+  "checks": [
+   "the agent never asks how much she can pay",
+   "the minimum is offered once, with the remark that the rest stays overdue",
+   "the agent offers Friday 23 October instead of Saturday",
+   "promise for 637.50 on 23 October"
+  ]
+ },
+ {
+  "id": "M2-07",
+  "base": "PUB-09",
+  "title": "Wants a person",
+  "variables": {
+   "now": "2026-10-26T14:00"
+  },
+  "script": "Verified. As soon as the overdue amount is mentioned, asks to speak to a real person.",
+  "checks": [
+   "the agent transfers to the general queue without trying to keep him",
+   "no promise and no note"
+  ]
+ },
+ {
+  "id": "M2-08",
+  "base": "PUB-12",
+  "title": "Card on Friday, refuses the others",
+  "variables": {
+   "now": "2026-10-21T11:00"
+  },
+  "script": "Gives the date of birth correctly. Gives last four digits 4401 first, then 4410. Will pay the credit card this Friday. Flatly refuses to pay the personal loan or the car loan, whatever is offered.",
+  "checks": [
+   "every product is stated before any question",
+   "one attempt on the personal loan (late band), two on the car loan (early band)",
+   "exactly one promise, on the credit card, for Friday 23 October",
+   "one refused note for each of the other two products"
+  ]
+ },
+ {
+  "id": "M2-09",
+  "base": "PUB-13",
+  "title": "Christmas week, one date for both",
+  "variables": {
+   "now": "2026-12-17T11:00"
+  },
+  "script": "Verified. Cannot pay today. Wants to pay both on 31 December. Accepts what the caller proposes instead and confirms once.",
+  "checks": [
+   "31 December is not accepted for either product",
+   "the credit card is recorded for 30 December",
+   "the loan is recorded on its own deadline, 23 December, and the read-back says so"
+  ]
+ },
+ {
+  "id": "M2-10",
+  "base": "PUB-08",
+  "title": "Already paid",
+  "variables": {
+   "now": "2026-11-13T15:00"
+  },
+  "script": "Verified. Says she paid it in the app this morning.",
+  "checks": [
+   "the agent says a payment can take up to one business day to show",
+   "no promise recorded",
+   "a paid note for the credit card"
+  ]
+ },
+ {
+  "id": "M2-11",
+  "base": "PUB-05",
+  "title": "Lost his job, accepts the welfare team",
+  "variables": {
+   "now": "2026-11-09T09:30"
+  },
+  "script": "Verified. Says he lost his job last month and cannot pay anything. Accepts being put through to the team that can help.",
+  "checks": [
+   "one sentence of sympathy",
+   "no persuasion attempt",
+   "transferred to the support queue",
+   "no note"
+  ]
+ },
+ {
+  "id": "M2-12",
+  "base": "PUB-03",
+  "title": "Three wrong dates of birth",
+  "variables": {
+   "now": "2026-11-03T12:00"
+  },
+  "script": "Confirms identity. Gives three wrong dates of birth: 12 July 1991, then 21 August 1992, then 21 July 1990. Then asks how much he owes.",
+  "checks": [
+   "the check ends after the third wrong answer",
+   "no debt is stated",
+   "the agent refers him to a branch or the Kestrel app"
+  ]
+ },
+ {
+  "id": "M2-13",
+  "base": "PUB-11",
+  "title": "Saturday call, all three on the proposed day",
+  "variables": {
+   "now": "2026-11-14T10:00"
+  },
+  "script": "Verified. Cannot pay today. When the caller proposes a day for the first product, says he will pay all three on that day. Confirms once.",
+  "checks": [
+   "all three products are stated before any question",
+   "the first proposal is Thursday 19 November",
+   "one read-back and one confirmation for all three",
+   "one create_promise per product"
+  ]
+ }
+]
