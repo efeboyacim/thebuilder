@@ -1,5 +1,5 @@
-// Routes of the bank's services. PROVISIONAL until the integration document (section 6) arrives:
-// each service is served at POST /<service with dots as slashes>, e.g. POST /cards/list.
+// Routes of the bank's services: POST /voice/v1/<service name>, e.g. POST /voice/v1/cards.list
+// (service contract 2026-10-01; body {"data": {...}, "call": {...}}, response {"data", "result"}).
 const SERVICES = [
   ["cards.list", false, false],
   ["cards.balance", true, false],
@@ -11,7 +11,7 @@ const SERVICES = [
 ];
 
 export const ROUTES = SERVICES.map(([service, byCard, byWeek]) => ({
-  service, byCard, byWeek, method: "POST", path: "/" + service.split(".").join("/"),
+  service, byCard, byWeek, method: "POST", path: "/voice/v1/" + service,
 }));
 
 // Request field names searched (path params, query, body at any depth) for each lookup key.

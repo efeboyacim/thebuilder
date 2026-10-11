@@ -8,7 +8,7 @@ const CUSTOMERS = Object.fromEntries(DATA.customers.map((c) => [String(c.custome
 const LOG = [];
 
 const json = (status, body) =>
-  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8" } });
+  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*" } });
 
 function matchPath(pattern, path) {
   const p = pattern.split("/").filter(Boolean), a = path.split("/").filter(Boolean);
@@ -36,6 +36,8 @@ function find(names, sources) {
 }
 
 const digits = (s) => String(s || "").replace(/\D/g, "");
+// The platform's "Test API Request" button sends "{{var}}" unfilled: answer with the first test customer.
+const isTemplate = (v) => typeof v === "string" && (v.startsWith("{{") || v.startsWith("%7B%7B"));
 
 // The services are keyed by the masked number from cards.list; accept masked, full or last-four forms.
 function cardKey(table, card) {
@@ -59,12 +61,13 @@ function envelope(code, message) {
 async function answer(route, params, url, body) {
   const sources = [params, Object.fromEntries(url.searchParams), body];
   const customerNo = find(FIELDS.customer, sources);
-  const cust = customerNo && CUSTOMERS[digits(customerNo)];
+  const cust = isTemplate(customerNo) ? DATA.customers[0] : customerNo && CUSTOMERS[digits(customerNo)];
   if (!cust) return { http: NOT_FOUND.customer.http, response: NOT_FOUND.customer.response };
   let entry = cust.services[route.service];
   if (!entry) return { http: NOT_FOUND.service.http, response: NOT_FOUND.service.response };
   if (route.byCard) {
-    const k = cardKey(entry, find(FIELDS.card, sources));
+    const card = find(FIELDS.card, sources);
+    const k = isTemplate(card) ? Object.keys(entry)[0] : cardKey(entry, card);
     if (!k) return { http: NOT_FOUND.card.http, response: NOT_FOUND.card.response };
     entry = entry[k];
   }
@@ -79,6 +82,9 @@ async function answer(route, params, url, body) {
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+    if (request.method === "OPTIONS")
+      return new Response(null, { headers: { "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "*" } });
     if (url.pathname === "/" || url.pathname === "/health")
       return json(200, { ok: true, customers: Object.keys(CUSTOMERS).length,
         routes: ROUTES.map((r) => `${r.method} ${r.path} -> ${r.service}`) });
