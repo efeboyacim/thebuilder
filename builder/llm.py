@@ -14,7 +14,7 @@ DEFAULT_EFFORT = "high"
 DEFAULT_SYSTEM = "You are a careful analyst. Follow the instructions exactly and answer only with what is asked."
 RETRIES = 2
 BACKOFF = (5, 20)  # seconds before retry 1 and 2
-MAX_TOKENS = 32000
+MAX_TOKENS = 64000  # the longest digest so far was 30k output tokens
 TIMEOUT = 900  # seconds per attempt
 START = time.time()  # the build's start: no retry after RETRY_UNTIL seconds, so a build stays within 30 minutes
 RETRY_UNTIL = 1200
@@ -111,11 +111,11 @@ class SdkBackend:
 
     def complete(self, *, model, prompt, system, schema, max_tokens, effort, timeout):
         try:
-            return asyncio.run(asyncio.wait_for(self._run(model, prompt, system, schema, effort), timeout))
+            return asyncio.run(asyncio.wait_for(self._run(model, prompt, system, schema, effort, max_tokens), timeout))
         except asyncio.TimeoutError:
             raise LLMError(f"no reply within {timeout} s") from None
 
-    async def _run(self, model, prompt, system, schema, effort):
+    async def _run(self, model, prompt, system, schema, effort, max_tokens=MAX_TOKENS):
         sdk = self.sdk
         system = system or DEFAULT_SYSTEM
         if len(system) > SDK_SYSTEM_ARG_MAX:
@@ -126,6 +126,7 @@ class SdkBackend:
         opts = sdk.ClaudeAgentOptions(
             model=model, system_prompt=system, tools=[], allowed_tools=[], setting_sources=[], cwd=self.cwd,
             max_turns=4 if schema else 1, effort=effort,
+            env={"CLAUDE_CODE_MAX_OUTPUT_TOKENS": str(max_tokens)},  # the CLI's own cap is lower
             output_format={"type": "json_schema", "schema": schema} if schema else None)
         parts, result, used = [], None, None
         async for m in sdk.query(prompt=prompt, options=opts):
