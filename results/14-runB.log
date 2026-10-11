@@ -1,0 +1,34 @@
+PASS PUB-11 medium Multi-product  | verify > verify > get_account > promise > promise > promise > close_call
+PASS PUB-12 hard   Multi-product  | verify > verify > verify > get_account > promise > add_note > add_note > close_call
+PASS PUB-13 hard   Multi-product  | verify > verify > get_account > promise > promise > close_call
+
+slowest agent turn per call: median 3 s, worst 6 s. Failed calls where the customer hung up: 0.
+-- run 1 of 3: 3 / 3 passed, 54 s
+
+PASS PUB-11 medium Multi-product  | verify > verify > get_account > promise > promise > promise > close_call
+FAIL PUB-12 hard   Multi-product  | verify > verify > verify > get_account > add_note > add_note > add_note > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-15')]
+       - notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]
+       - conversation: The assistant failed several criteria: 1) It did not record a promise for the credit card; system events show it logged a 'refused' note for all three products instead. 2) It exceeded the attempt limits for the loans: the car loan (early band) wa
+PASS PUB-13 hard   Multi-product  | verify > verify > get_account > promise > promise > close_call
+
+slowest agent turn per call: median 6 s, worst 7 s. Failed calls where the customer hung up: 0.
+-- run 2 of 3: 2 / 3 passed, 53 s
+
+PASS PUB-11 medium Multi-product  | verify > verify > get_account > promise > promise > promise > close_call
+FAIL PUB-12 hard   Multi-product  | verify > verify > verify > get_account > add_note > add_note > add_note > close_call
+       - outcome ('no_promise', 'refused'), expected ('promise', None)
+       - promises [], expected [('p1', 510.0, '2026-10-15')]
+       - notes [('p1', 'refused'), ('p2', 'refused'), ('p3', 'refused')], expected [('p2', 'refused'), ('p3', 'refused')]
+       - conversation: - Identity verification: The phone question was repeated exactly once (Message 6) and the date of birth was not repeated, meeting those criteria. - Promises and Notes: The agent failed to record a promise for the credit card. Instead, it recorded
+PASS PUB-13 hard   Multi-product  | verify > verify > get_account > promise > promise > close_call
+
+slowest agent turn per call: median 6 s, worst 7 s. Failed calls where the customer hung up: 0.
+-- run 3 of 3: 2 / 3 passed, 43 s
+
+PASS PUB-11 3/3
+FAIL PUB-12 1/3
+PASS PUB-13 3/3
+
+2 / 3 passed (bank records and conversation checks), a customer counts with 3 of 3 runs. Last simulation de7b16c8-d5e9-4cc3-bf58-ca5f7572e4d3, status completed, 149 s.

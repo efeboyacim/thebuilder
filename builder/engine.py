@@ -19,7 +19,7 @@ NS = "not_specified"
 TALK, API, END, FAILED = "talk_", "api_", "end_call", "brain_failed"
 STATE = "brain_state"
 STAGES = ("open", "third", "identity", "negotiate", "confirm")
-SLOTS = ("main", "side_q", "event", "reply", "answer", "day", "time", "amount", "said")
+SLOTS = ("main", "side_q", "event", "reply", "answer", "day", "time", "amount", "scope", "product", "said")
 SIDE_Q = ("purpose", "other")
 CONTINUE = "Please go on."
 LOOP_LIMIT = 3
@@ -97,7 +97,8 @@ def new_state():
                 pending=None, third=dict(bad=0, none=0, other=0, day="", cb=None),
                 ident=dict(q=0, wrong=0, qwrong=dict(), partial=None, refusals=0, purpose=0, fails=0, passed=[]),
                 products=[], offers=[], agreed=[], recorded=[], fails=dict(), pp=dict(), cur="", conf=0,
-                no_transfer=False, turns=0, ev=dict(), pev=None, sup=[], sup_no="", hang="", resume="", facts="")
+                no_transfer=False, turns=0, ev=dict(), pev=None, sup=[], sup_no="", hang="", resume="", facts="",
+                noted=[], carry=[])
 
 
 def step(c):
@@ -105,6 +106,7 @@ def step(c):
     p = st.get("pending")
     if p:
         st["pending"] = None
+        c["say"], st["carry"] = list(st.get("carry") or []), []
         return on_result(c, p, api_result(c, p))
     stage = st.get("wait") or st.get("stage") or "open"
     st["wait"] = ""
@@ -178,8 +180,11 @@ def close(c, sid):
     if sit is None:
         sid = hangup(c, st.get("stage"))
         sit = situation(c, sid) or dict(say="", farewell="")
-    if sit.get("queue") and "transfer" in S["bindings"]["tools"] and not st.get("transferred") and             not st.get("no_transfer"):
+    if sit.get("queue") and "transfer" in S["bindings"]["tools"] and not st.get("transferred") and \
+            not st.get("no_transfer"):
         return call(c, "transfer", dict(queue=sit["queue"]), dict(kind="transfer", sid=sid))
+    if note_next(c, sid, sit):
+        return None
     st["closing"] = sid
     vals = values(c)
     cb = st["third"].get("cb")
@@ -189,6 +194,35 @@ def close(c, sid):
     c["out"]["farewell"] = join(*[render(s, vals) for s in c["say"] + [sit.get("say"), sit.get("farewell")]])
     c["say"] = []
     c["out"]["route"] = END
+
+
+def note_reason(c, sid):
+    return (situation(c, sid) or dict()).get("note_reason") or ""
+
+
+def note_next(c, sid, sit):
+    """With notes on, the next note for a product without a recorded promise (none at all on a transfer, unless the
+    spec keeps them). True when a note call was routed."""
+    S, st = c["S"], c["st"]
+    N = S.get("notes") or dict()
+    if N.get("enabled") is not True or "record_note" not in S["bindings"]["tools"] or not st.get("products"):
+        return False
+    if (sit.get("queue") or st.get("transferred")) and N.get("on_transfer") != "keep":
+        return False
+    done = [str(r) for r in st["recorded"]] + [str(r) for r in st["noted"]]
+    for p in st["products"]:
+        if str(p.get("ref")) in done:
+            continue
+        reason = note_reason(c, pstate(c, p).get("end") or sid)
+        if not reason:
+            st["noted"].append(str(p.get("ref")))
+            continue
+        vals = dict(product_ref=p["ref"], note_reason=reason)
+        if N.get("text_template") not in (None, "", NS):
+            vals["note_text"] = render(N["text_template"], product_values(c, p, dict(note_reason=reason)))
+        call(c, "record_note", vals, dict(kind="note", ref=str(p.get("ref")), sid=sid))
+        return True
+    return False
 
 
 def call(c, role, engine_values, ctx):
@@ -221,6 +255,7 @@ def call(c, role, engine_values, ctx):
             out[resp_var(role, r)] = ""
     st["pending"] = dict(ctx, role=role, s=to_int(v.get(node + "_success_count")) or 0,
                          f=to_int(v.get(node + "_failure_count")) or 0)
+    st["carry"], c["say"] = list(c["say"]), []
     out["route"] = node
 
 
@@ -246,6 +281,9 @@ def on_result(c, p, r):
         return promise_result(c, p, r)
     if kind == "callback":
         return callback_result(c, p, r)
+    if kind == "note":
+        c["st"]["noted"].append(p.get("ref"))
+        return close(c, p.get("sid"))
     if kind == "transfer":
         if r["ok"]:
             c["st"]["transferred"] = True
@@ -527,9 +565,12 @@ def verified(c):
 
 
 def target(c, t, stage):
-    """An event's target: a situation ends the call, anything else goes back to what the agent was asking."""
+    """An event's target: a situation ends the call (every product without a recorded promise ends there), anything
+    else goes back to what the agent was asking."""
     st = c["st"]
     if isinstance(t, str) and situation(c, t) is not None:
+        if verified(c) and not situation(c, t).get("queue"):
+            return end_open(c, t)
         return close(c, t)
     return ask(c, stage, st.get("resume") or st.get("last") or "")
 
@@ -568,6 +609,14 @@ def fire_event(c, stage, x):
     t = e.get("then")
     if not verified(c) and e.get("then_before_verification") not in (None, "", NS):
         t = e["then_before_verification"]
+    if verified(c) and multi(c) and e.get("several_products") == "note_and_continue" and \
+            situation(c, t) is not None and not situation(c, t).get("queue"):
+        p = match_product(c, x["product"]) or current(c)
+        c["say"].append(situation(c, t).get("say"))
+        if str(p.get("ref")) in [str(a["ref"]) for a in st["agreed"]]:
+            st["agreed"] = [a for a in st["agreed"] if str(a["ref"]) != str(p.get("ref"))]
+        product_done(c, p, t)
+        return True
     target(c, t, stage)
     return True
 
@@ -805,7 +854,7 @@ def pstate(c, p):
     pp = c["st"]["pp"]
     k = str(p.get("ref"))
     if k not in pp:
-        pp[k] = dict(used=0, vague=0, proposed=False, refused=[], offer=None, too_much=False)
+        pp[k] = dict(used=0, vague=0, proposed=False, refused=[], offer=None, too_much=False, status="open", end="")
     return pp[k]
 
 
@@ -828,6 +877,13 @@ def customer_day(c, text):
     return resolve_day(text, c["today"], c["wmode"])
 
 
+def points_back(text):
+    """A day phrase that only points back at the day the agent named."""
+    t = str(text or "").lower()
+    return re.search(r"\d", t) is None and re.search(r"\b(then|that|same|this one|you said|you mentioned)\b", t) \
+        is not None and resolve_day(t, datetime.date(2000, 1, 3)) is None
+
+
 def reask(c):
     st = c["st"]
     st["loops"] += 1
@@ -839,21 +895,28 @@ def reask(c):
 def turn_negotiate(c, x):
     st, neg = c["st"], c["S"]["negotiation"]
     p = current(c)
+    if multi(c) and x["product"]:
+        p = match_product(c, x["product"]) or p
+        if pstate(c, p).get("status") != "open":
+            p = current(c)
     s = pstate(c, p)
     o = s.get("offer") or dict()
+    if multi(c) and (x["day"] or x["main"] == "accepts") and (x["scope"] == "all" or (
+            x["main"] == "accepts" and o.get("kind") == "first") or (not x["scope"] and not x["product"] and re.search(
+            r"\b(all|both|every|everything|each)\b", x["said"].lower()))):
+        return propose_all(c, customer_day(c, x["day"]) if x["day"] else None, bool(x["day"]))
     if x["amount"]:
         a = parse_amount(x["amount"], p.get("due"), p.get("floor"))
         if a is not None:
             return propose_amount(c, p, a, customer_day(c, x["day"]) if x["day"] else None, bool(x["day"]))
     if x["day"]:
         d = customer_day(c, x["day"])
+        if d is None and o.get("date") and (x["main"] == "accepts" or x["reply"] == "yes" or points_back(x["day"])):
+            d = datetime.date.fromisoformat(o["date"])  # 'then', 'that day': the day on the table
         if not (x["main"] == "refuses" and d is not None and d.isoformat() == o.get("date")):
             return propose_day(c, p, d)
     m = x["main"]
     if m == "accepts" and o:
-        if o.get("kind") == "first" and len(st["offers"]) > 1:  # item 14: several products
-            st["agreed"] = [dict(a) for a in st["offers"]]
-            return readback(c)
         return propose_day(c, p, datetime.date.fromisoformat(o["date"]), o["amount"])
     if m == "proposes":
         return vague_day(c, p)
@@ -942,8 +1005,7 @@ def propose_day(c, p, d, amount=None):
                 return propose_day(c, p, d2, amount)
             return offer(c, p, amount, d2, "shift", pol["template"], d)
         return ask_day(c, p)
-    st["agreed"] = [dict(ref=p["ref"], amount=float(amount), date=d.isoformat())]
-    return readback(c)
+    return agree(c, p, amount, d)
 
 
 def ask_day(c, p):
@@ -1001,7 +1063,23 @@ def refusal(c, p):
         s["refused"].append([round(float(o["amount"]), 2), o["date"]])
     if st.get("sup_no"):  # an event stopped persuasion: a refusal ends the call
         e = event_row(c, st["sup_no"]) or dict()
-        return close(c, sit_ref(c, e.get("on_no"), "negotiate"))
+        return end_open(c, sit_ref(c, e.get("on_no"), "negotiate"))
+    return ladder_next(c, p)
+
+
+def intro_once(c, p):
+    """With several products, the product's intro before the agent's first words about it."""
+    intro = (c["S"]["negotiation"].get("multi") or dict()).get("product_intro_template")
+    s = pstate(c, p)
+    if multi(c) and intro not in (None, "", NS) and not s.get("intro"):
+        s["intro"] = True
+        c["say"].append(render(intro, product_values(c, p)))
+
+
+def ladder_next(c, p):
+    """The next ladder step of the product's band that is not a refused offer, or the product ends."""
+    neg, s = c["S"]["negotiation"], pstate(c, p)
+    o = s.get("offer")
     steps = [(i, x) for i, x in enumerate(neg.get("ladder") or []) if not x.get("bands") or p.get("band") in x["bands"]]
     while s["used"] < p.get("attempts", 0) and s["used"] < len(steps):
         i, step = steps[s["used"]]
@@ -1012,10 +1090,129 @@ def refusal(c, p):
         if neg.get("dedupe_refused_offers") is not False and [round(amount, 2), d.isoformat()] in s["refused"]:
             continue
         same = (neg.get("amounts") or dict()).get("same_amount_template")
-        if o and abs(float(o["amount"]) - amount) < 0.005 and same not in (None, "", NS) and                 s.get("floor_n") and abs(float(p["floor"]) - amount) < 0.005:  # the floor is not named twice
+        if o and abs(float(o["amount"]) - amount) < 0.005 and same not in (None, "", NS) and \
+                s.get("floor_n") and abs(float(p["floor"]) - amount) < 0.005:  # the floor is not named twice
             return offer(c, p, amount, d, "ladder", same)
+        intro_once(c, p)
         return offer(c, p, amount, d, "ladder", step["template"])
-    return close(c, sit_ref(c, neg.get("on_exhausted"), "negotiate"))
+    return product_done(c, p, sit_ref(c, neg.get("on_exhausted"), "negotiate"))
+
+
+# ---------- several products ----------
+
+def multi(c):
+    return len(c["st"]["products"]) > 1
+
+
+def match_product(c, text):
+    """The product a customer names (by a word of its kind or its spoken name), by word overlap with that name."""
+    words = set(re.findall(r"[a-z0-9]+", str(text or "").lower()))
+    best, score = None, 0
+    for p in c["st"]["products"]:
+        name = (product_name(c, p) + " " + str(p.get("kind") or "").replace("_", " ")).lower()
+        n = len(words & (set(re.findall(r"[a-z0-9]+", name)) - set(["your", "the", "a", "on", "ending"])))
+        if n > score:
+            best, score = p, n
+    return best
+
+
+def agree(c, p, amount, d, capped=False, advance_now=True):
+    st = c["st"]
+    pstate(c, p)["status"] = "agreed"
+    order = [str(q.get("ref")) for q in st["products"]]
+    st["agreed"] = [a for a in st["agreed"] if str(a["ref"]) != str(p["ref"])] + \
+        [dict(ref=p["ref"], amount=float(amount), date=d.isoformat(), capped=capped)]
+    st["agreed"].sort(key=lambda a: order.index(str(a["ref"])) if str(a["ref"]) in order else 99)
+    return advance(c) if advance_now else None
+
+
+def product_done(c, p, sid):
+    s = pstate(c, p)
+    s["status"], s["end"] = "ended", sid
+    return advance(c)
+
+
+def end_open(c, sid):
+    """Every product without a recorded promise ends in sid (agreed ones are not recorded); the call closes."""
+    st = c["st"]
+    done = [str(r) for r in st["recorded"]]
+    for p in st["products"]:
+        s = pstate(c, p)
+        if str(p.get("ref")) not in done and s.get("status") != "ended":
+            s["status"], s["end"] = "ended", sid
+    st["agreed"] = []
+    return close(c, aggregate(c) if not st["recorded"] else sid)
+
+
+def advance(c):
+    """Back to the current product while it is open, else the next open product from attempt 1, else the end."""
+    S, st = c["S"], c["st"]
+    if st.get("cur") and pstate(c, current(c)).get("status") == "open":
+        return ask(c, "negotiate", st.get("last") or "")
+    nxt = next((p for p in st["products"] if pstate(c, p).get("status") == "open"), None)
+    if nxt is None:
+        return readback(c) if st["agreed"] else close(c, aggregate(c))
+    st["cur"] = str(nxt.get("ref"))
+    if S["negotiation"]["first_ask"].get("scope") == "each_product":
+        o = pstate(c, nxt).get("offer") or dict()
+        if o.get("kind") == "first" and not pstate(c, nxt).get("asked"):
+            pstate(c, nxt)["asked"] = True
+            intro_once(c, nxt)
+            dt = datetime.date.fromisoformat(o["date"])
+            return ask(c, "negotiate", render(S["negotiation"]["first_ask"]["template"], product_values(c, nxt, dict(
+                amount=say_money(o["amount"]), date=say_date(dt, c["today"])))))
+    return ladder_next(c, nxt)
+
+
+def aggregate(c):
+    """The closing situation with no recorded promise: the one every product ended in, else the first product's whose
+    note reason is not skipped."""
+    st = c["st"]
+    done = [str(r) for r in st["recorded"]]
+    ends = [pstate(c, p).get("end") for p in st["products"] if str(p.get("ref")) not in done]
+    ends = [e for e in ends if e]
+    if not ends:
+        return hangup(c, st.get("stage"))
+    if all(e == ends[0] for e in ends):
+        return ends[0]
+    skip = ((c["S"]["closing"].get("aggregation") or dict()).get("skip_note_reasons")) or []
+    return next((e for e in ends if note_reason(c, e) not in skip), ends[0])
+
+
+def propose_all(c, d, named_day):
+    """One day (or each product's offer date) for every open product: checked per product, then read back."""
+    S, cal, today = c["S"], c["cal"], c["today"]
+    neg = S["negotiation"]
+    if named_day and d is None:
+        return vague_day(c, current(c))
+    items = []
+    for p in c["st"]["products"]:
+        s = pstate(c, p)
+        if s.get("status") != "open":
+            continue
+        o = s.get("offer") or dict()
+        amount = o.get("amount", p.get("due") or 0)
+        dd = d or (datetime.date.fromisoformat(o["date"]) if o.get("date") else today)
+        if dd < today:
+            return ask_day(c, p)
+        if not is_business_day(cal, dd):
+            way = (neg.get("non_business_day") or dict()).get("policy")
+            if way not in ("next", "prev"):
+                return ask_day(c, p)
+            dd = roll(cal, dd, way)
+            if dd < today:
+                dd = roll(cal, dd, "next")
+        end, capped = deadline(p), False
+        if end is not None and dd > end:
+            ov = (neg.get("multi") or dict()).get("overflow")
+            if ov == "own_deadline" or (ov not in ("ask",) and (neg.get("after_deadline") or dict()).get("policy") == "offer_deadline"):
+                dd, capped = end, True
+            else:
+                return ask_day(c, p)
+        items.append((p, amount, dd, capped))
+    for p, amount, dd, capped in items:
+        agree(c, p, amount, dd, capped, advance_now=False)
+    return advance(c)
 
 
 def offer(c, p, amount, d, kind, template, named=None, extra=None):
@@ -1038,10 +1235,14 @@ def readback(c):
     cf = S["confirm"]
     st["conf"] = 0
     items = []
+    note = (S["negotiation"].get("multi") or dict()).get("overflow_note_template")
     for a in st["agreed"]:
         dt = datetime.date.fromisoformat(a["date"])
-        items.append(render(cf["item_template"], product_values(c, product_by_ref(c, a["ref"]), dict(
-            amount=say_money(a["amount"]), date=say_date(dt, c["today"])))))
+        vals = product_values(c, product_by_ref(c, a["ref"]), dict(amount=say_money(a["amount"]),
+                                                                    date=say_date(dt, c["today"])))
+        items.append(render(cf["item_template"], vals))
+        if a.get("capped") and note not in (None, "", NS):
+            items.append(render(note, vals))
     text = render(cf["readback_template"], values(c, dict(items=join(*items), question=cf["question"])))
     return ask(c, "confirm", text)
 
@@ -1052,6 +1253,12 @@ def turn_confirm(c, x):
     d = customer_day(c, x["day"]) if x["day"] else None
     if x["main"] == "yes" and a and (d is None or d.isoformat() == a["date"]):
         return record_next(c)
+    if len(st["agreed"]) > 1 and (x["main"] in ("no", "change") or x["day"] or x["amount"]):
+        for g in st["agreed"]:  # a correction: the products go back to negotiation and this turn is read again
+            s = pstate(c, product_by_ref(c, g["ref"]))
+            s["status"], s["offer"] = "open", dict(g, kind="agreed")
+        st["cur"], st["agreed"], st["stage"] = str(a["ref"]), [], "negotiate"
+        return turn_negotiate(c, dict(x, main="" if x["main"] in ("no", "change") else x["main"]))
     if a and x["amount"] and len(st["agreed"]) == 1:  # a changed amount: checked again, then read back again
         p = product_by_ref(c, a["ref"])
         amt = parse_amount(x["amount"], p.get("due"), p.get("floor"))
@@ -1063,6 +1270,7 @@ def turn_confirm(c, x):
     if a and x["main"] == "no" and len(st["agreed"]) == 1:  # not confirmed: a refusal of what was agreed
         p = product_by_ref(c, a["ref"])
         pstate(c, p)["offer"] = dict(a, kind="agreed")
+        pstate(c, p)["status"] = "open"
         st["agreed"] = []
         st["stage"] = "negotiate"
         return refusal(c, p)
@@ -1090,12 +1298,27 @@ def promise_result(c, p, r):
     if r["ok"]:
         st["recorded"].append(p["ref"])
         return record_next(c)
+    pol = (c["S"].get("failure_policy") or dict()).get("record_promise") or dict()
+    several = (c["S"]["negotiation"].get("multi") or dict()).get("failed_promise") == "note_and_continue"
+    if several and len(st["agreed"]) > 1:
+        key = "record_promise:" + str(p["ref"])
+        st["fails"][key] = st["fails"].get(key, 0) + 1
+        n = to_int(pol.get("retries"))
+        if st["fails"][key] <= (1 if n is None else n):
+            return record_next(c)
+        prod = product_by_ref(c, p["ref"])
+        s = pstate(c, prod)
+        s["status"], s["end"] = "ended", sit_ref(c, pol.get("on_exhausted"), "confirm")
+        st["agreed"] = [a for a in st["agreed"] if str(a["ref"]) != str(p["ref"])]
+        return record_next(c)
     return failed(c, "record_promise", lambda: record_next(c), "confirm", "record_promise:" + str(p["ref"]))
 
 
 def finish_recorded(c):
     S, st = c["S"], c["st"]
     cf = S["confirm"]
+    if not st["recorded"]:
+        return close(c, aggregate(c))
     done = [str(r) for r in st["recorded"]]
     for a in st["agreed"]:
         if str(a["ref"]) in done:

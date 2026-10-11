@@ -17,13 +17,25 @@ DAY_TEXT = dict(
           "absent.",
     negotiate="The day or period the person offers or agrees to pay on in the LAST message, exactly as said, with "
               "every word that places it (a weekday with this or next, a date, a day of the month, tomorrow, a "
-              "number of days, a week or a month, or an event such as a payday). none if absent, and none when the "
-              "person only says they cannot pay on a day.",
+              "number of days, a week or a month, or an event such as a payday). none if absent, none when the "
+              "person only says they cannot pay on a day, and none when they only accept the day the agent named.",
     confirm="A different day the person now wants to pay on in the LAST message, exactly as said; none if absent or "
             "if they only repeat the day that was read back.")
 AMOUNT_TEXT = ("An amount of money the person themselves offers to pay in the LAST message, exactly as said, in "
                "digits or words (or words such as the minimum, the full amount); none if absent, and none when they "
                "only repeat or refuse the amount the agent named.")
+SCOPE_TEXT = ("Whether what the person says in their LAST message is about all their products together (all), about "
+              "one product (one), or neither (none).")
+PRODUCT_TEXT = ("The product the person talks about in their LAST message, in their own words (its kind, a name or a "
+                "number); none if they name none.")
+
+
+def several(S):
+    """True when the spec handles customers with several products."""
+    fa = S["negotiation"]["first_ask"]
+    return fa.get("scope") in ("all_products", "each_product") or fa.get("template_multi") not in (None, "", "not_specified")
+
+
 REPLY_TEXT = ("The person's answer to a yes/no question the agent asked just before: yes, no, or none when the LAST "
               "message does not answer it.")
 
@@ -90,5 +102,8 @@ def extraction(S):
                 "The clock time named in the LAST message exactly as said; none if absent.")))
         if "amount" in STAGE_SLOTS[stage]:
             fields.append(dict(name=x_var("amount"), type="string", enum=None, description=AMOUNT_TEXT))
+        if several(S) and stage in ("negotiate", "confirm"):
+            fields.append(dict(name=x_var("scope"), type="string", enum=["all", "one", "none"], description=SCOPE_TEXT))
+            fields.append(dict(name=x_var("product"), type="string", enum=None, description=PRODUCT_TEXT))
         out[stage] = fields
     return out

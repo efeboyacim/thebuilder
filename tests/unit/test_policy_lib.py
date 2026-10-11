@@ -153,3 +153,11 @@ def test_parse_now_and_spoken_formats():
     assert pl.say_date(D(2026, 10, 16), D(2026, 10, 14)) == "Friday, 16 October"
     assert pl.say_date(D(2027, 1, 4), D(2026, 12, 30)) == "Monday, 4 January 2027"
     assert pl.render("Hello {{title}} {{last_name}} , {{missing}}.", {"title": "Ms", "last_name": "Lee"}) == "Hello Ms Lee,."
+
+
+@pytest.mark.parametrize("text,want", [
+    ("Nineteen October nineteen eighty three", "1983-10-19"), ("twenty May nineteen ninety", "1990-05-20"),
+    ("October nineteenth, nineteen eighty-three", "1983-10-19"), ("the twentieth of January twenty twenty", "2020-01-20"),
+    ("twenty-third February nineteen eighty nine", "1989-02-23"), ("19/10/1983", "1983-10-19")])
+def test_day_words_never_merge_with_the_year_across_the_month(text, want):
+    assert pl.iso_date(pl.date_parts(text)) == want

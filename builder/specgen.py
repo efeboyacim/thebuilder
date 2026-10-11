@@ -130,9 +130,9 @@ Rules for the spec:
    situation when the material uses notes, else "".
 6. Rules the sections cannot express go to residual_rules: class speech (wording or tone only) or flow (changes a
    tool call, an outcome, an amount, a date or a count; give its trigger). Dates and the calendar, bands and
-   deadlines, the floor, amounts, the persuasion ladder, tool failures, events and side questions have their own
-   sections (calendar, products, negotiation, failure_policy, events, side_questions). Notes and rules for several
-   products belong in residual_rules in this spec version: put each one there, complete and with every value.
+   deadlines, the floor, amounts, the persuasion ladder, tool failures, events, side questions, notes and several
+   products have their own sections (calendar, products, negotiation, failure_policy, events, side_questions, notes,
+   negotiation.multi, closing.aggregation): use them, and keep residual_rules for what none of them can say.
 7. rule_index: every digest rule with status binding appears exactly once, with the spec paths that carry it and/or
    residual:<id>. Paths are dotted, list items by [index] or [id] (situations[some_id], identity.questions[0]).
 8. refs: the ids of the digest rules a part comes from.
@@ -157,6 +157,10 @@ Rules for the spec:
    opening, identity, disclosure, offers, read-back) may use the word the material uses for a successful write (the
    verb in confirm.recorded_template), not even with another meaning: when the material requires such content (for
    example about the call itself), keep the meaning with another form of the word, such as its -ing form.
+16. Several products: when the material allows a customer several products, set negotiation.first_ask.scope and
+   template_multi, negotiation.multi, events[].several_products, notes (with each situation's note_reason) and
+   closing.aggregation from it. When it never has several products, those are not_specified, notes.enabled is false
+   unless the material uses notes, and skip_note_reasons is empty.
 
 Engine placeholders per template (besides call-variable names):
 {templates}

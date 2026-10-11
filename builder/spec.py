@@ -49,6 +49,9 @@ TEMPLATES = {
     "events[].template": (),
     "side_questions.answers[].template": (),
     "side_questions.other.no_info_template": (),
+    "negotiation.multi.product_intro_template": PRODUCT_VARS + (ITEM_FIELDS,),
+    "negotiation.multi.overflow_note_template": PRODUCT_VARS + ("date", "deadline", ITEM_FIELDS),
+    "notes.text_template": PRODUCT_VARS + ("note_reason", ITEM_FIELDS),
     "confirm.readback_template": ("items", "question"),
     "confirm.item_template": ("product_name", "amount", "date"),
     "confirm.recording_template": (),
@@ -446,7 +449,7 @@ def validate(spec, api, brief_text="", rule_ids=None, known_ids=None):
         return Report(errors, warnings, info)
     ctx = _Ctx(spec, api)
     for check in (_check_bindings, _check_codes, _check_situations, _check_templates, _check_expressions,
-                  _check_identity, _check_calendar, _check_callback, _check_negotiation, _check_events,
+                  _check_identity, _check_calendar, _check_callback, _check_negotiation, _check_events, _check_notes,
                   _check_pre_verification, _check_honesty, _check_phrases):
         try:
             errors += check(ctx, brief_text)
@@ -499,6 +502,8 @@ def _check_bindings(ctx, _):
         needed.add("book_callback")
     if any(isinstance(s, dict) and s.get("queue") for s in ctx.spec.get("situations") or []):
         needed.add("transfer")
+    if (ctx.spec.get("notes") or {}).get("enabled") is True:
+        needed.add("record_note")
     for role in sorted(needed - set(ctx.b.tools)):
         errs.append(f"bindings.tools.{role}: the spec needs this tool role; bind it to a tool")
     return errs
@@ -533,6 +538,9 @@ def _check_codes(ctx, brief_text):
         for key, allowed in (("reason", reasons), ("queue", queues), ("note_reason", notes)):
             if isinstance(sit.get(key), str) and sit[key]:
                 errs += _code_check(f"{w}.{key}", sit[key], allowed, brief_text, forbidden)
+    for i, r in enumerate(((s.get("closing") or {}).get("aggregation") or {}).get("skip_note_reasons") or []):
+        if isinstance(r, str):
+            errs += _code_check(f"closing.aggregation.skip_note_reasons[{i}]", r, notes, brief_text, forbidden)
     for i, row in enumerate((s.get("closing") or {}).get("outcome_table") or []):
         if not isinstance(row, dict):
             continue
@@ -721,6 +729,25 @@ def _check_events(ctx, _):
             errs.append(f"{w}.template: on_yes/on_no need a template that asks the question")
         if not asks and e.get("then") in (None, NS) and e.get("below_min_template") in (None, NS):
             errs.append(f"{w}: the event does nothing; set then, or a question with on_yes and on_no")
+    return errs
+
+
+def _check_notes(ctx, _):
+    """With notes on, every situation that can end a product without a promise names its note reason."""
+    s = ctx.spec
+    if (s.get("notes") or {}).get("enabled") is not True:
+        return []
+    sits = {x.get("id"): (i, x) for i, x in enumerate(s.get("situations") or []) if isinstance(x, dict)}
+    ends = [("negotiation.on_exhausted", (s.get("negotiation") or {}).get("on_exhausted")),
+            ("failure_policy.record_promise.on_exhausted", ((s.get("failure_policy") or {}).get("record_promise") or {}).get("on_exhausted"))]
+    for n, e in enumerate(s.get("events") or []):
+        if isinstance(e, dict) and set(e.get("stages") or []) & {"negotiate", "confirm"}:
+            ends += [(f"events[{n}].{k}", e.get(k)) for k in ("then", "on_no")]
+    errs = []
+    for path, sid in ends:
+        if sid in sits and not sits[sid][1].get("queue") and not sits[sid][1].get("note_reason"):
+            errs.append(f"situations[{sits[sid][0]}].note_reason: notes are enabled and {path} ends a product here, "
+                        f"so this situation needs its note reason")
     return errs
 
 

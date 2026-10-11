@@ -354,10 +354,11 @@ def date_parts(text, order="day_month_year", today=None):
         nums = [int(m.group(1)), int(m.group(2))] + ([int(m.group(3))] if m.group(3) else [])
     else:
         mw = _MONTH_RE.search(s)
-        if mw:
+        if mw:  # numbers before and after the month word never merge ('nineteen October nineteen eighty')
             month = _month_of(mw.group(1))
-            s = s[:mw.start()] + " , " + s[mw.end():]
-        nums = [n[0] for n in spoken_numbers(s)]
+            nums = [n[0] for n in spoken_numbers(s[:mw.start()])] + [n[0] for n in spoken_numbers(s[mw.end():])]
+        else:
+            nums = [n[0] for n in spoken_numbers(s)]
     out = dict()
     if month:
         out["month"] = month

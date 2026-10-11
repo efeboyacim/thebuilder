@@ -513,6 +513,13 @@
     "R42",
     "R44"
    ]
+  },
+  "multi": {
+   "product_intro_template": "not_specified",
+   "overflow": "not_specified",
+   "overflow_note_template": "not_specified",
+   "failed_promise": "not_specified",
+   "refs": []
   }
  },
  "confirm": {
@@ -583,7 +590,8 @@
    "then_before_verification": "not_specified",
    "refs": [
     "R49"
-   ]
+   ],
+   "several_products": "not_specified"
   },
   {
    "id": "paid",
@@ -602,7 +610,8 @@
    "then_before_verification": "not_specified",
    "refs": [
     "R56"
-   ]
+   ],
+   "several_products": "not_specified"
   },
   {
    "id": "dispute",
@@ -621,7 +630,8 @@
    "then_before_verification": "not_specified",
    "refs": [
     "R57"
-   ]
+   ],
+   "several_products": "not_specified"
   },
   {
    "id": "restructuring",
@@ -640,7 +650,8 @@
    "then_before_verification": "not_specified",
    "refs": [
     "R58"
-   ]
+   ],
+   "several_products": "not_specified"
   },
   {
    "id": "human",
@@ -661,7 +672,8 @@
    "then_before_verification": "not_specified",
    "refs": [
     "R59"
-   ]
+   ],
+   "several_products": "not_specified"
   },
   {
    "id": "no_talk",
@@ -682,7 +694,8 @@
    "then_before_verification": "not_verified_declined",
    "refs": [
     "R62"
-   ]
+   ],
+   "several_products": "not_specified"
   }
  ],
  "side_questions": {
@@ -716,6 +729,12 @@
    "R60",
    "R61"
   ]
+ },
+ "notes": {
+  "enabled": false,
+  "on_transfer": "not_specified",
+  "text_template": "not_specified",
+  "refs": []
  },
  "situations": [
   {
@@ -1042,7 +1061,11 @@
    "R69",
    "R70",
    "R72"
-  ]
+  ],
+  "aggregation": {
+   "skip_note_reasons": [],
+   "refs": []
+  }
  },
  "phrases": [
   {

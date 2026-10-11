@@ -183,6 +183,21 @@ verification, then says `{{say_next}}`; or no_info → the fixed sentence). New 
 (yes/no to the agent's question) in every stage that has events, `x_amount` in negotiate and confirm. A customer
 amount below the full amount sets `said_too_much`. Every call has a 40-turn guard (`engine.TURN_LIMIT`).
 
+**Item 14 sections.** `notes` (enabled, `on_transfer` drop/keep, `text_template`): every product without a recorded
+promise gets a note when the call closes, with the note_reason of the situation that ended that product, else of the
+closing situation; a transfer writes none (drop). `negotiation.multi`: `product_intro_template` (said before the first
+offer for each product when they are gone through one by one), `overflow` (one day for all that is after a product's
+deadline: own_deadline or ask) with `overflow_note_template` (added to that read-back line), `failed_promise`
+(note_and_continue or end_call). `events[].several_products` (note_and_continue: the event ends only the product it
+concerns, by `x_product` or the current one; end_call). `closing.aggregation.skip_note_reasons`: with no recorded
+promise the close is the situation every product ended in, else the first product's (lookup order) whose note reason
+is not skipped. Engine: each product is open, agreed or ended; `advance` goes back to the current product while it is
+open, else to the next open one from ladder attempt 1 (or its own first ask when `first_ask.scope` is each_product),
+else to the read-back of every agreed product, else to the aggregated close. `propose_all` handles one day for all.
+Says before an api hop are carried in state (`carry`). Extraction adds `x_scope` (all, one) and `x_product` in
+negotiate and confirm when the spec can have several products. The brain code is token-minified (`brain.minify`);
+75 KB on the A+B fixture; the hard stop is 150 KB.
+
 ### 2.3 Expressions
 
 Some values are computed per call: deadlines, floors, ladder steps, band selectors, callback days, `earliest_date`.
@@ -243,6 +258,10 @@ Every one that is used produces a trace `warning`.
 | Floor offers (item 12) | 1 |
 | Other side questions (item 12) | The no-information sentence |
 | An event target (item 12) | Continue with what the agent was asking |
+| Notes (item 14) | Off |
+| Several products, one day after a deadline (item 14) | As after_deadline: its own deadline when that policy offers the deadline, else ask |
+| A failed promise among several (item 14) | End the call with the failure situation |
+| An event with several products (item 14) | End the call |
 
 ---
 

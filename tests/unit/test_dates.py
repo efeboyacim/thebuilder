@@ -342,3 +342,13 @@ def test_a_failed_lookup_is_retried(spec, api, code):
     acts = verified("PUB-10") + [dict(stage="negotiate", main="accepts"), dict(stage="confirm", main="yes")]
     r = play(spec, api, code, "PUB-10", acts, faults={"lookup": ["timeout"]})
     expect(r, "promise", promises=[promise("p1", 365.0, "2026-10-14")])
+
+
+@pytest.mark.parametrize("day,main", [("then", "proposes"), ("that day", "accepts"), ("on the day you said", "unclear")])
+def test_a_day_that_points_back_accepts_the_offer(spec, api, code, day, main):
+    acts = verified("PUB-07") + [
+        dict(stage="negotiate", main="refuses"),
+        dict(stage="negotiate", main="proposes", day="Monday the 26th"),
+        dict(stage="negotiate", main=main, day=day, said="Yes, I can pay it " + day + "."),
+        dict(stage="confirm", main="yes")]
+    expect(play(spec, api, code, "PUB-07", acts), "promise", promises=[promise("p1", 540.0, "2026-10-27")])

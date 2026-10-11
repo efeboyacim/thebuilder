@@ -8,14 +8,16 @@ Wrapping everything in `def _brain(vars)` makes the code independent of how the 
 global and local namespaces, top-level functions could not see each other, nested ones always can. The spec is
 embedded as a JSON string with its braces written as escapes, so no doubled brace ever appears in the code.
 """
-import ast, builtins, copy, json, pathlib, re
+import ast, builtins, copy, io, json, pathlib, re, tokenize
 
 from builder import engine, exprs, policy_lib
 from builder import spec as sp
 
 _DROP = ("refs", "when", "trigger", "phrases", "residual_rules", "rule_index", "forbidden_codes", "required_content",
-         "forbidden_before_verification", "does_not_count", "spec_version")
-MAX_BYTES = 80_000  # S1b ran 60 KB; item 11 measured the brain on Freya at about 62 KB
+         "forbidden_before_verification", "does_not_count", "spec_version", "outcome_table", "api_format",
+         "one_at_a_time", "may_answer_identity", "needs_clear_yes", "on_change", "recording_template",
+         "stated_in_brief", "meaning")
+MAX_BYTES = 150_000  # a hard stop only: 62-75 KB brains ran live (items 11-13); the trace records brain_bytes
 
 
 class BrainError(Exception):
@@ -33,6 +35,11 @@ def _strip(node):
 def compact_spec(spec, api):
     """What the engine reads: the spec without sources, prose and indexes, plus the product row layout."""
     S = _strip(copy.deepcopy(spec))
+    for path in exprs.expressions(spec):  # compiled into EXPRS; the engine never reads the text
+        segs = sp.split_path(path)
+        found, parent = sp.resolve(S, ".".join(str(x) if isinstance(x, str) else "[" + str(x) + "]" for x in segs[:-1]).replace(".[", "["))
+        if found and isinstance(parent, dict) and segs[-1] in parent:
+            parent[segs[-1]] = 1
     S["call_variables"] = [v["name"] for v in spec.get("call_variables") or [] if isinstance(v, dict)]
     products, fields = exprs.item_schema(spec, api)
     S["_api"] = {"products": products, "item_fields": fields}
@@ -50,13 +57,44 @@ def module_source(module):
             if isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant) and \
                     isinstance(first.value.value, str) and len(node.body) > 1:
                 drop.update(range(first.lineno, first.end_lineno + 1))
-    lines = []
-    for n, line in enumerate(text.splitlines(), 1):
-        if n in drop or "# brain: strip" in line or not line.strip() or line.lstrip().startswith("#"):
+    lines = [line for n, line in enumerate(text.splitlines(), 1) if n not in drop and "# brain: strip" not in line]
+    return minify("\n".join(lines) + "\n")
+
+
+_WORD = (tokenize.NAME, tokenize.NUMBER)
+
+
+def _space(a, b):
+    if a.type in _WORD and b.type in _WORD + (tokenize.STRING,):
+        return True
+    if a.type == tokenize.STRING and b.type in _WORD + (tokenize.STRING,):
+        return True
+    return a.string in ("{", "}") and b.string in ("{", "}")  # never a doubled brace
+
+
+def minify(text):
+    """The same program with one space per indent level, one physical line per logical line, no comments and no
+    spaces the tokenizer does not need."""
+    out, line, level, prev = [], [], 0, None
+    for t in tokenize.generate_tokens(io.StringIO(text).readline):
+        if t.type in (tokenize.COMMENT, tokenize.NL, tokenize.ENCODING):
             continue
-        lead = len(line) - len(line.lstrip(" "))
-        lines.append(" " * (lead // 4 + (1 if lead % 4 else 0)) + line.strip())
-    return "\n".join(lines) + "\n"
+        if t.type == tokenize.INDENT:
+            level += 1
+            continue
+        if t.type == tokenize.DEDENT:
+            level -= 1
+            continue
+        if t.type in (tokenize.NEWLINE, tokenize.ENDMARKER):
+            if line:
+                out.append(" " * level + "".join(line))
+            line, prev = [], None
+            continue
+        if prev is not None and _space(prev, t):
+            line.append(" ")
+        line.append(t.string)
+        prev = t
+    return "\n".join(out) + "\n"
 
 
 def _literal(text):

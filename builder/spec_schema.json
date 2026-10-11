@@ -6,7 +6,7 @@
  "additionalProperties": false,
  "required": ["spec_version", "call_variables", "bindings", "calendar", "opening", "third_party", "identity",
               "disclosure", "products", "negotiation", "confirm", "failure_policy", "events", "side_questions",
-              "situations", "closing", "phrases", "residual_rules", "rule_index", "forbidden_codes"],
+              "notes", "situations", "closing", "phrases", "residual_rules", "rule_index", "forbidden_codes"],
  "$defs": {
   "ns": {"const": "not_specified"},
   "refs": {"type": "array", "items": {"type": "string", "pattern": "^R[0-9]+$"},
@@ -262,7 +262,7 @@
   "negotiation": {
    "type": "object", "additionalProperties": false,
    "required": ["first_ask", "non_business_day", "after_deadline", "vague", "ask_date_template", "ladder",
-                "non_answer_is_refusal", "dedupe_refused_offers", "on_exhausted", "amounts", "refs"],
+                "non_answer_is_refusal", "dedupe_refused_offers", "on_exhausted", "amounts", "multi", "refs"],
    "properties": {
     "first_ask": {
      "type": "object", "additionalProperties": false,
@@ -328,6 +328,22 @@
     "dedupe_refused_offers": {"$ref": "#/$defs/switch",
                               "description": "true when an offer the customer already refused must not be made again (a step that would repeat one is skipped)."},
     "on_exhausted": {"$ref": "#/$defs/situation_ref", "description": "Situation when the attempts are used up."},
+    "multi": {
+     "description": "A customer with several late products.",
+     "type": "object", "additionalProperties": false,
+     "required": ["product_intro_template", "overflow", "overflow_note_template", "failed_promise", "refs"],
+     "properties": {
+      "product_intro_template": {"$ref": "#/$defs/optional_text",
+                                 "description": "Said before the first offer for each product when the products are gone through one by one."},
+      "overflow": {"enum": ["own_deadline", "ask", "not_specified"],
+                   "description": "One day named for all products that is after one product's deadline: that product takes its own deadline, or the agent asks for another day."},
+      "overflow_note_template": {"$ref": "#/$defs/optional_text",
+                                 "description": "Added to a read-back line whose product took its own deadline: date is that deadline."},
+      "failed_promise": {"enum": ["note_and_continue", "end_call", "not_specified"],
+                         "description": "A promise that cannot be recorded among several: keep the others (the product gets the failure situation's note), or end the call with the failure situation."},
+      "refs": {"$ref": "#/$defs/refs"}
+     }
+    },
     "amounts": {
      "description": "Amounts. The agent proposes every amount; it never asks how much the customer can pay.",
      "type": "object", "additionalProperties": false,
@@ -422,7 +438,7 @@
    "type": "array",
    "items": {"type": "object", "additionalProperties": false,
              "required": ["id", "trigger", "stages", "min_occurrences", "suppresses", "below_min_template", "template",
-                          "on_yes", "on_no", "then", "then_before_verification", "refs"],
+                          "on_yes", "on_no", "then", "then_before_verification", "several_products", "refs"],
              "properties": {
               "id": {"$ref": "#/$defs/id"},
               "trigger": {"$ref": "#/$defs/text", "description": "What the customer says, in the material's words; it becomes an extraction label."},
@@ -437,6 +453,8 @@
               "on_no": {"$ref": "#/$defs/target", "description": "Also used when the customer refuses a payment after this event suppressed persuasion."},
               "then": {"$ref": "#/$defs/target", "description": "What follows when the template asks no question."},
               "then_before_verification": {"$ref": "#/$defs/target", "description": "Replaces then (and on_yes) before identity is verified; not_specified = the same."},
+              "several_products": {"enum": ["note_and_continue", "end_call", "not_specified"],
+                                   "description": "With several products: the event ends only the product it concerns (it gets the situation's note and the call goes on with the others), or it ends the call."},
               "refs": {"$ref": "#/$defs/refs"}}}
   },
 
@@ -456,6 +474,18 @@
                                         "description": "answer_from_facts: answered in one sentence from the facts the tools gave (none before verification); no_info: always the no-information sentence."},
                              "no_info_template": {"$ref": "#/$defs/text", "description": "Says the agent does not have that information."},
                              "refs": {"$ref": "#/$defs/refs"}}},
+    "refs": {"$ref": "#/$defs/refs"}
+   }
+  },
+
+  "notes": {
+   "description": "Notes the agent writes for products without a recorded promise.",
+   "type": "object", "additionalProperties": false, "required": ["enabled", "on_transfer", "text_template", "refs"],
+   "properties": {
+    "enabled": {"$ref": "#/$defs/switch",
+                "description": "true when every product without a promise gets a note (the reason is the note_reason of the situation that ended it, or of the closing situation)."},
+    "on_transfer": {"enum": ["drop", "keep", "not_specified"], "description": "Notes when the call is transferred: none at all (drop), or as usual (keep)."},
+    "text_template": {"$ref": "#/$defs/optional_text", "description": "The note's free text, if the tool takes one."},
     "refs": {"$ref": "#/$defs/refs"}
    }
   },
@@ -482,7 +512,7 @@
 
   "closing": {
    "type": "object", "additionalProperties": false,
-   "required": ["outcome_table", "transfer_overrides_promise", "hangup", "refs"],
+   "required": ["outcome_table", "transfer_overrides_promise", "hangup", "aggregation", "refs"],
    "properties": {
     "outcome_table": {"type": "array", "minItems": 1,
                       "items": {"type": "object", "additionalProperties": false, "required": ["outcome", "reasons"],
@@ -490,6 +520,12 @@
                                                "reasons": {"type": "array", "items": {"type": "string", "minLength": 1},
                                                            "description": "Allowed reasons; empty when the outcome takes no reason."}}}},
     "transfer_overrides_promise": {"$ref": "#/$defs/switch", "description": "A transfer after a recorded promise closes as the transfer."},
+    "aggregation": {
+     "description": "With several products and no recorded promise: when every product ended in the same situation, that one; otherwise the situation of the first product, in lookup order, whose note reason is not in skip_note_reasons.",
+     "type": "object", "additionalProperties": false, "required": ["skip_note_reasons", "refs"],
+     "properties": {"skip_note_reasons": {"type": "array", "items": {"type": "string"}},
+                    "refs": {"$ref": "#/$defs/refs"}}
+    },
     "hangup": {
      "description": "The situation used when the line drops in each stage. stated_in_brief false: the brief is silent and you picked the closest situation.",
      "type": "object", "additionalProperties": false, "required": ["open", "third", "identity", "negotiate", "confirm"],
